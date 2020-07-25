@@ -1,7 +1,8 @@
 {
-  "name": "TODO",
-  "description": "TODO",
+  "name": "fuzzy-playground",
+  "description": "An evolving environment to play, experiment and learn about web graphics and user interfaces",
   "version": "0.0.1",
+  "license": "BSD-3-Clause",
   "scripts": {
     "dev": "sapper dev",
     "build": "sapper build --legacy",
