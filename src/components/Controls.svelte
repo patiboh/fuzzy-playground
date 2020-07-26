@@ -6,43 +6,33 @@
 
   let xPosition = 0
   let yPosition = 0
-  const EMOJIS = {
-    BODY: {
-      DEFAULT: {
-        utf8: 0x1f941, // 🥁 drums
-      },
-
-      SUCCESS: {
-        utf8: 0x2728, // ✨ sparkles
-      },
-
-      ERROR: {
-        utf8: 0x1f47b, // 👻 ghost
-      },
-    },
-    ANIMATE: {
-      DEFAULT: {
-        utf8: 0x26a1, // ⚡️ lightning
-      },
-      SUCCESS: {
-        utf8: 0x1f64c, // 🙌 raised handss
-      },
-      ERROR: {
-        utf8: 0x1f52b, // 🔫 water pistol
-      },
-      ACTIVE: {
-        utf8: 0x1f4a5, // 💥 fire spark
-      },
-    },
-    REFRESH: {
-      DEFAULT: {
-        utf8: 0x1f9fd, // 🧽 sponge
-      },
-    },
+  const state = {
+    DEFAULT: 'default',
+    SUCCESS: 'success',
+    FOCUS: 'focus',
+    HOVER: 'hover',
+    ACTIVE: 'active',
+    ERROR: 'error',
   }
-  const CURSOR_SIZE = {
-    BODY: 'LG',
-    BUTTON: 'SM',
+  const size = {
+    LG: 'LG',
+    SM: 'SM',
+  }
+  const emojis = {
+    body: {
+      default: 0x1f941, // 🥁 drums
+      success: 0x2728, // ✨ sparkles
+      error: 0x1f47b, // 👻 ghost
+    },
+    animate: {
+      default: 0x26a1, // ⚡️ lightning
+      success: 0x1f64c, // 🙌 raised handss
+      error: 0x1f52b, // 🔫 water pistol // OR 0x1f327 // 🌧 cloud with rain
+      active: 0x1f4a5, // 💥 fire spark
+    },
+    refresh: {
+      default: 0x1f9fd, // 🧽 sponge
+    },
   }
   let animateButton
   let refreshButton
@@ -56,8 +46,7 @@
     const xPositionInput = document.getElementById('input-x')
     const yPositionInput = document.getElementById('input-y')
     animateButton.classList.add('active')
-    utils.updateCursor(document.body, 0x2728, 'LG') // ✨ sparkles
-    utils.updateCursor(this, 0x1f4a5, 'SM') // 💥 fire spark
+    utils.updateCursor(animateButton, emojis.animate[state.ACTIVE], size.SM)
     const confetti = document.getElementsByClassName('confetti')
     const poop = document.getElementsByClassName('poop')
     Array.from(confetti).map((element) => {
@@ -77,7 +66,8 @@
         animateButton.classList.remove('error')
         animateButton.classList.add('success')
         // this = animate button
-        utils.updateCursor(animateButton, 0x1f64c, 'SM') // 🙌 raised hands
+        utils.updateCursor(document.body, emojis.body[state.SUCCES], size.LG)
+        utils.updateCursor(animateButton, emojis.animate[state.SUCCES], size.SM)
         Array.from(confetti).map((element) => {
           element.classList.add('yay')
         })
@@ -90,9 +80,8 @@
       document.body.classList.add('error')
       feedback.classList.add('error')
       stacktrace.append(`${error}\n`)
-      utils.updateCursor(document.body, 0x1f47b, 'LG') // 👻 ghost
-      // utils.updateCursor(animate, 0x1f327, 'SM') // 🌧 cloud with rain
-      utils.updateCursor(animateButton, 0x1f52b, 'SM') // 🔫 water pistol
+      utils.updateCursor(document.body, emojis.body[state.ERROR], size.LG)
+      utils.updateCursor(animateButton, emojis.animate[state.ERROR], size.SM)
       Array.from(poop).map((element) => {
         element.classList.add('nay')
       })
@@ -101,19 +90,17 @@
   }
 
   function refresh() {
-    utils.updateCursor(document.body, 0x1f941, 'LG') // 🥁 drums
-    utils.updateCursor(animateButton, 0x26a1, 'SM') // ⚡️ lightning
+    utils.updateCursor(document.body, emojis.body[state.DEFAULT], size.LG)
+    utils.updateCursor(animateButton, emojis.animate[state.DEFAULT], size.SM)
     location.reload()
   }
   const handleAnimate = () => animate()
   const handleRefresh = () => refresh()
 
   onMount(() => {
-    utils.updateCursor(document.body, 0x1f941, 'LG') // 🥁 drums
-    utils.updateCursor(animateButton, 0x26a1, 'SM') // ⚡️ lightning
-    utils.updateCursor(refreshButton, 0x1f9fd, 'SM') // 🧽 sponge
-    animateButton.addEventListener('click', animate)
-    refreshButton.addEventListener('click', refresh)
+    utils.updateCursor(document.body, emojis.body[state.DEFAULT], size.LG)
+    utils.updateCursor(animateButton, emojis.animate[state.DEFAULT], size.SM)
+    utils.updateCursor(refreshButton, emojis.refresh[state.DEFAULT], size.SM)
   })
 </script>
 
