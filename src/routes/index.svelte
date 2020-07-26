@@ -1,5 +1,10 @@
+<script>
+  import GraphicsDisplay from '../components/GraphicsDisplay.svelte'
+  import Controls from '../components/Controls.svelte'
+</script>
+
 <style>
-	h1, figure, p {
+  /* h1, figure, p {
 		text-align: center;
 		margin: 0 auto;
 	}
@@ -29,18 +34,12 @@
 		h1 {
 			font-size: 4em;
 		}
-	}
+	} */
 </style>
 
 <svelte:head>
-	<title>Sapper project template</title>
+  <title>Fuzzy Playground</title>
 </svelte:head>
 
-<h1>Great success!</h1>
-
-<figure>
-	<img alt='Success Kid' src='successkid.jpg'>
-	<figcaption>Have fun with Sapper!</figcaption>
-</figure>
-
-<p><strong>Try editing this file (src/routes/index.svelte) to test live reloading.</strong></p>
+<GraphicsDisplay />
+<Controls />
