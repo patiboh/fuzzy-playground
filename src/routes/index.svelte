@@ -1,5 +1,5 @@
 <script>
-  import Display from '../components/Display.svelte'
+  import Playground from '../components/Playground.svelte'
   import Controls from '../components/Controls.svelte'
 </script>
 
@@ -7,8 +7,7 @@
   <title>Fuzzy Playground</title>
 </svelte:head>
 
-<Display />
-<Controls />
+<Playground />
 
 <div aria-hidden>
   <span class="confetti tada" />

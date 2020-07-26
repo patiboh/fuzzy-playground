@@ -1,11 +1,9 @@
 <script>
   // @ts-check
-  import {onMount} from 'svelte'
+  import {onMount, createEventDispatcher} from 'svelte'
   import * as utils from '../libs/utils.js'
   import * as draw from '../libs/draw.js'
 
-  let xPosition = 0
-  let yPosition = 0
   const state = {
     DEFAULT: 'default',
     SUCCESS: 'success',
@@ -34,71 +32,19 @@
       default: 0x1f9fd, // 🧽 sponge
     },
   }
+  let xPosition = 0
+  let yPosition = 0
   let animateButton
   let refreshButton
-
+  const dispatch = createEventDispatcher()
   function animate() {
-    // Output
-    const feedback = document.getElementById('feedback')
-    const stacktrace = document.getElementById('stack-trace')
-
-    // Coordinate Controls
-    const xPositionInput = document.getElementById('input-x')
-    const yPositionInput = document.getElementById('input-y')
-    animateButton.classList.add('active')
-    utils.updateCursor(animateButton, emojis.animate[state.ACTIVE], size.SM)
-    const confetti = document.getElementsByClassName('confetti')
-    const poop = document.getElementsByClassName('poop')
-    Array.from(confetti).map((element) => {
-      element.classList.remove('yay')
-    })
-    Array.from(poop).map((element) => {
-      element.classList.remove('nay')
-    })
-    try {
-      const webGlProps = draw.initScene()
-      const webGlAnimation = window.setInterval(() => {
-        draw.drawScene(webGlProps)
-      }, 1)
-
-      window.setTimeout(() => {
-        animateButton.classList.remove('active')
-        animateButton.classList.remove('error')
-        animateButton.classList.add('success')
-        // this = animate button
-        utils.updateCursor(document.body, emojis.body[state.SUCCES], size.LG)
-        utils.updateCursor(animateButton, emojis.animate[state.SUCCES], size.SM)
-        Array.from(confetti).map((element) => {
-          element.classList.add('yay')
-        })
-        window.clearInterval(webGlAnimation)
-      }, 1000)
-    } catch (error) {
-      animateButton.classList.remove('active')
-      animateButton.classList.remove('success')
-      animateButton.classList.add('error')
-      document.body.classList.add('error')
-      feedback.classList.add('error')
-      stacktrace.append(`${error}\n`)
-      utils.updateCursor(document.body, emojis.body[state.ERROR], size.LG)
-      utils.updateCursor(animateButton, emojis.animate[state.ERROR], size.SM)
-      Array.from(poop).map((element) => {
-        element.classList.add('nay')
-      })
-      console.error(error)
-    }
+    dispatch('animate')
   }
-
   function refresh() {
-    utils.updateCursor(document.body, emojis.body[state.DEFAULT], size.LG)
-    utils.updateCursor(animateButton, emojis.animate[state.DEFAULT], size.SM)
-    location.reload()
+    dispatch('refresh')
   }
-  const handleAnimate = () => animate()
-  const handleRefresh = () => refresh()
 
   onMount(() => {
-    utils.updateCursor(document.body, emojis.body[state.DEFAULT], size.LG)
     utils.updateCursor(animateButton, emojis.animate[state.DEFAULT], size.SM)
     utils.updateCursor(refreshButton, emojis.refresh[state.DEFAULT], size.SM)
   })
@@ -116,12 +62,12 @@
     </label>
   </div>
   <button
-    on:click={handleAnimate}
+    on:click={animate}
     bind:this={animateButton}
     class="jumbo fire-starter"
     aria-label="Animate" />
   <button
-    on:click={handleRefresh}
+    on:click={refresh}
     bind:this={refreshButton}
     class="jumbo shower"
     aria-label="Refresh" />
