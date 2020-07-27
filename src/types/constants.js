@@ -18,7 +18,7 @@ export const emojis = {
   },
   animate: {
     default: 0x26a1, // ⚡️ lightning
-    success: 0x1f64c, // 🙌 raised handss
+    success: 0x1f64c, // 🙌 raised hands
     error: 0x1f52b, // 🔫 water pistol // OR 0x1f327 // 🌧 cloud with rain
     active: 0x1f4a5, // 💥 fire spark
   },
