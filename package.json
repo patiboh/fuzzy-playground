@@ -3,6 +3,9 @@
   "description": "An evolving environment to play, experiment and learn about web graphics and user interfaces",
   "version": "0.0.1",
   "license": "BSD-3-Clause",
+  "cypress-cucumber-preprocessor": {
+    "nonGlobalStepDefinitions": true
+  },
   "scripts": {
     "dev": "sapper dev",
     "build": "sapper build --legacy",
@@ -36,6 +39,7 @@
     "@rollup/plugin-node-resolve": "^8.0.0",
     "@rollup/plugin-replace": "^2.2.0",
     "autoprefixer": "^9.8.5",
+    "cypress-cucumber-preprocessor": "^2.5.4",
     "eslint": "^7.5.0",
     "eslint-config-prettier": "^6.11.0",
     "eslint-config-standard": "^14.1.1",
