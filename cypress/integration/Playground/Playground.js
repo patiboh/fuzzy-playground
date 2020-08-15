@@ -6,7 +6,10 @@ Given('I arrive on the playground for the first time', () => {
   cy.visit(rootUrl)
 })
 When('I launch an animation', () => {
-  // TODO
+  cy.get('[data-cy="button-animate"]').then(($btn) => {
+    $btn.click()
+    cy.get('[data-cy="button-animate"]').should('have.class', 'active')
+  })
 })
 
 describe('Fresh play - success', () => {
