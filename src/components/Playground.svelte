@@ -12,7 +12,7 @@
   let animateButton
   let refreshButton
   let feedback
-  let stacktrace
+  let stacktrace = ''
 
   let animateButtonState
   let emojis
@@ -56,7 +56,7 @@
       // feedback.classList.add(constants.uiState.ERROR)
       // emojis = multiply([constants.emojis.error.poop])
       loop()
-      stacktrace.append(`${error}\n`)
+      stacktrace = `${error}\n${stacktrace}`
       utils.updateCursor(
         document.body,
         constants.emojis.body[constants.uiState.ERROR],
@@ -109,10 +109,10 @@
   })
 </script>
 
-<section class="display">
+<section class={`display ${$uiState}`}>
   <canvas bind:this={canvas} />
-  <div bind:this={feedback} data-cy="feedback">
-    <pre bind:this={stacktrace} />
+  <div class="feedback" bind:this={feedback} data-cy="feedback">
+    <pre class="stacktrace">{stacktrace}</pre>
   </div>
 </section>
 
