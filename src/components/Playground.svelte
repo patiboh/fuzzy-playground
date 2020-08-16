@@ -17,29 +17,15 @@
   let animateButtonState
   let emojis
   let canvas
+  let frame
 
   const uiStateSubscription = uiState.subscribe((value) => {
     animateButtonState = value
   })
 
   const emojiFeedbackSubscription = emojiFeedback.subscribe((value) => {
-    emojis = surprise(Object.values(constants.emojis.confetti))
+    emojis = utils.multiply(Object.values(value))
   })
-
-  function surprise(characters) {
-    console.log(characters)
-    return new Array(100) // code from Svelte tutorial confetti
-      .fill(0)
-      .map((_, i) => {
-        return {
-          character: characters[i % characters.length],
-          x: Math.random() * 100,
-          y: -10 - Math.random() * 100,
-          radius: 0.1 + Math.random() * 1,
-        }
-      })
-      .sort((a, b) => a.radius - b.radius)
-  }
 
   function handleAnimate() {
     let frame
@@ -47,14 +33,14 @@
       frame = requestAnimationFrame(loop)
 
       emojis = emojis.map((emoji) => {
-        emoji.y += 0.7 * emoji.r
+        emoji.y += 0.7 * emoji.radius
         if (emoji.y > 120) emoji.y = -20
         return emoji
       })
     }
     utils.updateCursor(
       animateButton,
-      constants.emojis.animate[constants.uiState.ACTIVE],
+      constants.emojis.animate[$uiState],
       constants.size.SM,
     )
     try {
@@ -62,15 +48,14 @@
       const webGlAnimation = window.setInterval(() => {
         draw.drawScene(webGlProps)
       }, 1)
-      emojis = surprise(Object.values(constants.emojis.confetti))
-      window.setTimeout(() => {
-        loop()
-        window.clearInterval(webGlAnimation)
-      }, 1000)
+      $uiState = constants.uiState.SUCCESS
+      loop()
     } catch (error) {
-      emojis = surprise([constants.emojis.error.poop])
-      document.body.classList.add(constants.uiState.ERROR)
-      feedback.classList.add(constants.uiState.ERROR)
+      $uiState = constants.uiState.ERROR
+      // document.body.classList.add(constants.uiState.ERROR)
+      // feedback.classList.add(constants.uiState.ERROR)
+      // emojis = multiply([constants.emojis.error.poop])
+      loop()
       stacktrace.append(`${error}\n`)
       utils.updateCursor(
         document.body,
@@ -84,11 +69,14 @@
       )
       console.error(error)
     } finally {
-      cancelAnimationFrame(frame)
+      window.setTimeout(() => {
+        cancelAnimationFrame(frame)
+      }, 10000)
     }
   }
 
   function handleRefresh(event) {
+    cancelAnimationFrame(frame)
     utils.updateCursor(
       document.body,
       constants.emojis.body[constants.uiState.DEFAULT],
@@ -122,7 +110,7 @@
 </script>
 
 <section class="display">
-  <canvas id="canvas" />
+  <canvas bind:this={canvas} />
   <div bind:this={feedback} data-cy="feedback">
     <pre bind:this={stacktrace} />
   </div>
@@ -152,9 +140,10 @@
     class={`jumbo shower ${animateButtonState}`}
     aria-label="Refresh" />
 </aside>
-
 {#each emojis as ef}
-  <span style="left: {ef.x}%; top: {ef.y}%; transform: scale({ef.radius})">
+  <span
+    class="emoji"
+    style="left: {ef.x}%; top: {ef.y}%; transform: scale({ef.radius})">
     {ef.character}
   </span>
 {/each}
