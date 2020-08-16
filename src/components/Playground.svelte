@@ -140,10 +140,10 @@
     class={`jumbo shower ${animateButtonState}`}
     aria-label="Refresh" />
 </aside>
-{#each emojis as ef}
+{#each emojis as emoji}
   <span
     class="emoji"
-    style="left: {ef.x}%; top: {ef.y}%; transform: scale({ef.radius})">
-    {ef.character}
+    style="left: {emoji.x}%; top: {emoji.y}%; transform: scale({emoji.radius})">
+    {emoji.character}
   </span>
 {/each}
