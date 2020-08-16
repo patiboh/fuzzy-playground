@@ -1,4 +1,12 @@
 /* Normalize */
+:global(body) {
+  overflow: hidden;
+}
+.yay,
+.nay {
+  position: absolute;
+  font-size: 5vw;
+}
 html {
   background-color: black;
   overflow: hidden;
@@ -196,266 +204,277 @@ main {
     rgba(0, 0, 0, 1) 60%
   );
 }
-.yay.tada {
-  animation: horizontal 2s infinite, vertical 3.9s infinite;
-  animation-timing-function: ease-in-out;
-  animation-delay: 0.6s;
+
+// Svelte tutorial confetti styles
+:global(body) {
+  overflow: hidden;
 }
-.yay.star {
-  animation: horizontal1 2s infinite, vertical 4.6s infinite;
-  animation-timing-function: ease-in-out;
-  animation-delay: 0.5s;
-}
-.yay.balloon {
-  animation: horizontal2 2s infinite, vertical 5s infinite;
-  animation-timing-function: ease-in-out;
-  animation-delay: 0.1s;
-}
-.yay.confetti-ball {
-  animation: horizontal3 2s infinite, vertical 4.3s infinite;
-  animation-timing-function: ease-in-out;
-  animation-delay: 0.3s;
-}
-.yay.party-face {
-  animation: horizontal4 2s infinite, vertical 4s infinite;
-  animation-timing-function: ease-in-out;
-  animation-delay: 0.8s;
-}
-.nay.poop1 {
-  animation: horizontal 2s infinite, vertical 3.9s infinite;
-  animation-timing-function: ease-in-out;
-  animation-delay: 0.6s;
-}
-.nay.poop2 {
-  animation: horizontal1 2s infinite, vertical 4.6s infinite;
-  animation-timing-function: ease-in-out;
-  animation-delay: 0.5s;
-}
-.nay.poop3 {
-  animation: horizontal2 2s infinite, vertical 5s infinite;
-  animation-timing-function: ease-in-out;
-  animation-delay: 0.1s;
-}
-.nay.poop4 {
-  animation: horizontal3 2s infinite, vertical 4.3s infinite;
-  animation-timing-function: ease-in-out;
-  animation-delay: 0.3s;
-}
-.nay.poop5 {
-  animation: horizontal4 2s infinite, vertical 4s infinite;
-  animation-timing-function: ease-in-out;
-  animation-delay: 0.8s;
-}
-.tada,
-.star,
-.balloon,
-.confetti-ball,
-.party-face,
-.poop {
+.yay,
+.nay {
   position: absolute;
-  top: -4rem;
-  z-index: 2;
-  width: 30px;
-  height: 30px;
-  font-size: 3rem;
+  font-size: 5vw;
 }
-.tada {
-  left: 10%;
-}
-.star {
-  left: 50%;
-}
-.balloon {
-  left: 80%;
-}
-.confetti-ball {
-  left: 30%;
-}
-.party-face {
-  left: 70%;
-}
-.poop1 {
-  left: 10%;
-}
-.poop2 {
-  left: 50%;
-}
-.poop3 {
-  left: 80%;
-}
-.poop4 {
-  left: 30%;
-}
-.poop5 {
-  left: 70%;
-}
-.tada::before {
-  position: absolute;
-  content: '\1F389';
-}
-.star::before {
-  position: absolute;
-  content: '\1F31F';
-}
-.balloon::before {
-  position: absolute;
-  content: '\1F388';
-}
-.confetti-ball::before {
-  position: absolute;
-  content: '\1F38A';
-}
-.party-face::before {
-  position: absolute;
-  content: '\1F973';
-}
-.poop::before {
-  position: absolute;
-  content: '\1F4A9';
-}
-@keyframes horizontal {
-  0% {
-    left: 20%;
-  }
-  20% {
-    left: 22%;
-  }
-  30% {
-    left: 20%;
-  }
-  50% {
-    left: 18%;
-  }
-  60% {
-    left: 20%;
-  }
-  80% {
-    left: 22%;
-  }
-  100% {
-    left: 20%;
-  }
-}
-@keyframes horizontal1 {
-  0% {
-    left: 50%;
-  }
-  20% {
-    left: 53%;
-  }
-  30% {
-    left: 50%;
-  }
-  50% {
-    left: 47%;
-  }
-  65% {
-    left: 50%;
-  }
-  80% {
-    left: 52%;
-  }
-  100% {
-    left: 50%;
-  }
-}
-@keyframes horizontal2 {
-  0% {
-    left: 80%;
-  }
-  20% {
-    left: 83%;
-  }
-  30% {
-    left: 80%;
-  }
-  50% {
-    left: 78%;
-  }
-  60% {
-    left: 80%;
-  }
-  80% {
-    left: 82%;
-  }
-  100% {
-    left: 80%;
-  }
-}
-@keyframes horizontal3 {
-  0% {
-    left: 60%;
-  }
-  20% {
-    left: 63%;
-  }
-  30% {
-    left: 60%;
-  }
-  50% {
-    left: 58%;
-  }
-  60% {
-    left: 61%;
-  }
-  80% {
-    left: 63%;
-  }
-  100% {
-    left: 60%;
-  }
-}
-@keyframes horizontal4 {
-  0% {
-    left: 30%;
-  }
-  20% {
-    left: 33%;
-  }
-  30% {
-    left: 29%;
-  }
-  50% {
-    left: 26%;
-  }
-  60% {
-    left: 28%;
-  }
-  80% {
-    left: 31%;
-  }
-  100% {
-    left: 29%;
-  }
-}
-@keyframes vertical {
-  0% {
-    top: 0;
-  }
-  20% {
-    top: 20%;
-  }
-  30% {
-    top: 30%;
-  }
-  50% {
-    top: 50%;
-  }
-  60% {
-    top: 60%;
-  }
-  80% {
-    top: 80%;
-  }
-  100% {
-    top: 100%;
-  }
-}
-@keyframes fadeIn {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
-}
+
+// .yay.tada {
+//   animation: horizontal 2s infinite, vertical 3.9s infinite;
+//   animation-timing-function: ease-in-out;
+//   animation-delay: 0.6s;
+// }
+// .yay.star {
+//   animation: horizontal1 2s infinite, vertical 4.6s infinite;
+//   animation-timing-function: ease-in-out;
+//   animation-delay: 0.5s;
+// }
+// .yay.balloon {
+//   animation: horizontal2 2s infinite, vertical 5s infinite;
+//   animation-timing-function: ease-in-out;
+//   animation-delay: 0.1s;
+// }
+// .yay.confetti-ball {
+//   animation: horizontal3 2s infinite, vertical 4.3s infinite;
+//   animation-timing-function: ease-in-out;
+//   animation-delay: 0.3s;
+// }
+// .yay.party-face {
+//   animation: horizontal4 2s infinite, vertical 4s infinite;
+//   animation-timing-function: ease-in-out;
+//   animation-delay: 0.8s;
+// }
+// .nay.poop1 {
+//   animation: horizontal 2s infinite, vertical 3.9s infinite;
+//   animation-timing-function: ease-in-out;
+//   animation-delay: 0.6s;
+// }
+// .nay.poop2 {
+//   animation: horizontal1 2s infinite, vertical 4.6s infinite;
+//   animation-timing-function: ease-in-out;
+//   animation-delay: 0.5s;
+// }
+// .nay.poop3 {
+//   animation: horizontal2 2s infinite, vertical 5s infinite;
+//   animation-timing-function: ease-in-out;
+//   animation-delay: 0.1s;
+// }
+// .nay.poop4 {
+//   animation: horizontal3 2s infinite, vertical 4.3s infinite;
+//   animation-timing-function: ease-in-out;
+//   animation-delay: 0.3s;
+// }
+// .nay.poop5 {
+//   animation: horizontal4 2s infinite, vertical 4s infinite;
+//   animation-timing-function: ease-in-out;
+//   animation-delay: 0.8s;
+// }
+// .tada,
+// .star,
+// .balloon,
+// .confetti-ball,
+// .party-face,
+// .poop {
+//   position: absolute;
+//   top: -4rem;
+//   z-index: 2;
+//   width: 30px;
+//   height: 30px;
+//   font-size: 3rem;
+// }
+// .tada {
+//   left: 10%;
+// }
+// .star {
+//   left: 50%;
+// }
+// .balloon {
+//   left: 80%;
+// }
+// .confetti-ball {
+//   left: 30%;
+// }
+// .party-face {
+//   left: 70%;
+// }
+// .poop1 {
+//   left: 10%;
+// }
+// .poop2 {
+//   left: 50%;
+// }
+// .poop3 {
+//   left: 80%;
+// }
+// .poop4 {
+//   left: 30%;
+// }
+// .poop5 {
+//   left: 70%;
+// }
+// .tada::before {
+//   position: absolute;
+//   content: '\1F389';
+// }
+// .star::before {
+//   position: absolute;
+//   content: '\1F31F';
+// }
+// .balloon::before {
+//   position: absolute;
+//   content: '\1F388';
+// }
+// .confetti-ball::before {
+//   position: absolute;
+//   content: '\1F38A';
+// }
+// .party-face::before {
+//   position: absolute;
+//   content: '\1F973';
+// }
+// .poop::before {
+//   position: absolute;
+//   content: '\1F4A9';
+// }
+// @keyframes horizontal {
+//   0% {
+//     left: 20%;
+//   }
+//   20% {
+//     left: 22%;
+//   }
+//   30% {
+//     left: 20%;
+//   }
+//   50% {
+//     left: 18%;
+//   }
+//   60% {
+//     left: 20%;
+//   }
+//   80% {
+//     left: 22%;
+//   }
+//   100% {
+//     left: 20%;
+//   }
+// }
+// @keyframes horizontal1 {
+//   0% {
+//     left: 50%;
+//   }
+//   20% {
+//     left: 53%;
+//   }
+//   30% {
+//     left: 50%;
+//   }
+//   50% {
+//     left: 47%;
+//   }
+//   65% {
+//     left: 50%;
+//   }
+//   80% {
+//     left: 52%;
+//   }
+//   100% {
+//     left: 50%;
+//   }
+// }
+// @keyframes horizontal2 {
+//   0% {
+//     left: 80%;
+//   }
+//   20% {
+//     left: 83%;
+//   }
+//   30% {
+//     left: 80%;
+//   }
+//   50% {
+//     left: 78%;
+//   }
+//   60% {
+//     left: 80%;
+//   }
+//   80% {
+//     left: 82%;
+//   }
+//   100% {
+//     left: 80%;
+//   }
+// }
+// @keyframes horizontal3 {
+//   0% {
+//     left: 60%;
+//   }
+//   20% {
+//     left: 63%;
+//   }
+//   30% {
+//     left: 60%;
+//   }
+//   50% {
+//     left: 58%;
+//   }
+//   60% {
+//     left: 61%;
+//   }
+//   80% {
+//     left: 63%;
+//   }
+//   100% {
+//     left: 60%;
+//   }
+// }
+// @keyframes horizontal4 {
+//   0% {
+//     left: 30%;
+//   }
+//   20% {
+//     left: 33%;
+//   }
+//   30% {
+//     left: 29%;
+//   }
+//   50% {
+//     left: 26%;
+//   }
+//   60% {
+//     left: 28%;
+//   }
+//   80% {
+//     left: 31%;
+//   }
+//   100% {
+//     left: 29%;
+//   }
+// }
+// @keyframes vertical {
+//   0% {
+//     top: 0;
+//   }
+//   20% {
+//     top: 20%;
+//   }
+//   30% {
+//     top: 30%;
+//   }
+//   50% {
+//     top: 50%;
+//   }
+//   60% {
+//     top: 60%;
+//   }
+//   80% {
+//     top: 80%;
+//   }
+//   100% {
+//     top: 100%;
+//   }
+// }
+// @keyframes fadeIn {
+//   0% {
+//     opacity: 0;
+//   }
+//   100% {
+//     opacity: 1;
+//   }
+// }

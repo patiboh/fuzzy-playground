@@ -9,7 +9,7 @@
 
 <Playground />
 
-<div aria-hidden>
+<!-- <div aria-hidden>
   <span class="confetti tada" />
   <span class="confetti star" />
   <span class="confetti balloon" />
@@ -20,4 +20,4 @@
   <span class="poop poop3" />
   <span class="poop poop4" />
   <span class="poop poop5" />
-</div>
+</div> -->

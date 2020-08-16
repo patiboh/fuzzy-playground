@@ -1,6 +1,7 @@
 <script>
   // @ts-check
   import {onMount} from 'svelte'
+  import {uiState, emojiFeedback} from '../stores.js'
 
   import * as constants from '../types/constants.js'
   import * as utils from '../libs/utils.js'
@@ -13,8 +14,21 @@
   let feedback
   let stacktrace
 
+  let animateButtonState
+  let emojis
+  let canvas
+
+  const uiStateSubscription = uiState.subscribe((value) => {
+    animateButtonState = value
+  })
+
+  const emojiFeedbackSubscription = emojiFeedback.subscribe((value) => {
+    emojis = surprise(Object.values(constants.emojis.confetti))
+  })
+
   function surprise(characters) {
-    return new Array(100)
+    console.log(characters)
+    return new Array(100) // code from Svelte tutorial confetti
       .fill(0)
       .map((_, i) => {
         return {
@@ -28,52 +42,33 @@
   }
 
   function handleAnimate() {
-    animateButton.classList.add(constants.uiState.ACTIVE)
+    let frame
+    function loop() {
+      frame = requestAnimationFrame(loop)
+
+      emojis = emojis.map((emoji) => {
+        emoji.y += 0.7 * emoji.r
+        if (emoji.y > 120) emoji.y = -20
+        return emoji
+      })
+    }
     utils.updateCursor(
       animateButton,
       constants.emojis.animate[constants.uiState.ACTIVE],
       constants.size.SM,
     )
-    const confetti = document.getElementsByClassName(
-      constants.confetti.CONFETTI,
-    )
-    const poop = document.getElementsByClassName(constants.confetti.POOP)
-    Array.from(confetti).map((element) => {
-      element.classList.remove(constants.confetti.YAY)
-    })
-    Array.from(poop).map((element) => {
-      element.classList.remove(constants.confetti.NAY)
-    })
     try {
       const webGlProps = draw.initScene()
       const webGlAnimation = window.setInterval(() => {
         draw.drawScene(webGlProps)
       }, 1)
-
+      emojis = surprise(Object.values(constants.emojis.confetti))
       window.setTimeout(() => {
-        animateButton.classList.remove(constants.uiState.ACTIVE)
-        animateButton.classList.remove(constants.uiState.ERROR)
-        animateButton.classList.add(constants.uiState.SUCCESS)
-        // this = animate button
-        utils.updateCursor(
-          document.body,
-          constants.emojis.body[constants.uiState.SUCCES],
-          constants.size.LG,
-        )
-        utils.updateCursor(
-          animateButton,
-          constants.emojis.animate[constants.uiState.SUCCES],
-          constants.size.SM,
-        )
-        Array.from(confetti).map((element) => {
-          element.classList.add(constants.confetti.YAY)
-        })
+        loop()
         window.clearInterval(webGlAnimation)
       }, 1000)
     } catch (error) {
-      animateButton.classList.remove(constants.uiState.ACTIVE)
-      animateButton.classList.remove(constants.uiState.SUCCESS)
-      animateButton.classList.add(constants.uiState.ERROR)
+      emojis = surprise([constants.emojis.error.poop])
       document.body.classList.add(constants.uiState.ERROR)
       feedback.classList.add(constants.uiState.ERROR)
       stacktrace.append(`${error}\n`)
@@ -87,10 +82,9 @@
         constants.emojis.animate[constants.uiState.ERROR],
         constants.size.SM,
       )
-      Array.from(poop).map((element) => {
-        element.classList.add(constants.confetti.NAY)
-      })
       console.error(error)
+    } finally {
+      cancelAnimationFrame(frame)
     }
   }
 
@@ -149,12 +143,18 @@
     data-cy="button-animate"
     on:click={handleAnimate}
     bind:this={animateButton}
-    class="jumbo fire-starter"
+    class={`jumbo fire-starter ${animateButtonState}`}
     aria-label="Animate" />
   <button
     data-cy="button-refresh"
     on:click={handleRefresh}
     bind:this={refreshButton}
-    class="jumbo shower"
+    class={`jumbo shower ${animateButtonState}`}
     aria-label="Refresh" />
 </aside>
+
+{#each emojis as ef}
+  <span style="left: {ef.x}%; top: {ef.y}%; transform: scale({ef.radius})">
+    {ef.character}
+  </span>
+{/each}
