@@ -11,6 +11,7 @@
   let yPosition = 0
   let animateButton
   let refreshButton
+  let clearEmojisButton
   let feedback
   let stacktrace = ''
 
@@ -54,7 +55,6 @@
         constants.emojis.animate[constants.uiState.ERROR],
         constants.size.SM,
       )
-      console.error(error)
     } finally {
       function loop() {
         frame = window.requestAnimationFrame(loop)
@@ -83,6 +83,11 @@
     location.reload()
   }
 
+  function handleClearEmojis(event) {
+    window.cancelAnimationFrame(frame)
+    emojis = []
+  }
+
   onMount(() => {
     utils.updateCursor(
       document.body,
@@ -94,50 +99,60 @@
       constants.emojis.animate[constants.uiState.DEFAULT],
       constants.size.SM,
     )
-    utils.updateCursor(
-      refreshButton,
-      constants.emojis.refresh[constants.uiState.DEFAULT],
-      constants.size.SM,
-    )
+    // utils.updateCursor(
+    //   refreshButton,
+    //   constants.emojis.refresh[constants.uiState.DEFAULT],
+    //   constants.size.SM,
+    // )
+    // utils.updateCursor(
+    //   refreshButton,
+    //   constants.emojis.refresh[constants.uiState.DEFAULT],
+    //   constants.size.SM,
+    // )
     return () => window.cancelAnimationFrame(frame)
   })
 </script>
 
 <section class={`display ${$uiState}`} data-cy="display">
-  {#each emojis as emoji}
-    <span
-      class="emoji"
-      style="left: {emoji.x}%; top: {emoji.y}%; transform: scale({emoji.ratio})">
-      {emoji.character}
-    </span>
-  {/each}
   <canvas bind:this={canvas} data-cy="canvas" />
   <div class="feedback" bind:this={feedback} data-cy="feedback">
     <pre class="stacktrace" data-cy="stacktrace">{stacktrace}</pre>
   </div>
 </section>
-
-<aside class="controls">
-  <div class="coordinates">
-    <label>
-      x = {xPosition}
-      <input type="range" bind:value={xPosition} />
-    </label>
-    <label>
-      y = {yPosition}
-      <input type="range" bind:value={yPosition} />
-    </label>
-  </div>
+<aside class="coordinates">
+  <label>
+    x = {xPosition}
+    <input type="range" bind:value={xPosition} />
+  </label>
+  <label>
+    y = {yPosition}
+    <input type="range" bind:value={yPosition} />
+  </label>
+</aside>
+<aside class="btn-group">
   <button
-    data-cy="button-animate"
+    data-cy="btn-animate"
     on:click={handleAnimate}
     bind:this={animateButton}
-    class={`jumbo fire-starter ${animateButtonState}`}
+    class={`btn-jumbo fire-starter ${animateButtonState}`}
     aria-label="Animate" />
   <button
-    data-cy="button-refresh"
+    data-cy="btn-clear-emojis"
+    on:click={handleClearEmojis}
+    bind:this={clearEmojisButton}
+    class={'btn-jumbo sponge'}
+    aria-label="Clear emoji feedback" />
+  <button
+    data-cy="btn-refresh"
     on:click={handleRefresh}
     bind:this={refreshButton}
-    class={`jumbo shower ${animateButtonState}`}
+    class={'btn-jumbo shower'}
     aria-label="Refresh" />
 </aside>
+{#each emojis as emoji}
+  <span
+    class="emoji"
+    style="left: {emoji.x}%; top: {emoji.y}%; transform: scale({emoji.ratio})">
+    {emoji.character}
+  </span>
+{/each}

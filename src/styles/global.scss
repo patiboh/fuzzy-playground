@@ -1,4 +1,5 @@
-/* Normalize */
+@import 'variables.scss';
+
 html {
   background-color: black;
   overflow: hidden;
@@ -33,43 +34,39 @@ main {
 }
 .grid {
   display: grid;
-  grid-template-columns: 10% 20% 20% 25% 25%;
+  grid-template-columns: 65% 10% 20% 5%;
   grid-template-rows: 20% 20% 20% 20% 20%;
 }
-/* Stretch canvas to fill viewport */
 .display {
   grid-column-start: 1;
-  grid-column-end: 5;
+  grid-column-end: 2;
   grid-row-start: 1;
   grid-row-end: 6;
   display: flex;
   width: 100%;
   height: 100%;
 }
-.controls {
-  grid-column-start: 5;
-  grid-row-start: 1;
-  grid-row-end: 6;
-  display: grid;
+.btn-group {
+  grid-column-start: 3;
+  grid-row-start: 2;
+  display: flex;
   flex-direction: column;
-  grid-template-columns: 100%;
-  grid-template-rows: 20% 20% 20% 20% 20%;
-}
-.jumbo {
-  width: 100%;
+  width: 12em;
   height: 100%;
+}
+.btn-jumbo {
   border: none;
   scale: 0.95;
   transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
-.jumbo::before {
-  font-size: 8rem;
+.btn-jumbo::before {
+  font-size: 10em;
   width: 100%;
   height: 100%;
-  z-index: 1;
+  line-height: 1.5;
 }
-.jumbo:hover,
-.jumbo:focus {
+.btn-jumbo:hover,
+.btn-jumbo:focus {
   outline: none;
   scale: 1;
 }
@@ -84,12 +81,12 @@ main {
   height: auto;
 }
 .stacktrace {
-  color: rgba(252, 222, 252, 1);
+  color: var(--color-text-light);
   font-size: 1rem;
   padding: 2rem;
   margin: 0;
   background: rgba(120, 94, 226, 0.3);
-  background: linear-gradient(rgba(238, 9, 123, 0.8), rgba(0, 0, 0, 1));
+  background: linear-gradient(var(--color-danger-08), transparent);
   border-radius: 20px;
   cursor: auto;
   white-space: pre-wrap;
@@ -97,13 +94,13 @@ main {
   min-height: 80%;
 }
 .coordinates {
-  grid-row-start: 1;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   width: auto;
   height: auto;
-  grid-column-start: 1;
+  grid-column-start: 2;
+  grid-column-end: 5;
   grid-row-start: 1;
   padding: 2rem;
   cursor: auto;
@@ -113,10 +110,10 @@ main {
 .coordinates label {
   display: flex;
   justify-content: space-between;
-  min-width: 220px;
+  max-width: 220px;
   padding: 0.5rem 1rem;
   margin: 0.25rem 0;
-  background: linear-gradient(rgba(34, 229, 227, 0.6), rgba(0, 0, 0, 0.6));
+  background: linear-gradient(var(--color-coordinates), rgba(0, 0, 0, 0.6));
   color: rgba(256, 256, 256, 1);
   border-radius: 6px;
 }
@@ -124,7 +121,10 @@ main {
   margin-top: 0;
 }
 .coordinates label:hover {
-  background: linear-gradient(rgba(200, 150, 238, 0.8), rgba(0, 0, 0, 0.6));
+  background: linear-gradient(
+    var(--color-coordinates-hover),
+    rgba(0, 0, 0, 0.6)
+  );
 }
 .coordinates input {
   margin-bottom: 1rem;
@@ -135,7 +135,7 @@ main {
 .fire-starter {
   grid-row-start: 4;
   border-radius: 50%;
-  background: radial-gradient(rgba(180, 150, 238, 0.6) 20%, transparent 60%);
+  background: radial-gradient(var(--color-firestarter-06) 20%, transparent 60%);
 }
 .fire-starter::before {
   content: '\1F47E';
@@ -147,14 +147,11 @@ main {
 }
 .fire-starter:hover,
 .fire-starter:focus {
-  background: radial-gradient(
-    rgba(180, 150, 238, 0.8) 20%,
-    rgba(0, 0, 0, 1) 60%
-  );
+  background: radial-gradient(var(--color-firestarter-08) 20%, transparent 60%);
 }
 .fire-starter.success {
   /* background: radial-gradient(
-    rgba(34, 229, 227, 0.6) 20%,
+    var(--color-coordinates) 20%,
     rgba(0, 0, 0, 1) 60%
   ); */
 }
@@ -173,29 +170,36 @@ main {
   background: radial-gradient(rgba(238, 9, 123, 1) 20%, transparent 60%);
 }
 .fire-starter.active {
-  background: radial-gradient(rgba(238, 204, 9, 0.8) 20%, transparent 60%);
+  background: radial-gradient(var(--color-sponge-08) 20%, transparent 60%);
 }
 .fire-starter.active:hover,
 .fire-starter.active:focus {
-  background: radial-gradient(rgba(238, 204, 9, 1) 20%, transparent 60%);
+  background: radial-gradient(var(--color-sponge) 20%, transparent 60%);
 }
 .shower {
   grid-row-start: 5;
   border-radius: 50%;
-  background: radial-gradient(
-    rgba(34, 229, 227, 0.4) 20%,
-    rgba(0, 0, 0, 1) 60%
-  );
+  background: radial-gradient(rgba(34, 229, 227, 0.4) 20%, transparent 60%);
 }
 .shower::before {
   content: '\1F6BF';
 }
 .shower:hover,
 .shower:focus {
-  background: radial-gradient(
-    rgba(34, 229, 227, 0.5) 20%,
-    rgba(0, 0, 0, 1) 60%
-  );
+  background: radial-gradient(rgba(34, 229, 227, 0.5) 20%, transparent 60%);
+}
+
+.sponge {
+  grid-row-start: 5;
+  border-radius: 50%;
+  background: radial-gradient(var(--color-sponge-08) 20%, transparent 60%);
+}
+.sponge::before {
+  content: '🧽';
+}
+.sponge:hover,
+.sponge:focus {
+  background: radial-gradient(var(--color-sponge) 20%, transparent 60%);
 }
 
 // Svelte tutorial confetti styles

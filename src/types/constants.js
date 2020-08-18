@@ -7,13 +7,6 @@ export const uiState = {
   ERROR: 'error',
 }
 
-export const confetti = {
-  CONFETTI: 'confetti',
-  POOP: 'poop',
-  YAY: 'yay',
-  NAY: 'nay',
-}
-
 export const size = {
   LG: 'LG',
   SM: 'SM',
@@ -39,8 +32,8 @@ export const emojis = {
   },
   error: {
     poop: '💩', // 💩 poop
-    typeScript: '🍱', // 🍱 bento box
-    lint: '🚨', // 🚨 rotating beacon
+    // typeScript: '🍱', // 🍱 bento box
+    // lint: '🚨', // 🚨 rotating beacon
   },
   refresh: {
     default: '🧽', // 🧽 sponge
