@@ -14,19 +14,12 @@ Given('I arrive on the playground for the first time', () => {
 })
 
 describe('Fresh play - success', () => {
+  // TODO : fix animation!
   And('The animation is a success', () => {
     cy.get(buttonAnimate)
       .click()
       .then(() => {
-        cy.get(sectionDisplay).then(($section) => {
-          if ($section.find(canvas).length) {
-            // Canvas is displayed: the animation was a success
-            cy.get(sectionDisplay).should(
-              'have.class',
-              constants.uiState.SUCCESS,
-            )
-          }
-        })
+        cy.get(sectionDisplay).should('have.class', constants.uiState.SUCCESS)
       })
   })
   Then('I can see the confetti', () => {
@@ -35,6 +28,7 @@ describe('Fresh play - success', () => {
 })
 
 describe('Fresh play - error', () => {
+  // TODO : mock error in animation to test that error UI displays correctly (init scene, draw: unit tests there ?)
   And('The animation has an error', () => {
     cy.get(buttonAnimate)
       .click()
