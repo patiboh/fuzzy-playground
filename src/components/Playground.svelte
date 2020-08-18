@@ -28,16 +28,6 @@
   })
 
   function handleAnimate() {
-    let frame
-    function loop() {
-      frame = requestAnimationFrame(loop)
-
-      emojis = emojis.map((emoji) => {
-        emoji.y += 0.7 * emoji.radius
-        if (emoji.y > 120) emoji.y = -20
-        return emoji
-      })
-    }
     utils.updateCursor(
       animateButton,
       constants.emojis.animate[$uiState],
@@ -49,13 +39,10 @@
         draw.drawScene(webGlProps)
       }, 1)
       $uiState = constants.uiState.SUCCESS
-      loop()
     } catch (error) {
       $uiState = constants.uiState.ERROR
-      // document.body.classList.add(constants.uiState.ERROR)
-      // feedback.classList.add(constants.uiState.ERROR)
-      // emojis = multiply([constants.emojis.error.poop])
-      loop()
+      document.body.classList.add(constants.uiState.ERROR)
+      feedback.classList.add(constants.uiState.ERROR)
       stacktrace = `${error}\n${stacktrace}`
       utils.updateCursor(
         document.body,
@@ -69,14 +56,20 @@
       )
       console.error(error)
     } finally {
-      window.setTimeout(() => {
-        cancelAnimationFrame(frame)
-      }, 10000)
+      function loop() {
+        frame = window.requestAnimationFrame(loop)
+
+        emojis = emojis.map((emoji) => {
+          emoji.y += 0.7 * emoji.ratio
+          if (emoji.y > 100) emoji.y = -20
+          return emoji
+        })
+      }
+      loop()
     }
   }
 
   function handleRefresh(event) {
-    cancelAnimationFrame(frame)
     utils.updateCursor(
       document.body,
       constants.emojis.body[constants.uiState.DEFAULT],
@@ -106,6 +99,7 @@
       constants.emojis.refresh[constants.uiState.DEFAULT],
       constants.size.SM,
     )
+    return () => window.cancelAnimationFrame(frame)
   })
 </script>
 
@@ -143,7 +137,7 @@
 {#each emojis as emoji}
   <span
     class="emoji"
-    style="left: {emoji.x}%; top: {emoji.y}%; transform: scale({emoji.radius})">
+    style="left: {emoji.x}%; top: {emoji.y}%; transform: scale({emoji.ratio})">
     {emoji.character}
   </span>
 {/each}

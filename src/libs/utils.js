@@ -63,7 +63,6 @@ export function updateCursor(htmlElement, emoji, size) {
 }
 
 export function multiply(characters) {
-  console.log(characters)
   return new Array(100) // code from Svelte tutorial confetti
     .fill(0)
     .map((_, i) => {
@@ -71,8 +70,8 @@ export function multiply(characters) {
         character: characters[i % characters.length],
         x: Math.random() * 100,
         y: -10 - Math.random() * 100,
-        radius: 0.1 + Math.random() * 1,
+        ratio: 0.1 + Math.random() * 1,
       }
     })
-    .sort((a, b) => a.radius - b.radius)
+    .sort((a, b) => a.ratio - b.ratio)
 }
