@@ -1,7 +1,7 @@
 @import 'variables.scss';
 
 html {
-  background-color: black;
+  background-color: var(--color-dark);
   overflow: hidden;
   font-family: sans-serif;
 }
@@ -87,7 +87,9 @@ main {
   margin: 0;
   background: rgba(120, 94, 226, 0.3);
   background: linear-gradient(var(--color-danger-08), transparent);
-  border-radius: 20px;
+  background: linear-gradient(var(--color-dark), transparent);
+  border: 2px solid var(--color-danger-08);
+  border-radius: 10px;
   cursor: auto;
   white-space: pre-wrap;
   word-wrap: break-word;
@@ -104,7 +106,7 @@ main {
   grid-row-start: 1;
   padding: 2rem;
   cursor: auto;
-  border-radius: 5%;
+  border-radius: 5px;
   overflow-x: scroll;
 }
 .coordinates label {
