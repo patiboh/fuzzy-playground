@@ -1,12 +1,4 @@
 /* Normalize */
-:global(body) {
-  overflow: hidden;
-}
-.yay,
-.nay {
-  position: absolute;
-  font-size: 5vw;
-}
 html {
   background-color: black;
   overflow: hidden;
@@ -22,11 +14,12 @@ body {
   color: white;
 }
 canvas {
+  display: none;
+}
+.success canvas {
+  display: block;
   width: 100%;
   height: 100%;
-}
-.error canvas {
-  display: none;
 }
 .app {
   width: 100%;
@@ -91,12 +84,12 @@ main {
   height: auto;
 }
 .stacktrace {
-  color: rgba(252, 222, 252, 0.8);
+  color: rgba(252, 222, 252, 1);
   font-size: 1rem;
   padding: 2rem;
   margin: 0;
   background: rgba(120, 94, 226, 0.3);
-  background: linear-gradient(rgba(238, 9, 123, 0.6), rgba(0, 0, 0, 1));
+  background: linear-gradient(rgba(238, 9, 123, 0.8), rgba(0, 0, 0, 1));
   border-radius: 20px;
   cursor: auto;
   white-space: pre-wrap;
@@ -142,10 +135,7 @@ main {
 .fire-starter {
   grid-row-start: 4;
   border-radius: 50%;
-  background: radial-gradient(
-    rgba(180, 150, 238, 0.6) 20%,
-    rgba(0, 0, 0, 1) 60%
-  );
+  background: radial-gradient(rgba(180, 150, 238, 0.6) 20%, transparent 60%);
 }
 .fire-starter::before {
   content: '\1F47E';
@@ -176,18 +166,18 @@ main {
   ); */
 }
 .fire-starter.error {
-  background: radial-gradient(rgba(238, 9, 123, 0.6) 20%, rgba(0, 0, 0, 1) 60%);
+  background: radial-gradient(rgba(238, 9, 123, 0.8) 20%, transparent 60%);
 }
 .fire-starter.error:hover,
 .fire-starter.error:focus {
-  background: radial-gradient(rgba(238, 9, 123, 0.8) 20%, rgba(0, 0, 0, 1) 60%);
+  background: radial-gradient(rgba(238, 9, 123, 1) 20%, transparent 60%);
 }
 .fire-starter.active {
-  background: radial-gradient(rgba(238, 204, 9, 0.8) 20%, rgba(0, 0, 0, 1) 60%);
+  background: radial-gradient(rgba(238, 204, 9, 0.8) 20%, transparent 60%);
 }
 .fire-starter.active:hover,
 .fire-starter.active:focus {
-  background: radial-gradient(rgba(238, 204, 9, 1) 20%, rgba(0, 0, 0, 1) 60%);
+  background: radial-gradient(rgba(238, 204, 9, 1) 20%, transparent 60%);
 }
 .shower {
   grid-row-start: 5;
@@ -215,4 +205,6 @@ main {
 .emoji {
   position: absolute;
   font-size: 5vw;
+  z-index: -1;
+  opacity: 0.6;
 }

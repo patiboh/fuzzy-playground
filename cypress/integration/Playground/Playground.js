@@ -1,20 +1,33 @@
-import {Then, And, Given, When} from 'cypress-cucumber-preprocessor/steps'
+import {Then, And, Given} from 'cypress-cucumber-preprocessor/steps'
+import * as constants from '../../../src/types/constants.js'
 
 const rootUrl = '/'
+const buttonAnimate = '[data-cy="button-animate"]'
+const sectionDisplay = '[data-cy="display"]'
+const stacktrace = '[data-cy="stacktrace"]'
+const feedback = '[data-cy="feedback"]'
+const canvas = '[data-cy="canvas"]'
+
 Given('I arrive on the playground for the first time', () => {
   // TODO
   cy.visit(rootUrl)
 })
-When('I launch an animation', () => {
-  cy.get('[data-cy="button-animate"]').then(($btn) => {
-    $btn.click()
-    cy.get('[data-cy="button-animate"]').should('have.class', 'active')
-  })
-})
 
 describe('Fresh play - success', () => {
   And('The animation is a success', () => {
-    // TODO
+    cy.get(buttonAnimate)
+      .click()
+      .then(() => {
+        cy.get(sectionDisplay).then(($section) => {
+          if ($section.find(canvas).length) {
+            // Canvas is displayed: the animation was a success
+            cy.get(sectionDisplay).should(
+              'have.class',
+              constants.uiState.SUCCESS,
+            )
+          }
+        })
+      })
   })
   Then('I can see the confetti', () => {
     // TODO
@@ -23,12 +36,17 @@ describe('Fresh play - success', () => {
 
 describe('Fresh play - error', () => {
   And('The animation has an error', () => {
-    // TODO
+    cy.get(buttonAnimate)
+      .click()
+      .then(() => {
+        cy.get(sectionDisplay).should('have.class', constants.uiState.ERROR)
+      })
   })
   Then('I can see the poop', () => {
     // TODO
   })
   And('I can see the error', () => {
-    // TODO
+    cy.get(stacktrace).then(($stacktrace) => expect($stacktrace).to.be.visible)
+    cy.get(feedback).then(($feedback) => expect($feedback).to.be.visible)
   })
 })

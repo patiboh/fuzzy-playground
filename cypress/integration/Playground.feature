@@ -1,7 +1,6 @@
 Feature: Playground
   Background:
     Given I arrive on the playground for the first time
-    When I launch an animation
 
   Scenario: Fresh play - success
     And The animation is a success

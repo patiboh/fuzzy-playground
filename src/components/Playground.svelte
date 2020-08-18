@@ -103,10 +103,17 @@
   })
 </script>
 
-<section class={`display ${$uiState}`}>
-  <canvas bind:this={canvas} />
+<section class={`display ${$uiState}`} data-cy="display">
+  {#each emojis as emoji}
+    <span
+      class="emoji"
+      style="left: {emoji.x}%; top: {emoji.y}%; transform: scale({emoji.ratio})">
+      {emoji.character}
+    </span>
+  {/each}
+  <canvas bind:this={canvas} data-cy="canvas" />
   <div class="feedback" bind:this={feedback} data-cy="feedback">
-    <pre class="stacktrace">{stacktrace}</pre>
+    <pre class="stacktrace" data-cy="stacktrace">{stacktrace}</pre>
   </div>
 </section>
 
@@ -134,10 +141,3 @@
     class={`jumbo shower ${animateButtonState}`}
     aria-label="Refresh" />
 </aside>
-{#each emojis as emoji}
-  <span
-    class="emoji"
-    style="left: {emoji.x}%; top: {emoji.y}%; transform: scale({emoji.ratio})">
-    {emoji.character}
-  </span>
-{/each}
