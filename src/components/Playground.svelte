@@ -10,7 +10,7 @@
   // UI controls
   let xPosition = 0
   let yPosition = 0
-  let animateButton
+  let playButton
   let refreshButton
   let clearEmojisButton
 
@@ -39,9 +39,9 @@
     emojiCursor = value
   })
 
-  function handleAnimate() {
+  function handlePlay() {
     $uiState = constants.uiState.ACTIVE
-    animateButton.style.cursor = emojiCursor
+    playButton.style.cursor = emojiCursor
 
     function loop() {
       if (frame) {
@@ -62,26 +62,28 @@
         draw.drawScene(webGlProps)
       }, 1)
       $uiState = constants.uiState.SUCCESS
+
+      // don't go on forever just yet
       setTimeout(() => {
         clearInterval(webGlAnimation)
+        playButton.style.cursor = emojiCursor
         loop()
       }, 1000)
     } catch (error) {
       $uiState = constants.uiState.ERROR
+      playButton.style.cursor = emojiCursor
       stacktrace = `${error}\n${stacktrace}`
       loop()
-    } finally {
-      animateButton.style.cursor = emojiCursor
     }
   }
 
-  function handleAnimateFocus() {
+  function handlePlayButtonFocus() {
     if ($uiState === constants.uiState.DEFAULT) {
       $uiState = constants.uiState.FOCUS
     }
   }
 
-  function handleAnimateBlur() {
+  function handlePlayButtonBlur() {
     if ($uiState === constants.uiState.FOCUS) {
       $uiState = constants.uiState.DEFAULT
     }
@@ -99,7 +101,7 @@
   }
 
   onMount(() => {
-    animateButton.style.cursor = emojiCursor
+    playButton.style.cursor = emojiCursor
     return () => {
       uiStateUnsub()
       emojiFeedbackUnsub()
@@ -128,14 +130,14 @@
 </aside>
 <aside class="btn-group">
   <button
-    data-cy="btn-animate"
-    on:focus={handleAnimateFocus}
-    on:mouseover={handleAnimateFocus}
-    on:mouseleave={handleAnimateBlur}
-    on:click={handleAnimate}
-    bind:this={animateButton}
+    data-cy="btn-play"
+    on:focus={handlePlayButtonFocus}
+    on:mouseover={handlePlayButtonFocus}
+    on:mouseleave={handlePlayButtonBlur}
+    on:click={handlePlay}
+    bind:this={playButton}
     class={`btn-jumbo fire-starter ${playgroundState}`}
-    aria-label="Animate" />
+    aria-label="Play" />
   <button
     data-cy="btn-clear-emojis"
     on:click={handleClearEmojis}
