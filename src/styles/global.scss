@@ -116,7 +116,7 @@ main {
   padding: 0.5rem 1rem;
   margin: 0.25rem 0;
   background: linear-gradient(var(--color-coordinates), rgba(0, 0, 0, 0.6));
-  color: rgba(256, 256, 256, 1);
+  color: var(--color-text-light-shower);
   border-radius: 6px;
 }
 .coordinates label:first-child {
@@ -127,6 +127,7 @@ main {
     var(--color-coordinates-hover),
     rgba(0, 0, 0, 0.6)
   );
+  color: var(--color-text-light);
 }
 .coordinates input {
   margin-bottom: 1rem;

@@ -42,7 +42,7 @@
   }
 
   a {
-    color: var(--color-text-light);
+    color: var(--color-text-light-shower);
     text-decoration: none;
     padding: 1em 0.5em;
     display: block;
