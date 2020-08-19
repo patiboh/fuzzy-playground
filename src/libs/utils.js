@@ -58,8 +58,12 @@ export function randomInt(range) {
   return Math.floor(Math.random() * range)
 }
 
-export function updateCursor(htmlElement, emoji, size) {
+export function generateCursor(htmlElement, emoji, size) {
   htmlElement.style.cursor = customCursor[size].replace('REPL', emoji)
+}
+
+export function updateCursor(htmlElement, cursor) {
+  htmlElement.style.cursor = cursor
 }
 
 export function multiply(characters) {

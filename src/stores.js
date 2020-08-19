@@ -3,7 +3,7 @@ import {writable, derived} from 'svelte/store'
 import * as constants from './types/constants.js'
 
 export const uiState = writable(constants.uiState.DEFAULT)
-export const emojiFeedback = derived(uiState, ($uiState) =>
+export const feedbackEmoji = derived(uiState, ($uiState) =>
   $uiState === constants.uiState.SUCCESS
     ? constants.emojis.confetti
     : constants.emojis.error,

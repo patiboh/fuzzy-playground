@@ -7,12 +7,14 @@ export const uiState = {
   ERROR: 'error',
 }
 
+// TODO : use typescript for these things
+// export type playgroundState = uiState.DEFAULT | uiState.SUCCESS | uiState.ERROR
 export const size = {
   LG: 'LG',
   SM: 'SM',
 }
 export const emojis = {
-  body: {
+  splash: {
     default: '🥁', // 🥁 drums
     success: '✨', // ✨ sparkles
     error: '👻', // 👻 ghost
@@ -20,8 +22,8 @@ export const emojis = {
   animate: {
     default: '⚡️', // ⚡️ lightning
     success: '🙌', // 🙌 raised hands
-    error: '🔫', // 🔫 water pistol // OR 0x1f327 // 🌧 cloud with rain
-    active: '🔫', // 💥 fire spark
+    error: '🌧', // 🌧 cloud with rain
+    active: '💥', // 💥 fire spark
   },
   confetti: {
     tada: '🎉', // 🎉 party-popper

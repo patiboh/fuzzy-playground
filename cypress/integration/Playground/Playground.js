@@ -5,7 +5,7 @@ const rootUrl = '/'
 const buttonAnimate = '[data-cy="btn-animate"]'
 const sectionDisplay = '[data-cy="display"]'
 const stacktrace = '[data-cy="stacktrace"]'
-const feedback = '[data-cy="feedback"]'
+const feedback = '[data-cy="playground-feedback"]'
 
 Given('I arrive on the playground for the first time', () => {
   // TODO

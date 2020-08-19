@@ -27,19 +27,20 @@ canvas {
   height: 100%;
 }
 main {
-  width: 100%;
+  width: calc(100% - 4em);
   height: calc(
     100% - 3em + 2px
   ); // 100% - nav height = 1em font size + 2em padding + 2px border bottom (::after)
+  margin: 2em;
 }
 .grid {
   display: grid;
-  grid-template-columns: 65% 10% 20% 5%;
+  grid-template-columns: 65% 10% 25%;
   grid-template-rows: 20% 20% 20% 20% 20%;
 }
 .display {
   grid-column-start: 1;
-  grid-column-end: 2;
+  grid-column-end: 3;
   grid-row-start: 1;
   grid-row-end: 6;
   display: flex;
@@ -70,18 +71,39 @@ main {
   outline: none;
   scale: 1;
 }
-.feedback {
-  display: none;
-}
-.error .feedback {
-  display: flow-root;
+.playground-feedback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   padding: 2rem 4rem;
   overflow-y: auto;
   width: 100%;
   height: auto;
 }
+.playground-feedback::before {
+  content: '🥁';
+  font-size: 16em;
+  opacity: 0.5;
+  transition: opacity 0.2s ease-in-out;
+}
+.focus .playground-feedback::before {
+  opacity: 1;
+}
+.success .playground-feedback {
+  display: none;
+  &::before {
+    display: none;
+  }
+}
+.error .playground-feedback {
+  display: block;
+  &::before {
+    display: none;
+  }
+}
 .stacktrace {
-  color: var(--color-text-light);
+  display: none;
+  color: var(--color-text-light-danger);
   font-size: 1rem;
   padding: 2rem;
   margin: 0;
@@ -90,10 +112,12 @@ main {
   background: linear-gradient(var(--color-dark), transparent);
   border: 2px solid var(--color-danger-08);
   border-radius: 10px;
-  cursor: auto;
   white-space: pre-wrap;
   word-wrap: break-word;
   min-height: 80%;
+}
+.error .stacktrace {
+  display: block;
 }
 .coordinates {
   display: flex;
@@ -101,11 +125,10 @@ main {
   justify-content: space-between;
   width: auto;
   height: auto;
-  grid-column-start: 2;
-  grid-column-end: 5;
+  grid-column-start: 3;
+  grid-column-end: 4;
   grid-row-start: 1;
   padding: 2rem;
-  cursor: auto;
   border-radius: 5px;
   overflow-x: scroll;
 }

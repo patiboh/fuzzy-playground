@@ -1,7 +1,7 @@
 <script>
   // @ts-check
   import {onMount} from 'svelte'
-  import {uiState, feedbackEmoji, splashEmoji} from '../stores.js'
+  import {uiState, feedbackEmoji} from '../stores.js'
 
   import * as constants from '../types/constants.js'
   import * as utils from '../libs/utils.js'
@@ -114,7 +114,7 @@
   })
 </script>
 
-<section class={`display ${$uiState}`} data-cy="display">
+<section class={`display ${playgroundState}`} data-cy="display">
   <canvas bind:this={canvas} data-cy="canvas" />
   <div
     class="playground-feedback"
