@@ -80,10 +80,12 @@
   }
 
   function handleAnimateFocus() {
-    $uiState = constants.uiState.FOCUS
+    if ($uiState === constants.uiState.DEFAULT) {
+      $uiState = constants.uiState.FOCUS
+    }
   }
 
-  function handleAnimateUnfocus() {
+  function handleAnimateBlur() {
     if ($uiState === constants.uiState.FOCUS) {
       $uiState = constants.uiState.DEFAULT
     }
@@ -138,7 +140,7 @@
     data-cy="btn-animate"
     on:focus={handleAnimateFocus}
     on:mouseover={handleAnimateFocus}
-    on:mouseleave={handleAnimateUnfocus}
+    on:mouseleave={handleAnimateBlur}
     on:click={handleAnimate}
     bind:this={animateButton}
     class={`btn-jumbo fire-starter ${playgroundState}`}
