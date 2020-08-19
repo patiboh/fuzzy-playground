@@ -47,7 +47,7 @@
       constants.size.SM,
     )
     try {
-      const webGlProps = draw.initScene()
+      const webGlProps = draw.initScene(canvas)
       const webGlAnimation = setInterval(() => {
         draw.drawScene(webGlProps)
       }, 1)

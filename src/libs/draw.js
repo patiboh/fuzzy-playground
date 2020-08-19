@@ -8,6 +8,9 @@
 import * as utils from './utils.js'
 import * as utilsWebGl from './utilsWebGL.js'
 
+import {frag} from '../gl/fragment-shader-2d'
+import {vert} from '../gl/vertex-shader-2d'
+
 /**
  * Write data to draw a rectangle into the last thing bound to gl.ARRAY_BUFFER (in this context positionBuffer)
  * @param {WebGLRenderingContext} gl
@@ -54,7 +57,7 @@ function setRectangle(gl, x, y, width, height) {
 
 /**
  * @param {WebGLRenderingContext} gl
- * @param {any} colorUniformLocation
+ * @param {number} colorUniformLocation
  */
 function drawRectangle(gl, colorUniformLocation) {
   // Setup a random rectangle
@@ -111,12 +114,10 @@ function drawRectangles(gl, colorUniformLocation, count) {
 /**
  * INITIALIZATION CODE
  * Code that gets executed once before the program runs
+ * @param {HTMLCanvasElement} canvas
  */
-export function initScene() {
+export function initScene(canvas) {
   // 1. Get A WebGL context
-  const canvas = /** @type {HTMLCanvasElement} */ (document.getElementById(
-    'canvas',
-  ))
   const gl = canvas.getContext('webgl')
 
   if (!gl) {
@@ -126,12 +127,8 @@ export function initScene() {
   // 2. Initialize shaders : 2 programs that are executed each time a pixel is rendered
   // - Vertex Shader = returns pixel position
   // - Fragment Shader = returns pixel color
-  const vertexShaderSrc = /** @type {HTMLScriptElement} */ (document.getElementById(
-    'vertex-shader-2d',
-  )).text
-  const fragmentShaderSrc = /** @type {HTMLScriptElement} */ (document.getElementById(
-    'fragment-shader-2d',
-  )).text
+  const vertexShaderSrc = vert
+  const fragmentShaderSrc = frag
 
   const vertexShader = utilsWebGl.createShader(
     gl,
