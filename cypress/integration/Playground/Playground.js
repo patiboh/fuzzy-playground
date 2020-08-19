@@ -2,11 +2,10 @@ import {Then, And, Given} from 'cypress-cucumber-preprocessor/steps'
 import * as constants from '../../../src/types/constants.js'
 
 const rootUrl = '/'
-const buttonAnimate = '[data-cy="button-animate"]'
+const buttonAnimate = '[data-cy="btn-animate"]'
 const sectionDisplay = '[data-cy="display"]'
 const stacktrace = '[data-cy="stacktrace"]'
 const feedback = '[data-cy="feedback"]'
-const canvas = '[data-cy="canvas"]'
 
 Given('I arrive on the playground for the first time', () => {
   // TODO
