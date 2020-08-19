@@ -1,81 +1,77 @@
 <script>
   // @ts-check
   import {onMount} from 'svelte'
-  import {uiState, feedbackEmoji} from '../stores.js'
+  import {uiState, feedbackEmoji, generateCursor} from '../stores.js'
 
   import * as constants from '../types/constants.js'
   import * as utils from '../libs/utils.js'
   import * as draw from '../libs/draw.js'
 
+  // UI controls
   let xPosition = 0
   let yPosition = 0
   let animateButton
   let refreshButton
   let clearEmojisButton
+
+  // UI feedback
+  let playgroundState
   let feedback
   let stacktrace = ''
-
-  let playgroundState
   let emojis
+  let emojiCursor
+
+  // WebGL
   let canvas
   let frame
+  let webGlProps
+  let webGlAnimation
 
-  let uiStateUnsub
-  let emojiFeedbackUnsub
-
-  const uiStateSubscription = uiState.subscribe((value) => {
+  const uiStateUnsub = uiState.subscribe((value) => {
     playgroundState = value
   })
 
-  const emojiFeedbackSubscription = feedbackEmoji.subscribe((value) => {
+  const emojiFeedbackUnsub = feedbackEmoji.subscribe((value) => {
     emojis = utils.multiply(Object.values(value))
   })
 
-  function subscribe() {
-    uiStateUnsub = uiState.subscribe((value) => {
-      playgroundState = value
-    })
-    emojiFeedbackUnsub = feedbackEmoji.subscribe((value) => {
-      emojis = utils.multiply(Object.values(value))
-    })
-  }
+  const emojiCursorUnsub = generateCursor.subscribe((value) => {
+    emojiCursor = value
+  })
 
   function handleAnimate() {
-    utils.generateCursor(
-      animateButton,
-      constants.emojis.animate[$uiState],
-      constants.size.SM,
-    )
+    $uiState = constants.uiState.ACTIVE
+    animateButton.style.cursor = emojiCursor
+
+    function loop() {
+      if (frame) {
+        cancelAnimationFrame(frame)
+        frame = null
+      }
+      frame = requestAnimationFrame(loop)
+
+      emojis = emojis.map((emoji) => {
+        emoji.y += 0.7 * emoji.ratio
+        if (emoji.y > 100) emoji.y = -20
+        return emoji
+      })
+    }
     try {
-      const webGlProps = draw.initScene(canvas)
-      const webGlAnimation = setInterval(() => {
+      webGlProps = draw.initScene(canvas)
+      webGlAnimation = setInterval(() => {
         draw.drawScene(webGlProps)
       }, 1)
       $uiState = constants.uiState.SUCCESS
+      setTimeout(() => {
+        clearInterval(webGlAnimation)
+        loop()
+      }, 1000)
     } catch (error) {
       $uiState = constants.uiState.ERROR
       stacktrace = `${error}\n${stacktrace}`
-      utils.updateCursor(document.body, 'auto')
-      utils.generateCursor(
-        animateButton,
-        constants.emojis.animate[$uiState],
-        constants.size.SM,
-      )
-    } finally {
-      function loop() {
-        if (frame) {
-          cancelAnimationFrame(frame)
-          frame = null
-        }
-        frame = requestAnimationFrame(loop)
-
-        emojis = emojis.map((emoji) => {
-          emoji.y += 0.7 * emoji.ratio
-          if (emoji.y > 100) emoji.y = -20
-          return emoji
-        })
-      }
       loop()
+    } finally {
+      animateButton.style.cursor = emojiCursor
     }
   }
 
@@ -92,11 +88,6 @@
   }
 
   function handleRefresh(event) {
-    utils.generateCursor(
-      animateButton,
-      constants.emojis.animate[$uiState],
-      constants.size.SM,
-    )
     location.reload() // TODO - reload gl code only ?
   }
 
@@ -108,11 +99,11 @@
   }
 
   onMount(() => {
-    utils.generateCursor(
-      animateButton,
-      constants.emojis.animate[$uiState],
-      constants.size.SM,
-    )
+    animateButton.style.cursor = emojiCursor
+    return () => {
+      uiStateUnsub()
+      emojiFeedbackUnsub()
+    }
   })
 </script>
 

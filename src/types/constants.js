@@ -41,3 +41,10 @@ export const emojis = {
     default: '🧽', // 🧽 sponge
   },
 }
+
+export const customCursor = {
+  LG:
+    'url(\'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="120" style="font-size: 100px;"><text y="100">REPL</text></svg>\'), auto',
+  SM:
+    'url(\'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="50" height="60" style="font-size: 40px;"><text y="40">REPL</text></svg>\'), auto',
+}

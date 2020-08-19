@@ -5,13 +5,6 @@
  ***********************
  */
 
-const customCursor = {
-  LG:
-    'url(\'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="120" style="font-size: 100px;"><text y="100">REPL</text></svg>\'), auto',
-  SM:
-    'url(\'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="50" height="60" style="font-size: 40px;"><text y="40">REPL</text></svg>\'), auto',
-}
-
 /**
  * Canvas, like Images, has 2 sizes
  * - Size the canvas is displayed: set with CSS
@@ -56,14 +49,6 @@ export function resizeHD(gl) {
 // Returns a random integer from 0 to range - 1.
 export function randomInt(range) {
   return Math.floor(Math.random() * range)
-}
-
-export function generateCursor(htmlElement, emoji, size) {
-  htmlElement.style.cursor = customCursor[size].replace('REPL', emoji)
-}
-
-export function updateCursor(htmlElement, cursor) {
-  htmlElement.style.cursor = cursor
 }
 
 export function multiply(characters) {
