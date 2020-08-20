@@ -2,6 +2,7 @@
   // @ts-check
   import {onMount} from 'svelte'
   import {uiState, feedbackEmoji, generateCursor} from '../stores.js'
+  import Feedback from './Feedback.svelte'
 
   import * as constants from '../types/constants.js'
   import * as utils from '../libs/utils.js'
@@ -109,14 +110,14 @@
   })
 </script>
 
-<section class={`display ${playgroundState}`} data-cy="display">
+<style lang="scss" global>
+  @import '../styles/variables.scss';
+  @import '../styles/playground.scss';
+</style>
+
+<section class={`output ${playgroundState}`} data-cy="output">
   <canvas bind:this={canvas} data-cy="canvas" />
-  <div
-    class="playground-feedback"
-    bind:this={feedback}
-    data-cy="playground-feedback">
-    <pre class="stacktrace" data-cy="stacktrace">{stacktrace}</pre>
-  </div>
+  <Feedback {stacktrace} />
 </section>
 <aside class="coordinates">
   <label>
