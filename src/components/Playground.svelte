@@ -9,6 +9,7 @@
   import {uiState, feedbackEmoji} from '../stores.js'
   import Feedback from './Feedback.svelte'
   import Controls from './Controls.svelte'
+  import Coordinates from './Coordinates.svelte'
 
   // UI feedback
   let playgroundState
@@ -20,6 +21,13 @@
   let frame
   let webGlProps
   let webGlAnimation
+  let xPosition
+  let yPosition
+  let xCoord = 0
+  let yCoord = 0
+
+  $: xPosition = xCoord
+  $: yPosition = yCoord
 
   const uiStateUnsub = uiState.subscribe((value) => {
     playgroundState = value
@@ -29,12 +37,12 @@
   })
 
   function handlePlay() {
+    if (frame) {
+      cancelAnimationFrame(frame)
+      frame = null
+    }
     uiState.set(constants.uiState.ACTIVE)
     function loop() {
-      if (frame) {
-        cancelAnimationFrame(frame)
-        frame = null
-      }
       frame = requestAnimationFrame(loop)
 
       emojis = emojis.map((emoji) => {
@@ -52,12 +60,10 @@
       setTimeout(() => {
         uiState.set(constants.uiState.SUCCESS)
         clearInterval(webGlAnimation)
-        // playButton.style.cursor = emojiCursor
         loop()
       }, 1000)
     } catch (error) {
       uiState.set(constants.uiState.ERROR)
-      // playButton.style.cursor = emojiCursor
       stacktrace = `${error}\n${stacktrace}`
       loop()
     }
@@ -66,10 +72,11 @@
     location.reload() // TODO - reload gl code only ?
   }
   function handleClearEmojis(event) {
-    cancelAnimationFrame(frame)
-    frame = null
+    if (frame) {
+      cancelAnimationFrame(frame)
+      frame = null
+    }
     emojis = []
-    // $uiState = constants.uiState.DEFAULT
   }
 </script>
 
@@ -79,10 +86,12 @@
 </style>
 
 <section class={`output ${playgroundState}`} data-cy="output">
+  <!-- <span>{xPosition}</span>
+  <span>{yPosition}</span> -->
   <canvas bind:this={canvas} data-cy="canvas" />
   <Feedback {stacktrace} />
 </section>
-
+<Coordinates bind:xCoord bind:yCoord />
 <Controls {handlePlay} {handleRefresh} {handleClearEmojis} />
 
 {#each emojis as emoji}

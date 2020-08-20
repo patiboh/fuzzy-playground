@@ -1,17 +1,17 @@
 <script>
   // @ts-check
-  import {onMount, createEventDispatcher} from 'svelte'
-  let xPosition = 0
-  let yPosition = 0
+  import {onMount} from 'svelte'
+  export let xCoord = 0
+  export let yCoord = 0
 </script>
 
 <aside class="coordinates">
   <label>
-    x = {xPosition}
-    <input type="range" bind:value={xPosition} />
+    x = {xCoord}
+    <input type="range" bind:value={xCoord} />
   </label>
   <label>
-    y = {yPosition}
-    <input type="range" bind:value={yPosition} />
+    y = {yCoord}
+    <input type="range" bind:value={yCoord} />
   </label>
 </aside>

@@ -7,8 +7,8 @@
   import * as draw from '../libs/draw.js'
 
   import {uiState, generateCursor} from '../stores.js'
-  import Coordinates from './Coordinates.svelte'
 
+  // Inputs
   let playButton
   let refreshButton
   let clearEmojisButton
@@ -50,8 +50,6 @@
     }
   })
 </script>
-
-<Coordinates />
 
 <aside class="btn-group">
   <button
