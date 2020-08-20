@@ -1,48 +1,25 @@
-.playground-feedback {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 2rem 4rem;
-  overflow-y: auto;
-  width: 100%;
-  height: auto;
-}
-.playground-feedback::before {
-  content: '🥁';
-  font-size: 16em;
-  opacity: 0.15;
-  transition: opacity 0.3s ease-in;
-}
-.focus .playground-feedback::before {
-  opacity: 1;
-}
-.success .playground-feedback {
+.feedback {
   display: none;
-  &::before {
-    display: none;
-  }
 }
-.error .playground-feedback {
-  display: block;
-  &::before {
-    display: none;
-  }
-}
-.stacktrace {
-  display: none;
-  color: var(--color-text-light-danger);
-  font-size: 1rem;
+
+.feedback.error {
+  display: inline-flex;
+  justify-content: stretch;
+  height: 100%;
   padding: 2rem;
-  margin: 0;
   background: rgba(120, 94, 226, 0.3);
   background: linear-gradient(var(--color-danger-08), transparent);
   background: linear-gradient(var(--color-dark), transparent);
   border: 2px solid var(--color-danger-08);
   border-radius: 10px;
+  overflow: auto;
+}
+
+.stacktrace {
+  color: var(--color-text-light-danger);
+  font-size: 1rem;
   white-space: pre-wrap;
   word-wrap: break-word;
-  min-height: 80%;
-}
-.error .stacktrace {
-  display: block;
+  margin: 0;
+  padding: 0;
 }
