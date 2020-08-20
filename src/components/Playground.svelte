@@ -1,26 +1,19 @@
 <script>
   // @ts-check
   import {onMount} from 'svelte'
-  import {uiState, feedbackEmoji, generateCursor} from '../stores.js'
-  import Feedback from './Feedback.svelte'
 
   import * as constants from '../types/constants.js'
   import * as utils from '../libs/utils.js'
   import * as draw from '../libs/draw.js'
 
-  // UI controls
-  let xPosition = 0
-  let yPosition = 0
-  let playButton
-  let refreshButton
-  let clearEmojisButton
+  import {uiState, feedbackEmoji} from '../stores.js'
+  import Feedback from './Feedback.svelte'
+  import Controls from './Controls.svelte'
 
   // UI feedback
   let playgroundState
-  let feedback
   let stacktrace = ''
   let emojis
-  let emojiCursor
 
   // WebGL
   let canvas
@@ -31,19 +24,12 @@
   const uiStateUnsub = uiState.subscribe((value) => {
     playgroundState = value
   })
-
   const emojiFeedbackUnsub = feedbackEmoji.subscribe((value) => {
     emojis = utils.multiply(Object.values(value))
   })
 
-  const emojiCursorUnsub = generateCursor.subscribe((value) => {
-    emojiCursor = value
-  })
-
   function handlePlay() {
-    $uiState = constants.uiState.ACTIVE
-    playButton.style.cursor = emojiCursor
-
+    uiState.set(constants.uiState.ACTIVE)
     function loop() {
       if (frame) {
         cancelAnimationFrame(frame)
@@ -62,52 +48,29 @@
       webGlAnimation = setInterval(() => {
         draw.drawScene(webGlProps)
       }, 1)
-      $uiState = constants.uiState.SUCCESS
-
       // don't go on forever just yet
       setTimeout(() => {
+        uiState.set(constants.uiState.SUCCESS)
         clearInterval(webGlAnimation)
-        playButton.style.cursor = emojiCursor
+        // playButton.style.cursor = emojiCursor
         loop()
       }, 1000)
     } catch (error) {
-      $uiState = constants.uiState.ERROR
-      playButton.style.cursor = emojiCursor
+      uiState.set(constants.uiState.ERROR)
+      // playButton.style.cursor = emojiCursor
       stacktrace = `${error}\n${stacktrace}`
       loop()
     }
   }
-
-  function handlePlayButtonFocus() {
-    if ($uiState === constants.uiState.DEFAULT) {
-      $uiState = constants.uiState.FOCUS
-    }
-  }
-
-  function handlePlayButtonBlur() {
-    if ($uiState === constants.uiState.FOCUS) {
-      $uiState = constants.uiState.DEFAULT
-    }
-  }
-
   function handleRefresh(event) {
     location.reload() // TODO - reload gl code only ?
   }
-
   function handleClearEmojis(event) {
     cancelAnimationFrame(frame)
     frame = null
     emojis = []
     // $uiState = constants.uiState.DEFAULT
   }
-
-  onMount(() => {
-    playButton.style.cursor = emojiCursor
-    return () => {
-      uiStateUnsub()
-      emojiFeedbackUnsub()
-    }
-  })
 </script>
 
 <style lang="scss" global>
@@ -119,39 +82,9 @@
   <canvas bind:this={canvas} data-cy="canvas" />
   <Feedback {stacktrace} />
 </section>
-<aside class="coordinates">
-  <label>
-    x = {xPosition}
-    <input type="range" bind:value={xPosition} />
-  </label>
-  <label>
-    y = {yPosition}
-    <input type="range" bind:value={yPosition} />
-  </label>
-</aside>
-<aside class="btn-group">
-  <button
-    data-cy="btn-play"
-    on:focus={handlePlayButtonFocus}
-    on:mouseover={handlePlayButtonFocus}
-    on:mouseleave={handlePlayButtonBlur}
-    on:click={handlePlay}
-    bind:this={playButton}
-    class={`btn-jumbo fire-starter ${playgroundState}`}
-    aria-label="Play" />
-  <button
-    data-cy="btn-clear-emojis"
-    on:click={handleClearEmojis}
-    bind:this={clearEmojisButton}
-    class={'btn-jumbo sponge'}
-    aria-label="Clear emoji animation" />
-  <button
-    data-cy="btn-refresh"
-    on:click={handleRefresh}
-    bind:this={refreshButton}
-    class={'btn-jumbo shower'}
-    aria-label="Refresh" />
-</aside>
+
+<Controls {handlePlay} {handleRefresh} {handleClearEmojis} />
+
 {#each emojis as emoji}
   <span
     class="emoji"

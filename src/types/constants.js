@@ -1,9 +1,9 @@
 export const uiState = {
   DEFAULT: 'default',
-  SUCCESS: 'success',
   FOCUS: 'focus',
   HOVER: 'hover',
   ACTIVE: 'active',
+  SUCCESS: 'success',
   ERROR: 'error',
 }
 
@@ -25,7 +25,7 @@ export const emojis = {
     error: '🌧', // 🌧 cloud with rain
     active: '💥', // 💥 fire spark
   },
-  confetti: {
+  success: {
     tada: '🎉', // 🎉 party-popper
     star: '🌟', // 🌟 glowing star
     balloon: '🎈', // 🎈 balloon

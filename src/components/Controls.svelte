@@ -1,48 +1,79 @@
 <script>
   // @ts-check
-  import {onMount, createEventDispatcher} from 'svelte'
+  import {onMount} from 'svelte'
 
   import * as constants from '../types/constants.js'
   import * as utils from '../libs/utils.js'
   import * as draw from '../libs/draw.js'
-  let xPosition = 0
-  let yPosition = 0
-  let animateButton
+
+  import {uiState, generateCursor} from '../stores.js'
+  import Coordinates from './Coordinates.svelte'
+
+  let playButton
   let refreshButton
-  const dispatch = createEventDispatcher()
-  function animate(event) {
-    event.preventDefault()
-    dispatch('animate', event)
-  }
-  function refresh(event) {
-    event.preventDefault()
-    dispatch('refresh', event)
+  let clearEmojisButton
+
+  // UI feedback
+  let playgroundState
+  let emojiCursor
+
+  // Event Handlers
+  export let handlePlay = () => {}
+  export let handleRefresh = () => {}
+  export let handleClearEmojis = () => {}
+
+  const uiStateUnsub = uiState.subscribe((value) => {
+    playgroundState = value
+  })
+
+  const emojiFeedbackUnsub = generateCursor.subscribe((value) => {
+    if (value !== emojiCursor) {
+      emojiCursor = value
+    }
+  })
+
+  function handlePlayButtonFocus(event) {
+    if (playgroundState === constants.uiState.DEFAULT) {
+      uiState.set(constants.uiState.FOCUS)
+    }
   }
 
-  onMount(() => {})
+  function handlePlayButtonBlur(event) {
+    if (playgroundState === constants.uiState.FOCUS) {
+      uiState.set(constants.uiState.DEFAULT)
+    }
+  }
+  onMount(() => {
+    return () => {
+      uiStateUnsub()
+      emojiFeedbackUnsub()
+    }
+  })
 </script>
 
-<aside class="controls">
-  <div class="coordinates">
-    <label>
-      x = {xPosition}
-      <input type="range" bind:value={xPosition} />
-    </label>
-    <label>
-      y = {yPosition}
-      <input type="range" bind:value={yPosition} />
-    </label>
-  </div>
+<Coordinates />
+
+<aside class="btn-group">
   <button
-    data-cy="button-animate"
-    on:click={animate}
-    bind:this={animateButton}
-    class="jumbo fire-starter"
-    aria-label="Animate" />
+    data-cy="btn-play"
+    on:focus={handlePlayButtonFocus}
+    on:mouseover={handlePlayButtonFocus}
+    on:mouseleave={handlePlayButtonBlur}
+    on:click={handlePlay}
+    bind:this={playButton}
+    class={`btn-jumbo fire-starter ${playgroundState}`}
+    style={`cursor: ${emojiCursor}`}
+    aria-label="Play" />
   <button
-    data-cy="button-refresh"
-    on:click={refresh}
+    data-cy="btn-clear-emojis"
+    on:click={handleClearEmojis}
+    bind:this={clearEmojisButton}
+    class={'btn-jumbo sponge'}
+    aria-label="Clear emoji animation" />
+  <button
+    data-cy="btn-refresh"
+    on:click={handleRefresh}
     bind:this={refreshButton}
-    class="jumbo shower"
+    class={'btn-jumbo shower'}
     aria-label="Refresh" />
 </aside>
