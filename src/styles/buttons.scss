@@ -1,0 +1,98 @@
+.btn-group {
+  grid-column-start: 3;
+  grid-row-start: 2;
+  display: flex;
+  flex-direction: column;
+  width: 12em;
+  height: 100%;
+}
+.btn-jumbo {
+  border: none;
+  scale: 0.95;
+  transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.btn-jumbo::before {
+  font-size: 10em;
+  width: 100%;
+  height: 100%;
+  line-height: 1.5;
+}
+.btn-jumbo:hover,
+.btn-jumbo:focus {
+  outline: none;
+  scale: 1;
+}
+
+// Play button
+.fire-starter {
+  grid-row-start: 4;
+  border-radius: 50%;
+  background: radial-gradient(var(--color-firestarter-06) 20%, transparent 60%);
+}
+.fire-starter::before {
+  content: '\1F47E';
+}
+.fire-starter:hover,
+.fire-starter:focus {
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="50" height="60" style="font-size: 40px;"><text y="40">%E2%9A%A1</text></svg>'),
+    auto;
+}
+.fire-starter:hover,
+.fire-starter:focus {
+  background: radial-gradient(var(--color-firestarter-08) 20%, transparent 60%);
+}
+.fire-starter.success {
+  /* background: radial-gradient(
+    var(--color-coordinates) 20%,
+    rgba(0, 0, 0, 1) 60%
+  ); */
+}
+.fire-starter.success:hover,
+.fire-starter.success:focus {
+  /* background: radial-gradient(
+    rgba(34, 229, 227, 0.8) 20%,
+    rgba(0, 0, 0, 1) 60%
+  ); */
+}
+.fire-starter.error {
+  background: radial-gradient(rgba(238, 9, 123, 0.8) 20%, transparent 60%);
+}
+.fire-starter.error:hover,
+.fire-starter.error:focus {
+  background: radial-gradient(rgba(238, 9, 123, 1) 20%, transparent 60%);
+}
+.fire-starter.active {
+  background: radial-gradient(var(--color-sponge-08) 20%, transparent 60%);
+}
+.fire-starter.active:hover,
+.fire-starter.active:focus {
+  background: radial-gradient(var(--color-sponge) 20%, transparent 60%);
+}
+
+// Refresh button
+.shower {
+  grid-row-start: 5;
+  border-radius: 50%;
+  background: radial-gradient(rgba(34, 229, 227, 0.4) 20%, transparent 60%);
+}
+.shower::before {
+  content: '\1F6BF';
+}
+.shower:hover,
+.shower:focus {
+  background: radial-gradient(rgba(34, 229, 227, 0.5) 20%, transparent 60%);
+}
+
+// Clear emojis animation button
+.sponge {
+  grid-row-start: 5;
+  border-radius: 50%;
+  background: radial-gradient(var(--color-sponge-08) 20%, transparent 60%);
+}
+.sponge::before {
+  content: '🧽';
+}
+.sponge:hover,
+.sponge:focus {
+  background: radial-gradient(var(--color-sponge) 20%, transparent 60%);
+}

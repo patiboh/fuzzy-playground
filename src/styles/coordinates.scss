@@ -1,0 +1,36 @@
+.coordinates {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: auto;
+  height: auto;
+  grid-column-start: 3;
+  grid-column-end: 4;
+  grid-row-start: 1;
+  padding: 2rem;
+  border-radius: 5px;
+  overflow-x: scroll;
+}
+.coordinates label {
+  display: flex;
+  justify-content: space-between;
+  max-width: 220px;
+  padding: 0.5rem 1rem;
+  margin: 0.25rem 0;
+  background: linear-gradient(var(--color-coordinates), rgba(0, 0, 0, 0.6));
+  color: var(--color-text-light-shower);
+  border-radius: 6px;
+}
+.coordinates label:first-child {
+  margin-top: 0;
+}
+.coordinates label:hover {
+  background: linear-gradient(
+    var(--color-coordinates-hover),
+    rgba(0, 0, 0, 0.6)
+  );
+  color: var(--color-text-light);
+}
+.coordinates input {
+  margin-bottom: 1rem;
+}

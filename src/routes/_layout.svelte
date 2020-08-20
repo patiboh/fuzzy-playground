@@ -5,7 +5,7 @@
 </script>
 
 <style lang="scss" global>
-  @import '../styles/global.scss';
+  @import '../styles/main.scss';
 </style>
 
 <Nav {segment} />
