@@ -19,18 +19,7 @@
     dispatch('refresh', event)
   }
 
-  onMount(() => {
-    utils.updateCursor(
-      animateButton,
-      constants.emojis.animate[constants.uiState.DEFAULT],
-      constants.size.SM,
-    )
-    utils.updateCursor(
-      refreshButton,
-      constants.emojis.refresh[constants.uiState.DEFAULT],
-      constants.size.SM,
-    )
-  })
+  onMount(() => {})
 </script>
 
 <aside class="controls">
