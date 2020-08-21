@@ -85,6 +85,7 @@
       frame = null
     }
     emojis = []
+    uiState.set(constants.uiState.DEFAULT)
   }
 </script>
 
