@@ -1,34 +1,93 @@
 .coordinates {
   display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  width: auto;
+  justify-content: space-around;
+  width: 100%;
   height: auto;
-  grid-column-start: 2;
-  grid-row-start: 1;
+  grid-column-start: 1;
+  grid-column-end: 3;
+  grid-row-start: 2;
   border-radius: 5px;
   overflow-x: scroll;
 }
 .coordinates label {
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
-  max-width: 100%;
-  padding: 0.5rem 1rem;
-  margin: 0.25rem 0;
-  background: linear-gradient(var(--color-coordinates), rgba(0, 0, 0, 0.6));
+  align-items: flex-start;
+  width: 100%;
+  max-width: calc(100% - 4em);
+  padding: 0.5em;
+  margin: 1em 0.25em;
+  background: linear-gradient(var(--color-dark) 10%, var(--color-coordinates));
   color: var(--color-text-light-shower);
   border-radius: 6px;
 }
 .coordinates label:first-child {
-  margin-top: 0;
+  margin-left: 0;
+}
+.coordinates label:last-child {
+  margin-right: 0;
 }
 .coordinates label:hover {
   background: linear-gradient(
-    var(--color-coordinates-hover),
-    rgba(0, 0, 0, 0.6)
+    var(--color-dark) 10%,
+    var(--color-coordinates-hover)
   );
   color: var(--color-text-light);
 }
 .coordinates input {
-  margin-bottom: 1rem;
+  margin-bottom: 0.25em;
+  width: calc(100% - 1em);
+}
+
+@media (min-width: 768px) {
+  .coordinates {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    grid-column-start: 2;
+    grid-row-start: 1;
+    border-radius: 5px;
+    overflow-x: scroll;
+  }
+  .coordinates label {
+    flex-direction: row;
+    align-items: center;
+    width: var(--coord-input-width);
+    max-width: calc(100% - 2em);
+    padding: 0.7em 1em;
+    margin: 0.5em 0;
+  }
+  .coordinates label:first-child {
+    margin-top: 0;
+  }
+  .coordinates input {
+    width: calc(100% - 6em);
+  }
+}
+
+@media (min-aspect-ratio: 1/1) and (max-width: 767px) {
+  .coordinates {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    grid-column-start: 2;
+    grid-row-start: 1;
+    border-radius: 5px;
+    overflow-x: scroll;
+  }
+  .coordinates label {
+    flex-direction: row;
+    align-items: center;
+    width: var(--coord-input-width);
+    max-width: calc(100% - 2em);
+    padding: 0.7em 1em;
+    margin: 0.5em 0;
+  }
+  .coordinates label:first-child {
+    margin-top: 0;
+  }
+  .coordinates input {
+    width: calc(100% - 6em);
+  }
 }

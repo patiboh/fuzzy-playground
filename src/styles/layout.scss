@@ -12,6 +12,20 @@ main {
 }
 .grid {
   display: grid;
-  grid-template-columns: 75% 25%;
-  grid-template-rows: 20% 80%;
+  grid-template-columns: auto;
+  grid-template-rows: auto 6em 5em;
+}
+
+@media (min-width: 768px) {
+  .grid {
+    grid-template-columns: auto var(--coord-input-width);
+    grid-template-rows: 20% 80%;
+  }
+}
+
+@media (min-aspect-ratio: 1/1) {
+  .grid {
+    grid-template-columns: auto var(--coord-input-width);
+    grid-template-rows: 20% 80%;
+  }
 }

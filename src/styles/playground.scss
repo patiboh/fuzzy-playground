@@ -1,13 +1,13 @@
 .output {
   grid-column-start: 1;
+  grid-column-end: 3;
   grid-row-start: 1;
-  grid-row-end: 3;
   display: flex;
   flex-direction: column;
   align-items: stretch;
   justify-content: center;
   overflow-y: auto;
-  width: calc(100% - 2em);
+  width: 100%;
   height: auto;
   min-height: 100%;
 }
@@ -38,8 +38,33 @@ canvas {
   height: 100%;
 }
 
-.controls {
-  grid-column-start: 2;
-  grid-row-start: 1;
-  grid-row-end: 3;
+// .controls {
+//   grid-column-start: 1;
+//   grid-column-end: 3;
+//   grid-row-start: 3;
+// }
+
+@media (min-width: 768px) {
+  .output {
+    grid-column-start: 1;
+    grid-column-end: 2;
+    grid-row-start: 1;
+    grid-row-end: 3;
+    width: calc(100% - 2em);
+  }
+
+  // .controls {
+  //   grid-column-start: 1;
+  //   grid-row-start: 3;
+  // }
+}
+
+@media (min-aspect-ratio: 1/1) {
+  .output {
+    grid-column-start: 1;
+    grid-column-end: 2;
+    grid-row-start: 1;
+    grid-row-end: 3;
+    width: calc(100% - 2em);
+  }
 }

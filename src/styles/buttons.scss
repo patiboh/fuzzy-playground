@@ -1,21 +1,25 @@
 .btn-group {
-  grid-column-start: 2;
-  grid-row-start: 2;
+  grid-column-start: 1;
+  grid-column-end: 3;
+  grid-row-start: 3;
   display: flex;
-  flex-direction: column;
-  width: 12em;
+  justify-content: space-between;
+  width: 100%;
   height: 100%;
+  max-width: 24em;
+  justify-self: center;
 }
+
 .btn-jumbo {
   border: none;
   scale: 0.95;
   transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 .btn-jumbo::before {
-  font-size: 10em;
+  font-size: 6em;
   width: 100%;
   height: 100%;
-  line-height: 1.5;
+  line-height: 1;
 }
 .btn-jumbo:hover,
 .btn-jumbo:focus {
@@ -23,9 +27,50 @@
   scale: 1;
 }
 
+@media (min-width: 768px) {
+  .btn-group {
+    grid-column-start: 2;
+    grid-row-start: 2;
+    flex-direction: column;
+    justify-content: space-evenly;
+    width: 8em;
+    height: 100%;
+    max-height: 22em;
+    padding: 1em;
+  }
+  .btn-jumbo::before {
+    font-size: 8em;
+  }
+}
+
+@media (min-aspect-ratio: 1/1) and (max-width: 767px) {
+  .btn-group {
+    grid-column-start: 2;
+    grid-row-start: 2;
+    flex-direction: column;
+    justify-content: space-evenly;
+    width: 8em;
+    height: 100%;
+    max-height: 22em;
+  }
+  .btn-jumbo::before {
+    font-size: 8em;
+  }
+}
+
+@media (min-width: 1280px) {
+  .btn-group {
+    width: 10em;
+    max-height: 26em;
+    padding: 2em;
+  }
+  .btn-jumbo::before {
+    font-size: 10em;
+  }
+}
+
 // Play button
 .fire-starter {
-  grid-row-start: 4;
   border-radius: 50%;
   background: radial-gradient(var(--color-firestarter-06) 20%, transparent 60%);
 }
@@ -71,7 +116,6 @@
 
 // Refresh button
 .shower {
-  grid-row-start: 5;
   border-radius: 50%;
   background: radial-gradient(rgba(34, 229, 227, 0.4) 20%, transparent 60%);
 }
@@ -85,7 +129,6 @@
 
 // Clear emojis animation button
 .sponge {
-  grid-row-start: 5;
   border-radius: 50%;
   background: radial-gradient(var(--color-sponge-08) 20%, transparent 60%);
 }
