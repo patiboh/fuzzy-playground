@@ -16,6 +16,10 @@
   let stacktrace = ''
   let emojis
 
+  // Audio
+  let drumroll
+  let duration = 4200
+
   // WebGL
   let canvas
   let frame
@@ -42,6 +46,7 @@
       frame = null
     }
     uiState.set(constants.uiState.ACTIVE)
+    // drumroll.play() // keep it warm for later
     function loop() {
       frame = requestAnimationFrame(loop)
 
@@ -61,7 +66,7 @@
         uiState.set(constants.uiState.SUCCESS)
         clearInterval(webGlAnimation)
         loop()
-      }, 1000)
+      }, duration) // duration of drumroll, for now
     } catch (error) {
       uiState.set(constants.uiState.ERROR)
       stacktrace = `${error}\n${stacktrace}`
@@ -89,6 +94,11 @@
   <!-- <span>{xPosition}</span>
   <span>{yPosition}</span> -->
   <canvas bind:this={canvas} data-cy="canvas" />
+  <audio bind:this={drumroll}>
+    <source src="drumroll.mp4" type="audio/mpeg" />
+    <source src="drumroll.ogg" type="audio/ogg" />
+    <track kind="captions" />
+  </audio>
   <Feedback {stacktrace} />
 </section>
 <Coordinates bind:xCoord bind:yCoord />
