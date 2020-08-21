@@ -4,7 +4,8 @@ An evolving environment to play, experiment and learn about web graphics and use
 
 **What does that even mean ?**
 
-Its basically a web application that uses Svelte to handle the state management necessary to run and interact with WebGL exercises in https://webglfundamentals.org/, as well as to turn errors into visual feedback on screen rather than logs in the console (+ totally overkill emoji ❤️)
+Its basically a web application that uses Svelte to handle the state management necessary to run and interact with WebGL examples given as part of the https://webglfundamentals.org/ tutorial.
+The interface also handles errors by providing visual feedback on screen (=== totally overkill emoji ❤️) rather than only logs in the console (although it does log the error message on screen as part of the feedback).
 
 The app displays a canvas, a feedback area (displayed only when there are errors in the code), and provides some controls:
 
