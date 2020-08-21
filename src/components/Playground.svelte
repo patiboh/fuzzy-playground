@@ -88,14 +88,13 @@
   }
 </script>
 
-<style lang="scss" global>
-  @import '../styles/variables.scss';
+<style lang="scss">
   @import '../styles/playground.scss';
 </style>
 
 <section class={`output ${playgroundState}`} data-cy="output">
-  <span>{xPosition}</span>
-  <span>{yPosition}</span>
+  <!-- <span>{xPosition}</span>
+  <span>{yPosition}</span> -->
   <canvas bind:this={canvas} data-cy="canvas" />
   <audio bind:this={drumroll}>
     <source src="drumroll.mp4" type="audio/mpeg" />

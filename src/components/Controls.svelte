@@ -51,6 +51,10 @@
   })
 </script>
 
+<style lang="scss">
+  @import '../styles/buttons.scss';
+</style>
+
 <aside class="btn-group">
   <button
     data-cy="btn-play"

@@ -5,6 +5,10 @@
   export let yCoord = 0
 </script>
 
+<style lang="scss">
+  @import '../styles/coordinates.scss';
+</style>
+
 <aside class="coordinates">
   <label>
     x = {xCoord}
