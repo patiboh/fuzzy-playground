@@ -48,8 +48,8 @@
       frame = null
     }
     uiState.set(constants.uiState.ACTIVE)
-    drumroll.playbackRate = playbackRate
-    drumroll.play() // keep it warm for later
+    // drumroll.playbackRate = playbackRate
+    // drumroll.play() // keep it warm for later
     function loop() {
       frame = requestAnimationFrame(loop)
 
