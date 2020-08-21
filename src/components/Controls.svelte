@@ -6,7 +6,7 @@
   import * as utils from '../libs/utils.js'
   import * as draw from '../libs/draw.js'
 
-  import {uiState, generateCursor} from '../stores.js'
+  import {uiState, currentCursor} from '../stores.js'
 
   // Inputs
   let playButton
@@ -26,7 +26,7 @@
     playgroundState = value
   })
 
-  const emojiFeedbackUnsub = generateCursor.subscribe((value) => {
+  const emojiFeedbackUnsub = currentCursor.subscribe((value) => {
     if (value !== emojiCursor) {
       emojiCursor = value
     }
