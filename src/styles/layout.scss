@@ -13,7 +13,7 @@ main {
 .grid {
   display: grid;
   grid-template-columns: auto;
-  grid-template-rows: auto 6em 5em;
+  grid-template-rows: auto 6em 6em;
 }
 
 @media (min-width: 768px) {
