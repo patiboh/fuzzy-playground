@@ -18,7 +18,9 @@
 
   // Audio
   let drumroll
-  let duration = 4200
+  let duration = 6.017687
+  let playbackRate = 1.5
+  let playbackDuration = 4200 / playbackRate
 
   // WebGL
   let canvas
@@ -46,7 +48,8 @@
       frame = null
     }
     uiState.set(constants.uiState.ACTIVE)
-    // drumroll.play() // keep it warm for later
+    drumroll.playbackRate = playbackRate
+    drumroll.play() // keep it warm for later
     function loop() {
       frame = requestAnimationFrame(loop)
 
@@ -66,7 +69,7 @@
         uiState.set(constants.uiState.SUCCESS)
         clearInterval(webGlAnimation)
         loop()
-      }, duration) // duration of drumroll, for now
+      }, playbackDuration) // duration of drumroll, for now
     } catch (error) {
       uiState.set(constants.uiState.ERROR)
       stacktrace = `${error}\n${stacktrace}`
@@ -91,13 +94,13 @@
 </style>
 
 <section class={`output ${playgroundState}`} data-cy="output">
-  <!-- <span>{xPosition}</span>
-  <span>{yPosition}</span> -->
+  <span>{xPosition}</span>
+  <span>{yPosition}</span>
   <canvas bind:this={canvas} data-cy="canvas" />
   <audio bind:this={drumroll}>
     <source src="drumroll.mp4" type="audio/mpeg" />
     <source src="drumroll.ogg" type="audio/ogg" />
-    <track kind="captions" />
+    <track kind="captions" src="drumrolls.vtt" srclang="en" />
   </audio>
   <Feedback {stacktrace} />
 </section>
