@@ -25,7 +25,7 @@ Pristine state
 
 Play button focus
 
-![Playground default state](playground-desktop-default.png)
+![Playground default state](playground-desktop-animate-button-focus.png)
 
 **Animating**
 
