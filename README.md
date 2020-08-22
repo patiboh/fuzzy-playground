@@ -5,7 +5,6 @@ An evolving environment to play, experiment and learn about web graphics and use
 **What does that even mean ?**
 
 Its basically a web application that uses Svelte to handle the state management necessary to run and interact with WebGL examples given as part of the https://webglfundamentals.org/ tutorial.
-The interface also handles errors by providing visual feedback on screen (=== totally overkill emoji ❤️) rather than only logs in the console (although it does log the error message on screen as part of the feedback).
 
 The app displays a canvas, a feedback area (displayed only when there are errors in the code), and provides some controls:
 
@@ -17,17 +16,31 @@ The app displays a canvas, a feedback area (displayed only when there are errors
 Some screenshots below
 
 **Default state**
-![Playground pristine](playground.png)
 
-**Animation success**
-(yes is OTT I know, specially since it happens pretty often, but I loved this from the first time I saw it, I just couldn't help it 😍)
+These are desktop views. I still have much to do to improve visuals, in particular transitions as well as optimise for mobile.
 
-![Playground animation is a success](playground-success.png)
+Pristine state
 
-**Animation error**
+![Playground default state](playground-desktop-default.png)
+
+Play button focus
+
+![Playground default state](playground-desktop-default.png)
+
+**Animating**
+
+To note that there are no emojis (except UI controls) when the animation is running. This also means that for any sort of endless loop (such as interactive animations) - there should not be any emoji feedback unless the animation has been stopped (in either success or failure state).
+
+![Playground animating](playground-animating.png)
+
+**Animation success / error**
+
+These are mobile views. Desktop views have the same content, using the layout of the default views above.
+
+Inspired by the [Svelte tutorial](https://svelte.dev/tutorial/basics) confetti - I loved this from the first time I saw it, I just couldn't help it 😍 - and this [tweet by @cassidoo](https://twitter.com/cassidoo/status/1280239175078273024?s=20)
+
+![Playground animation is a success](playground-animation-end-success.png)
 ![Playground animation has an error](playground-error.png)
-
-Some screenshots below
 
 **Is that all??**
 
@@ -61,3 +74,12 @@ Consult [sapper.svelte.dev](https://sapper.svelte.dev) for help getting started.
 - [Svelte tutorial](https://svelte.dev/tutorial/basics): the best intro to Svelte, and source of the emoji animations
 - WebGL examples from https://webglfundamentals.org/
 - Drumroll sample from https://freesound.org/people/adriann/sounds/191718/
+
+## TODO
+
+- Make animations interactive (WIP)
+- Fix mobile states
+- Figure out a testing strategy : separate UI from GL errors as they apply to two different usages
+- Get back to the WebGL bits!
+- Explore how to use Svelte better (-> checkout svelte.gl) !
+- ...
