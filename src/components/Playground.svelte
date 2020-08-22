@@ -32,8 +32,14 @@
   let xCoord = 0
   let yCoord = 0
 
+  // tmp vars
+  let width = 100
+  let height = 30
+  let color = [Math.random(), Math.random(), Math.random(), 1]
+
   $: xPosition = xCoord
   $: yPosition = yCoord
+  $: translation = [xCoord, yCoord]
 
   const uiStateUnsub = uiState.subscribe((value) => {
     playgroundState = value
