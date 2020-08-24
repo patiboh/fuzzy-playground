@@ -53,9 +53,10 @@
 
 <style lang="scss">
   @import '../styles/buttons.scss';
+  @import '../styles/ui-controls.scss';
 </style>
 
-<aside class="btn-group">
+<div class="btn-group ui-controls">
   <button
     data-cy="btn-play"
     on:focus={handlePlayButtonFocus}
@@ -78,4 +79,4 @@
     bind:this={refreshButton}
     class={'btn-jumbo shower'}
     aria-label="Refresh" />
-</aside>
+</div>

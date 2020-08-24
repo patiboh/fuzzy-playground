@@ -1,20 +1,80 @@
 <script>
   // @ts-check
-  import {onMount} from 'svelte'
-
   import * as constants from '../types/constants.js'
   import * as utils from '../libs/utils.js'
   import * as draw from '../libs/draw.js'
 
   import {uiState, feedbackEmoji} from '../stores.js'
   import Feedback from './Feedback.svelte'
-  import Controls from './Controls.svelte'
+  import UIControls from './UIControls.svelte'
   import Coordinates from './Coordinates.svelte'
+  import AnimationsMenu from './AnimationsMenu.svelte'
+
+  // WebGL
+  let canvas
+  let frame
+  let webGlProps
+  let webGlAnimation
+  let xCoord = 0
+  let yCoord = 0
+  let hasControls = false
+  let showCoordinates
+  let translation = [0, 0]
+  let color = [Math.random(), Math.random(), Math.random(), 1]
+  let width = 100
+  let height = 30
+
+  const animations = [
+    {
+      id: 'L1',
+      name: 'Random rectangles',
+      hasControls: false,
+      setInterval: true,
+      run(
+        webGLProps,
+        translation = null,
+        color = null,
+        width = null,
+        height = null,
+      ) {
+        return setInterval(() => {
+          draw.rectanglesScene(webGlProps)
+        }, 1)
+      },
+    },
+    {
+      id: 'L2',
+      name: 'Translation',
+      hasControls: true,
+      setInterval: false,
+      run(webGlProps, translation, color, width, height) {
+        draw.translationSceneViaDOM(
+          webGlProps,
+          translation,
+          color,
+          width,
+          height,
+        )
+      },
+    },
+    {
+      id: 'L3',
+      name: 'Translation via shader',
+      hasControls: true,
+      setInterval: false,
+      run(webGlProps, translation, color) {
+        draw.translationSceneViaWebGL(webGlProps, translation)
+      },
+    },
+  ]
 
   // UI feedback
   let playgroundState
   let stacktrace = ''
   let emojis
+  let currentAnimation = animations[0]
+  let canvasWidth
+  let canvasHeight
 
   // Audio
   let drumroll
@@ -22,24 +82,10 @@
   let playbackRate = 1.5
   let playbackDuration = 4200 / playbackRate
 
-  // WebGL
-  let canvas
-  let frame
-  let webGlProps
-  let webGlAnimation
-  let xPosition
-  let yPosition
-  let xCoord = 0
-  let yCoord = 0
-
-  // tmp vars
-  let width = 100
-  let height = 30
-  let color = [Math.random(), Math.random(), Math.random(), 1]
-
-  $: xPosition = xCoord
-  $: yPosition = yCoord
   $: translation = [xCoord, yCoord]
+  $: maxX = canvas ? canvasWidth - width : 100
+  $: maxY = canvas ? canvasHeight - height : 100
+  $: showCoordinates = hasControls
 
   const uiStateUnsub = uiState.subscribe((value) => {
     playgroundState = value
@@ -48,50 +94,68 @@
     emojis = utils.multiply(Object.values(value))
   })
 
+  function loop() {
+    frame = requestAnimationFrame(loop)
+
+    emojis = emojis.map((emoji) => {
+      emoji.y += 0.7 * emoji.ratio
+      if (emoji.y > 100) emoji.y = -20
+      return emoji
+    })
+  }
+
   function handlePlay() {
     if (frame) {
       cancelAnimationFrame(frame)
       frame = null
     }
-    uiState.set(constants.uiState.ACTIVE)
-    // drumroll.playbackRate = playbackRate
-    // drumroll.play() // keep it warm for later
-    function loop() {
-      frame = requestAnimationFrame(loop)
-
-      emojis = emojis.map((emoji) => {
-        emoji.y += 0.7 * emoji.ratio
-        if (emoji.y > 100) emoji.y = -20
-        return emoji
-      })
-    }
     try {
+      uiState.set(constants.uiState.ACTIVE)
       webGlProps = draw.initScene(canvas)
-      webGlAnimation = setInterval(() => {
-        draw.drawScene(webGlProps)
-      }, 1)
-      // don't go on forever just yet
-      setTimeout(() => {
-        uiState.set(constants.uiState.SUCCESS)
-        clearInterval(webGlAnimation)
-        loop()
-      }, playbackDuration) // duration of drumroll, for now
+
+      if (currentAnimation.setInterval) {
+        webGlAnimation = currentAnimation.run(webGlProps)
+        // don't go on forever just yet
+        setTimeout(() => {
+          uiState.set(constants.uiState.SUCCESS)
+          clearInterval(webGlAnimation)
+          loop()
+        }, playbackDuration) // duration of drumroll, for now
+      } else {
+        canvasWidth = canvas.width
+        canvasHeight = canvas.height
+        currentAnimation.run(webGlProps, translation, color)
+      }
     } catch (error) {
       uiState.set(constants.uiState.ERROR)
       stacktrace = `${error}\n${stacktrace}`
       loop()
     }
   }
-  function handleRefresh(event) {
+  function handleRefresh() {
     location.reload() // TODO - reload gl code only ?
   }
-  function handleClearEmojis(event) {
+  function handleClearEmojis() {
     if (frame) {
       cancelAnimationFrame(frame)
       frame = null
     }
     emojis = []
     uiState.set(constants.uiState.DEFAULT)
+  }
+  function handleLoadAnimation(event) {
+    handleClearEmojis()
+    const animationId = event.detail.animation
+    currentAnimation = animations.find(
+      (animation) => animation.id === animationId,
+    )
+    hasControls = currentAnimation.hasControls
+  }
+  function updateXCoord() {
+    currentAnimation.run(webGlProps, translation, color, width, height)
+  }
+  function updateYCoord() {
+    currentAnimation.run(webGlProps, translation, color, width, height)
   }
 </script>
 
@@ -100,19 +164,27 @@
 </style>
 
 <section class={`output ${playgroundState}`} data-cy="output">
-  <!-- <span>{xPosition}</span>
-  <span>{yPosition}</span> -->
   <canvas bind:this={canvas} data-cy="canvas" />
-  <audio bind:this={drumroll}>
+  <!-- <audio bind:this={drumroll}>
     <source src="drumroll.mp4" type="audio/mpeg" />
     <source src="drumroll.ogg" type="audio/ogg" />
     <track kind="captions" src="drumrolls.vtt" srclang="en" />
-  </audio>
+  </audio> -->
   <Feedback {stacktrace} />
 </section>
-<Coordinates bind:xCoord bind:yCoord />
-<Controls {handlePlay} {handleRefresh} {handleClearEmojis} />
-
+<section class="controls">
+  <UIControls {handlePlay} {handleRefresh} {handleClearEmojis} />
+  <AnimationsMenu on:loadAnimation={handleLoadAnimation} {animations} />
+  {#if showCoordinates}
+    <Coordinates
+      bind:xCoord
+      bind:yCoord
+      bind:maxX
+      bind:maxY
+      on:updateXCoord={updateXCoord}
+      on:updateYCoord={updateYCoord} />
+  {/if}
+</section>
 {#each emojis as emoji}
   <span
     class="emoji"

@@ -1,0 +1,55 @@
+.btn-group.animation-menu {
+  grid-row-start: 3;
+  padding-top: 0.5em;
+  align-items: flex-start;
+}
+
+.btn-menu {
+  padding: 1em 2em;
+  border-radius: var(--border-radius-input);
+  flex-grow: 1;
+  margin: 0 0.5em;
+  background: var(--color-dark);
+  border: 2px solid var(--color-coordinates);
+  color: var(--color-text-light-shower);
+  font-weight: 500;
+
+  &:first-of-type {
+    margin-left: 0;
+  }
+  &:last-of-type {
+    margin-right: 0;
+  }
+}
+
+.btn-menu:hover,
+.btn-menu:focus {
+  border-color: var(--color-coordinates-hover);
+  color: var(--color-text-light);
+}
+
+@media (min-width: 768px) {
+  .btn-group.animation-menu {
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+
+  .btn-menu {
+    width: 100%;
+    margin: 0 0 1em 0;
+    flex-grow: 0;
+  }
+}
+
+@media (min-aspect-ratio: 1/1) and (max-width: 767px) {
+  .btn-group.animation-menu {
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+
+  .btn-menu {
+    width: 100%;
+    margin: 0 0 1em 0;
+    flex-grow: 0;
+  }
+}

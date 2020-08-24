@@ -16,25 +16,21 @@ main {
 .grid {
   display: grid;
   grid-template-columns: auto;
-  grid-template-rows: auto var(--coord-input-height) var(
-      --control-btn-group-height
+  grid-template-rows: auto calc(
+      var(--coord-input-height) + var(--control-btn-group-height) * 2
     );
 }
 
 @media (min-width: 768px) {
   .grid {
     grid-template-columns: auto var(--coord-input-width);
-    grid-template-rows:
-      calc(var(--coord-input-height) * 2) var(--control-btn-group-height)
-      auto;
+    grid-template-rows: auto;
   }
 }
 
 @media (min-aspect-ratio: 1/1) {
   .grid {
     grid-template-columns: auto var(--coord-input-width);
-    grid-template-rows:
-      calc(var(--coord-input-height) * 2) var(--control-btn-group-height)
-      auto;
+    grid-template-rows: auto;
   }
 }

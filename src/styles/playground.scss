@@ -2,7 +2,6 @@
   align-items: stretch;
   display: flex;
   flex-direction: column;
-  grid-column-end: 3;
   grid-column-start: 1;
   grid-row-start: 1;
   height: auto;
@@ -23,7 +22,7 @@
 .output::before {
   align-self: center;
   content: '🥁';
-  font-size: 16em;
+  font-size: 18em;
   opacity: 0.15;
   transition: opacity 0.3s ease-in;
 }
@@ -43,33 +42,42 @@ canvas {
   width: 100%;
 }
 
-// .controls {
-//   grid-column-start: 1;
-//   grid-column-end: 3;
-//   grid-row-start: 3;
-// }
+.controls {
+  grid-column-start: 1;
+  grid-row-start: 2;
+  display: grid;
+  grid-template-columns: auto;
+  grid-template-rows: var(--coord-input-height) var(--control-btn-group-height);
+}
 
 @media (min-width: 768px) {
   .output {
-    grid-column-end: 2;
     grid-column-start: 1;
-    grid-row-end: 4;
     grid-row-start: 1;
     width: calc(100% - 2em);
   }
-
-  // .controls {
-  //   grid-column-start: 1;
-  //   grid-row-start: 3;
-  // }
+  .controls {
+    grid-column-start: 2;
+    grid-row-start: 1;
+    display: grid;
+    grid-template-rows:
+      calc(var(--coord-input-height) * 2) var(--control-btn-group-height)
+      auto;
+  }
 }
 
 @media (min-aspect-ratio: 1/1) {
   .output {
-    grid-column-end: 2;
     grid-column-start: 1;
-    grid-row-end: 4;
     grid-row-start: 1;
     width: calc(100% - 2em);
+  }
+  .controls {
+    grid-column-start: 2;
+    grid-row-start: 1;
+    display: grid;
+    grid-template-rows:
+      calc(var(--coord-input-height) * 2) var(--control-btn-group-height)
+      auto;
   }
 }
