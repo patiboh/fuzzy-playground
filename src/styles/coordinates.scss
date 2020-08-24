@@ -17,7 +17,7 @@
   width: 100%;
   max-width: calc(100% - 4em);
   padding: 0.5em;
-  margin: 1em 0.25em;
+  margin: 0 0.25em 1em;
   background: linear-gradient(var(--color-dark) 10%, var(--color-coordinates));
   color: var(--color-text-light-shower);
   border-radius: 6px;
@@ -56,7 +56,7 @@
     width: var(--coord-input-width);
     max-width: calc(100% - 2em);
     padding: 0.7em 1em;
-    margin: 0.5em 0;
+    margin: 0;
   }
   .coordinates label:first-child {
     margin-top: 0;
