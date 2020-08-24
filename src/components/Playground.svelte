@@ -83,9 +83,10 @@
   let playbackDuration = 4200 / playbackRate
 
   $: translation = [xCoord, yCoord]
+  $: showCoordinates =
+    hasControls && canvas && canvasWidth > 0 && canvasHeight > 0
   $: maxX = canvas ? canvasWidth - width : 100
   $: maxY = canvas ? canvasHeight - height : 100
-  $: showCoordinates = hasControls
 
   const uiStateUnsub = uiState.subscribe((value) => {
     playgroundState = value
