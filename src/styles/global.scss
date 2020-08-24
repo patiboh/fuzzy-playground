@@ -1,25 +1,22 @@
 html {
   background-color: var(--color-dark);
-  overflow: hidden;
   font-family: sans-serif;
-}
-body {
-  border: 0;
-  margin: 0;
-  position: relative;
-  background: none;
-  width: 100vw;
-  height: 100vh;
-  color: white;
+  overflow: hidden;
 }
 
-// Svelte tutorial confetti styles
-:global(body) {
+body {
+  background: none;
+  border: 0;
+  color: var(--color-white);
+  height: 100vh;
+  margin: 0;
   overflow: hidden;
+  position: relative;
 }
+
 .emoji {
-  position: absolute;
   font-size: 5vw;
-  z-index: -1;
   opacity: 0.6;
+  position: absolute;
+  z-index: -1;
 }
