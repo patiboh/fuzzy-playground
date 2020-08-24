@@ -1,10 +1,7 @@
 <script>
-  // @ts-check
   import {onMount} from 'svelte'
 
   import * as constants from '../types/constants.js'
-  import * as utils from '../libs/utils.js'
-  import * as draw from '../libs/draw.js'
 
   import {uiState, currentCursor} from '../stores.js'
 

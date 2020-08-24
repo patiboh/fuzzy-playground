@@ -1,5 +1,6 @@
 <script>
-  // @ts-check
+  import {onMount} from 'svelte'
+
   import * as constants from '../types/constants.js'
   import * as utils from '../libs/utils.js'
   import * as draw from '../libs/draw.js'
@@ -77,8 +78,8 @@
   let canvasHeight
 
   // Audio
-  let drumroll
-  let duration = 6.017687
+  // let drumroll
+  // let duration = 6.017687
   let playbackRate = 1.5
   let playbackDuration = 4200 / playbackRate
 
@@ -158,6 +159,13 @@
   function updateYCoord() {
     currentAnimation.run(webGlProps, translation, color, width, height)
   }
+
+  onMount(() => {
+    return () => {
+      uiStateUnsub()
+      emojiFeedbackUnsub()
+    }
+  })
 </script>
 
 <style lang="scss">

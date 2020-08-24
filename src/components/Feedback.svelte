@@ -1,5 +1,6 @@
 <script>
-  // @ts-check
+  import {onMount} from 'svelte'
+
   import {uiState} from '../stores.js'
   // UI feedback
   export let stacktrace = ''
@@ -8,6 +9,12 @@
 
   const uiStateUnsub = uiState.subscribe((value) => {
     playgroundState = value
+  })
+
+  onMount(() => {
+    return () => {
+      uiStateUnsub()
+    }
   })
 </script>
 
