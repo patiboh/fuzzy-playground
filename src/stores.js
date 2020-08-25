@@ -11,7 +11,6 @@ export const feedbackEmoji = derived(uiState, ($uiState) => {
 // Use small cursor only for now
 export const currentCursor = derived(uiState, ($uiState) => {
   if (Object.keys(constants.emojis.animate).includes($uiState)) {
-    const emoji = constants.emojis.animate[$uiState]
-    return constants.customCursor[constants.size.SM].replace('REPL', emoji)
+    return constants.cursor[$uiState]
   }
 })

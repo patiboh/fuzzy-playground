@@ -2,6 +2,7 @@
   grid-column-start: 1;
   grid-row-start: 2;
   max-width: 16em;
+  padding: 0.5em 0;
 }
 
 .btn-jumbo {
@@ -20,7 +21,6 @@
 
 .btn-jumbo:hover,
 .btn-jumbo:focus {
-  outline: none;
   scale: 1;
 }
 
@@ -36,7 +36,7 @@
 .fire-starter:hover,
 .fire-starter:focus {
   background: radial-gradient(var(--color-firestarter-08) 20%, transparent 60%);
-  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="50" height="60" style="font-size: 40px;"><text y="40">%E2%9A%A1</text></svg>'),
+  cursor: url('data:image/svg+xml;utf8,<svg  xmlns="http://www.w3.org/2000/svg" width="30" height="30" style="font-size: 30px;"><text y="25" >⚡️</text></svg>'),
     auto;
 }
 
