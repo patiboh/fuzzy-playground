@@ -137,21 +137,22 @@
   function handleRefresh() {
     location.reload() // TODO - reload gl code only ?
   }
-  function handleClearEmojis() {
+  function handleReset() {
     if (frame) {
       cancelAnimationFrame(frame)
       frame = null
     }
     emojis = []
+    xCoord = 0
+    yCoord = 0
     uiState.set(constants.uiState.DEFAULT)
   }
   function handleLoadAnimation(event) {
-    handleClearEmojis()
+    handleReset()
     const animationId = event.detail.animation
     currentAnimation = animations.find(
       (animation) => animation.id === animationId,
     )
-    hasControls = currentAnimation.hasControls
   }
   function updateXCoord() {
     currentAnimation.run(webGlProps, translation, color, width, height)
@@ -182,7 +183,7 @@
   <Feedback {stacktrace} />
 </section>
 <section class="controls">
-  <UIControls {handlePlay} {handleRefresh} {handleClearEmojis} />
+  <UIControls {handlePlay} {handleRefresh} {handleReset} />
   <AnimationsMenu on:loadAnimation={handleLoadAnimation} {animations} />
   {#if showCoordinates}
     <Coordinates

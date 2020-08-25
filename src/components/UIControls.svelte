@@ -8,7 +8,7 @@
   // Inputs
   let playButton
   let refreshButton
-  let clearEmojisButton
+  let resetButton
 
   // UI feedback
   let playgroundState
@@ -17,7 +17,7 @@
   // Event Handlers
   export let handlePlay = () => {}
   export let handleRefresh = () => {}
-  export let handleClearEmojis = () => {}
+  export let handleReset = () => {}
 
   const uiStateUnsub = uiState.subscribe((value) => {
     playgroundState = value
@@ -66,14 +66,14 @@
     aria-label="Play" />
   <button
     data-cy="btn-clear-emojis"
-    on:click={handleClearEmojis}
-    bind:this={clearEmojisButton}
+    on:click={handleReset}
+    bind:this={resetButton}
     class={'btn-jumbo sponge'}
-    aria-label="Clear emoji animation" />
+    aria-label="Reset playground" />
   <button
     data-cy="btn-refresh"
     on:click={handleRefresh}
     bind:this={refreshButton}
     class={'btn-jumbo shower'}
-    aria-label="Refresh" />
+    aria-label="Refresh page" />
 </div>
