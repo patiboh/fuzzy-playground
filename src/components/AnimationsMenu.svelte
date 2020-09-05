@@ -5,7 +5,7 @@
   const dispatch = createEventDispatcher()
 
   export let animations = undefined
-  
+
   let handleClick = (event) => {
     const element = event.target
     dispatch('loadAnimation', {
@@ -15,7 +15,6 @@
 </script>
 
 <style lang="scss">
-  @import '../styles/buttons.scss';
   @import '../styles/animation-menu.scss';
 </style>
 

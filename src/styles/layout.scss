@@ -21,14 +21,20 @@ main {
     );
 }
 
-@media (min-width: 768px) {
-  .grid {
-    grid-template-columns: auto var(--coord-input-width);
-    grid-template-rows: auto;
-  }
-}
+// @media (min-width: 768px) {
+//   .grid {
+//     grid-template-columns: auto var(--coord-input-width);
+//   }
+// }
 
-@media (min-aspect-ratio: 1/1) {
+// @media (min-aspect-ratio: 1/1) {
+//   .grid {
+//     grid-template-columns: auto var(--coord-input-width);
+//     grid-template-rows: auto;
+//   }
+// }
+
+@media (min-width: 768px) and (min-aspect-ratio: 1/1) {
   .grid {
     grid-template-columns: auto var(--coord-input-width);
     grid-template-rows: auto;

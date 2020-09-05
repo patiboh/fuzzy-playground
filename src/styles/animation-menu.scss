@@ -32,6 +32,8 @@
   .btn-group.animation-menu {
     flex-direction: column;
     justify-content: flex-start;
+    grid-row-start: 1;
+    padding: 0 0 0.5em;
   }
 
   .btn-menu {
@@ -45,6 +47,8 @@
   .btn-group.animation-menu {
     flex-direction: column;
     justify-content: flex-start;
+    grid-row-start: 1;
+    padding: 0 0 0.5em;
   }
 
   .btn-menu {

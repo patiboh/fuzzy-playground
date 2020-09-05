@@ -7,9 +7,9 @@
 
   import {uiState, feedbackEmoji} from '../stores.js'
   import Feedback from './Feedback.svelte'
-  import UIControls from './UIControls.svelte'
   import Coordinates from './Coordinates.svelte'
   import AnimationsMenu from './AnimationsMenu.svelte'
+  import EmojiButton from './EmojiButton.svelte'
 
   // WebGL
   let canvas
@@ -72,22 +72,21 @@
   // UI feedback
   let playgroundState
   let stacktrace = ''
+  let emojiCursor
   let emojis
   let currentAnimation = animations[0]
-  let canvasWidth
-  let canvasHeight
+  let canvasWidth = 300
+  let canvasHeight = 150
 
   // Audio
   // let drumroll
   // let duration = 6.017687
   let playbackRate = 1.5
   let playbackDuration = 4200 / playbackRate
-
   $: translation = [xCoord, yCoord]
-  $: showCoordinates =
-    hasControls && canvas && canvasWidth > 0 && canvasHeight > 0
-  $: maxX = canvas ? canvasWidth - width : 100
-  $: maxY = canvas ? canvasHeight - height : 100
+  $: showCoordinates = hasControls
+  $: maxX = canvasWidth
+  $: maxY = canvasHeight
 
   const uiStateUnsub = uiState.subscribe((value) => {
     playgroundState = value
@@ -95,6 +94,12 @@
   const emojiFeedbackUnsub = feedbackEmoji.subscribe((value) => {
     emojis = utils.multiply(Object.values(value))
   })
+
+  function setCoordinates() {
+    canvasWidth = canvas.width - width
+    canvasHeight = canvas.height - height
+    hasControls = currentAnimation.hasControls
+  }
 
   function loop() {
     frame = requestAnimationFrame(loop)
@@ -114,7 +119,6 @@
     try {
       uiState.set(constants.uiState.ACTIVE)
       webGlProps = draw.initScene(canvas)
-
       if (currentAnimation.setInterval) {
         webGlAnimation = currentAnimation.run(webGlProps)
         // don't go on forever just yet
@@ -123,9 +127,8 @@
           clearInterval(webGlAnimation)
           loop()
         }, playbackDuration) // duration of drumroll, for now
-      } else {
-        canvasWidth = canvas.width
-        canvasHeight = canvas.height
+      } else if (currentAnimation.hasControls) {
+        setCoordinates(canvas)
         currentAnimation.run(webGlProps, translation, color)
       }
     } catch (error) {
@@ -134,9 +137,23 @@
       loop()
     }
   }
+
+  function handlePlayButtonFocus(event) {
+    if (playgroundState === constants.uiState.DEFAULT) {
+      uiState.set(constants.uiState.FOCUS)
+    }
+  }
+
+  function handlePlayButtonBlur(event) {
+    if (playgroundState === constants.uiState.FOCUS) {
+      uiState.set(constants.uiState.DEFAULT)
+    }
+  }
+
   function handleRefresh() {
     location.reload() // TODO - reload gl code only ?
   }
+
   function handleReset() {
     if (frame) {
       cancelAnimationFrame(frame)
@@ -147,16 +164,25 @@
     yCoord = 0
     uiState.set(constants.uiState.DEFAULT)
   }
+
   function handleLoadAnimation(event) {
     handleReset()
     const animationId = event.detail.animation
     currentAnimation = animations.find(
       (animation) => animation.id === animationId,
     )
+    if (!currentAnimation.hasControls) {
+      showCoordinates = false
+    } else {
+      showCoordinates = true
+    }
+    handlePlay()
   }
+
   function updateXCoord() {
     currentAnimation.run(webGlProps, translation, color, width, height)
   }
+
   function updateYCoord() {
     currentAnimation.run(webGlProps, translation, color, width, height)
   }
@@ -183,7 +209,6 @@
   <Feedback {stacktrace} />
 </section>
 <section class="controls">
-  <UIControls {handlePlay} {handleRefresh} {handleReset} />
   <AnimationsMenu on:loadAnimation={handleLoadAnimation} {animations} />
   {#if showCoordinates}
     <Coordinates
@@ -194,6 +219,25 @@
       on:updateXCoord={updateXCoord}
       on:updateYCoord={updateYCoord} />
   {/if}
+  <div class="btn-group ui-controls">
+    <EmojiButton
+      dataCy="btn-play"
+      buttonClass="firestarter"
+      buttonLabel="Play"
+      handleClick={handlePlay}
+      handleFocus={handlePlayButtonFocus}
+      handleBlur={handlePlayButtonBlur} />
+    <EmojiButton
+      dataCy="btn-reset"
+      buttonClass="sponge"
+      buttonLabel="Reset playground"
+      handleClick={handleReset} />
+    <EmojiButton
+      dataCy="btn-refresh"
+      buttonClass="shower"
+      buttonLabel="Refresh page"
+      handleClick={handleRefresh} />
+  </div>
 </section>
 {#each emojis as emoji}
   <span
