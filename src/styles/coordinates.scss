@@ -6,8 +6,8 @@
   grid-row-start: 1;
   height: auto;
   justify-content: space-around;
-  width: calc(100% - 1em);
   padding: 1em 0 0.5em;
+  width: calc(100% - 1em);
 }
 
 .coordinates label {
@@ -17,10 +17,10 @@
   color: var(--color-text-light-shower);
   display: flex;
   justify-content: space-between;
-  width: auto;
+  margin-right: 0.5em;
   max-width: var(--coord-input-width);
   padding: 0.7em 1em;
-  margin-right: 0.5em;
+  width: auto;
 }
 
 .coordinates label:hover {
@@ -32,8 +32,8 @@
 }
 
 .coordinates input {
-  margin-top: 0.5em;
   margin-bottom: 0.25em;
+  margin-top: 0.5em;
   width: calc(100% - 1em);
 }
 
@@ -41,12 +41,14 @@
   .coordinates {
     justify-content: center;
   }
+
   .coordinates label {
     align-items: center;
     flex-direction: row;
     max-width: calc(100% - 2em);
     width: var(--coord-input-width);
   }
+
   .coordinates input {
     width: calc(100% - 6em);
   }
@@ -54,8 +56,8 @@
 
 @media (min-width: 768px) {
   .coordinates {
-    grid-row-start: 2;
     border-radius: 5px;
+    grid-row-start: 2;
   }
 
   .coordinates label {
@@ -76,13 +78,14 @@
   }
 }
 
-@media (min-aspect-ratio: 1/1) and (max-width: 767px) {
+@media (min-width: 768px) and (min-aspect-ratio: 3/5) {
   .coordinates {
     border-radius: 5px;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     overflow-x: scroll;
+    width: 100%;
   }
 
   .coordinates label {

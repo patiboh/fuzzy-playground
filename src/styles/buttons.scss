@@ -3,8 +3,8 @@ button {
 }
 
 .btn-emoji {
-  border-radius: 50%;
   border: unset;
+  border-radius: 50%;
   scale: 0.95;
   transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
@@ -84,20 +84,21 @@ button {
   background: radial-gradient(var(--color-sponge) 20%, transparent 60%);
 }
 
-@media (min-width: 768px) {
-  .btn-group {
-    justify-content: space-evenly;
-  }
-  .btn-emoji {
-    height: auto;
-    width: 100%;
-  }
-}
+// @media (min-width: 768px) {
+//   .btn-group {
+//     justify-content: space-evenly;
+//   }
+//   .btn-emoji {
+//     height: auto;
+//     width: 100%;
+//   }
+// }
 
-@media (min-aspect-ratio: 1/1) and (max-width: 767px) {
+@media (min-width: 768px) and (min-aspect-ratio: 3/5) {
   .btn-group {
     justify-content: space-evenly;
   }
+
   .btn-emoji {
     height: auto;
     width: 100%;
