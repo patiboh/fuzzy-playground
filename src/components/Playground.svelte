@@ -18,8 +18,7 @@
   let webGlAnimation
   let xCoord = 0
   let yCoord = 0
-  let hasControls = false
-  let showCoordinates
+  let showCoordinates = false
   let translation = [0, 0]
   let color = [Math.random(), Math.random(), Math.random(), 1]
   let width = 100
@@ -29,7 +28,7 @@
     {
       id: 'L1',
       name: 'Random rectangles',
-      hasControls: false,
+      hasCoordinates: false,
       setInterval: true,
       run(
         webGLProps,
@@ -46,7 +45,7 @@
     {
       id: 'L2',
       name: 'Translation',
-      hasControls: true,
+      hasCoordinates: true,
       setInterval: false,
       run(webGlProps, translation, color, width, height) {
         draw.translationSceneViaDOM(
@@ -61,9 +60,9 @@
     {
       id: 'L3',
       name: 'Translation via shader',
-      hasControls: true,
+      hasCoordinates: true,
       setInterval: false,
-      run(webGlProps, translation, color) {
+      run(webGlProps, translation, color, width = null, height = null) {
         draw.translationSceneViaWebGL(webGlProps, translation)
       },
     },
@@ -77,6 +76,7 @@
   let currentAnimation = animations[0]
   let canvasWidth = 300
   let canvasHeight = 150
+  let output
 
   // Audio
   // let drumroll
@@ -84,7 +84,7 @@
   let playbackRate = 1.5
   let playbackDuration = 4200 / playbackRate
   $: translation = [xCoord, yCoord]
-  $: showCoordinates = hasControls
+  $: showCoordinates = currentAnimation.hasCoordinates
   $: maxX = canvasWidth
   $: maxY = canvasHeight
 
@@ -96,9 +96,8 @@
   })
 
   function setCoordinates() {
-    canvasWidth = canvas.width - width
-    canvasHeight = canvas.height - height
-    hasControls = currentAnimation.hasControls
+    canvasWidth = output.getBoundingClientRect().width - width
+    canvasHeight = output.getBoundingClientRect().height - height
   }
 
   function loop() {
@@ -127,7 +126,8 @@
           clearInterval(webGlAnimation)
           loop()
         }, playbackDuration) // duration of drumroll, for now
-      } else if (currentAnimation.hasControls) {
+      }
+      if (currentAnimation.hasCoordinates) {
         setCoordinates(canvas)
         currentAnimation.run(webGlProps, translation, color)
       }
@@ -171,11 +171,7 @@
     currentAnimation = animations.find(
       (animation) => animation.id === animationId,
     )
-    if (!currentAnimation.hasControls) {
-      showCoordinates = false
-    } else {
-      showCoordinates = true
-    }
+    showCoordinates = currentAnimation.hasCoordinates
     handlePlay()
   }
 
@@ -199,7 +195,10 @@
   @import '../styles/playground.scss';
 </style>
 
-<section class={`output ${playgroundState}`} data-cy="output">
+<section
+  class={`output ${playgroundState}`}
+  bind:this={output}
+  data-cy="output">
   <canvas bind:this={canvas} data-cy="canvas" />
   <!-- <audio bind:this={drumroll}>
     <source src="drumroll.mp4" type="audio/mpeg" />
