@@ -163,6 +163,10 @@
     xCoord = 0
     yCoord = 0
     uiState.set(constants.uiState.DEFAULT)
+
+    if (!currentAnimation.setInterval) {
+      handlePlay()
+    }
   }
 
   function handleLoadAnimation(event) {
