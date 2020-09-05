@@ -94,7 +94,7 @@ button {
   }
 }
 
-@media (min-aspect-ratio: 1/1) and (min-width: 767px) {
+@media (min-aspect-ratio: 1/1) and (max-width: 767px) {
   .btn-group {
     justify-content: space-evenly;
   }

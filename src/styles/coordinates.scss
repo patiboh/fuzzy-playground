@@ -1,12 +1,13 @@
 .coordinates {
   border-radius: 5px;
   display: flex;
+  flex-direction: column;
   grid-column-start: 1;
   grid-row-start: 1;
   height: auto;
   justify-content: space-around;
-  width: 100%;
-  padding-bottom: 0.5em;
+  width: calc(100% - 1em);
+  padding: 1em 0 0.5em;
 }
 
 .coordinates label {
@@ -15,20 +16,11 @@
   border-radius: var(--border-radius-input);
   color: var(--color-text-light-shower);
   display: flex;
-  flex-direction: column;
   justify-content: space-between;
-  margin: 0 0.25em;
-  max-width: calc(100% - 4em);
-  padding: 0.7em 0.5em;
-  width: 100%;
-}
-
-.coordinates label:first-child {
-  margin-left: 0;
-}
-
-.coordinates label:last-child {
-  margin-right: 0;
+  width: auto;
+  max-width: var(--coord-input-width);
+  padding: 0.7em 1em;
+  margin-right: 0.5em;
 }
 
 .coordinates label:hover {
@@ -47,40 +39,32 @@
 
 @media (min-width: 600px) {
   .coordinates {
-    grid-row-start: 2;
     justify-content: center;
   }
   .coordinates label {
     align-items: center;
     flex-direction: row;
     max-width: calc(100% - 2em);
-    padding: 0.7em 1em;
     width: var(--coord-input-width);
   }
   .coordinates input {
-    margin-top: 0.5em;
-    margin-bottom: 0.25em;
     width: calc(100% - 6em);
   }
 }
 
 @media (min-width: 768px) {
   .coordinates {
+    grid-row-start: 2;
     border-radius: 5px;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    overflow-x: scroll;
   }
 
   .coordinates label {
     align-items: center;
     flex-direction: row;
-    margin: 0;
-    max-width: calc(100% - 2em);
+    margin: 0.5em 0 0;
+    max-width: calc(100% - 1em);
     padding: 0.7em 1em;
-    width: var(--coord-input-width);
-    margin-bottom: 1em;
+    width: 100%;
   }
 
   .coordinates label:first-child {
@@ -104,11 +88,10 @@
   .coordinates label {
     align-items: center;
     flex-direction: row;
-    margin: 0;
+    margin: 0.5em 0 0;
     max-width: calc(100% - 2em);
     padding: 0.7em 1em;
     width: var(--coord-input-width);
-    margin-bottom: 1em;
   }
 
   .coordinates label:first-child {
