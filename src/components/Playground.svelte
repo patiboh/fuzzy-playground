@@ -23,6 +23,7 @@
   let color = [Math.random(), Math.random(), Math.random(), 1]
   let width = 100
   let height = 30
+  let timeoutID
 
   const animations = [
     {
@@ -121,7 +122,7 @@
       if (currentAnimation.setInterval) {
         webGlAnimation = currentAnimation.run(webGlProps)
         // don't go on forever just yet
-        setTimeout(() => {
+        timeoutID = setTimeout(() => {
           uiState.set(constants.uiState.SUCCESS)
           clearInterval(webGlAnimation)
           loop()
@@ -158,6 +159,9 @@
     if (frame) {
       cancelAnimationFrame(frame)
       frame = null
+    }
+    if (timeoutID) {
+      clearTimeout(timeoutID)
     }
     emojis = []
     xCoord = 0
