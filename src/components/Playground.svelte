@@ -11,19 +11,32 @@
   import AnimationsMenu from './AnimationsMenu.svelte'
   import EmojiButton from './EmojiButton.svelte'
 
-  // WebGL
+  // Canvas
   let canvas
-  let frame
+  let canvasWidth = 300
+  let canvasHeight = 150
+
+  // Audio
+  // let drumroll
+  // let duration = 6.017687
+  let playbackRate = 1.5
+
+  // WebGL
   let webGlProps
-  let webGlAnimation
+  let translation = [0, 0]
+  let color = [Math.random(), Math.random(), Math.random(), 1]
+  let width = 100 // of geometry
+  let height = 30 // of geometry
+
+  // animation controls
   let xCoord = 0
   let yCoord = 0
   let showCoordinates = false
-  let translation = [0, 0]
-  let color = [Math.random(), Math.random(), Math.random(), 1]
-  let width = 100
-  let height = 30
-  let timeoutID
+
+  // animation loops
+  let animationInterval
+  let animationTimeout
+  let animationDuration = 4200 / playbackRate
 
   const animations = [
     {
@@ -69,21 +82,16 @@
     },
   ]
 
+  let currentAnimation = animations[0]
+
   // UI feedback
   let playgroundState
-  let stacktrace = ''
   let emojiCursor
+  let emojiFrame
   let emojis
-  let currentAnimation = animations[0]
-  let canvasWidth = 300
-  let canvasHeight = 150
   let output
+  let stacktrace = ''
 
-  // Audio
-  // let drumroll
-  // let duration = 6.017687
-  let playbackRate = 1.5
-  let playbackDuration = 4200 / playbackRate
   $: translation = [xCoord, yCoord]
   $: showCoordinates = currentAnimation.hasCoordinates
   $: maxX = canvasWidth
@@ -99,10 +107,12 @@
   function setCoordinates() {
     canvasWidth = output.getBoundingClientRect().width - width
     canvasHeight = output.getBoundingClientRect().height - height
+    xCoord = 0
+    yCoord = 0
   }
 
-  function loop() {
-    frame = requestAnimationFrame(loop)
+  function loopEmojis() {
+    emojiFrame = requestAnimationFrame(loopEmojis)
 
     emojis = emojis.map((emoji) => {
       emoji.y += 0.7 * emoji.ratio
@@ -111,70 +121,90 @@
     })
   }
 
-  function handlePlay() {
-    if (frame) {
-      cancelAnimationFrame(frame)
-      frame = null
+  function stopAnimation() {
+    if (animationInterval) {
+      clearInterval(animationInterval)
+      animationInterval = null
     }
-    try {
-      uiState.set(constants.uiState.ACTIVE)
-      webGlProps = draw.initScene(canvas)
-      if (currentAnimation.setInterval) {
-        webGlAnimation = currentAnimation.run(webGlProps)
-        // don't go on forever just yet
-        timeoutID = setTimeout(() => {
-          uiState.set(constants.uiState.SUCCESS)
-          clearInterval(webGlAnimation)
-          loop()
-        }, playbackDuration) // duration of drumroll, for now
-      }
-      if (currentAnimation.hasCoordinates) {
-        setCoordinates(canvas)
-        currentAnimation.run(webGlProps, translation, color)
-      }
-    } catch (error) {
-      uiState.set(constants.uiState.ERROR)
-      stacktrace = `${error}\n${stacktrace}`
-      loop()
+    if (animationTimeout) {
+      clearTimeout(animationTimeout)
+      animationTimeout = null
     }
   }
 
-  function handlePlayButtonFocus(event) {
+  function startAnimation() {
+    webGlProps = draw.initScene(canvas)
+    if (currentAnimation.setInterval) {
+      animationInterval = currentAnimation.run(webGlProps)
+      // don't go on forever just yet
+      animationTimeout = setTimeout(() => {
+        uiState.set(constants.uiState.SUCCESS)
+        clearInterval(animationInterval)
+        loopEmojis() // get this out of here: make reactive to store change ?
+      }, animationDuration) // duration of drumroll, for now
+    }
+    if (currentAnimation.hasCoordinates) {
+      setCoordinates(canvas)
+      currentAnimation.run(webGlProps, translation, color)
+    }
+  }
+
+  function clearEmojis() {
+    if (emojiFrame) {
+      cancelAnimationFrame(emojiFrame)
+      emojiFrame = null
+    }
+    emojis = []
+  }
+
+  function handleError() {
+    uiState.set(constants.uiState.ERROR)
+    stacktrace = `${error}\n${stacktrace}`
+    loopEmojis()
+  }
+
+  function handlePlay() {
+    try {
+      uiState.set(constants.uiState.ACTIVE)
+      startAnimation()
+    } catch (error) {
+      handleError()
+    }
+  }
+
+  function handlePlayButtonFocus() {
     if (playgroundState === constants.uiState.DEFAULT) {
       uiState.set(constants.uiState.FOCUS)
     }
   }
 
-  function handlePlayButtonBlur(event) {
+  function handlePlayButtonBlur() {
     if (playgroundState === constants.uiState.FOCUS) {
       uiState.set(constants.uiState.DEFAULT)
     }
   }
 
   function handleRefresh() {
+    clearEmojis()
+    stopAnimation()
+    setCoordinates()
     location.reload() // TODO - reload gl code only ?
   }
 
   function handleReset() {
-    if (frame) {
-      cancelAnimationFrame(frame)
-      frame = null
-    }
-    if (timeoutID) {
-      clearTimeout(timeoutID)
-    }
-    emojis = []
-    xCoord = 0
-    yCoord = 0
+    clearEmojis()
+    stopAnimation()
+    setCoordinates()
     uiState.set(constants.uiState.DEFAULT)
-
     if (!currentAnimation.setInterval) {
       handlePlay()
     }
   }
 
   function handleLoadAnimation(event) {
-    handleReset()
+    clearEmojis()
+    stopAnimation()
+    setCoordinates()
     const animationId = event.detail.animation
     currentAnimation = animations.find(
       (animation) => animation.id === animationId,
