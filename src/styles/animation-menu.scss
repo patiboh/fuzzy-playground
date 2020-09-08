@@ -2,12 +2,11 @@
   align-items: flex-start;
   display: flex;
   flex-direction: column;
-  grid-column-start: 2;
+  grid-column-start: 3;
   grid-row-end: 3;
   grid-row-start: 1;
-  justify-self: flex-end;
+  justify-self: stretch;
   max-width: var(--coord-input-width);
-  padding-top: 1em;
 }
 
 .btn-menu {

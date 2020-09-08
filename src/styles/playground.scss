@@ -4,9 +4,8 @@
   flex-direction: column;
   grid-column-start: 1;
   grid-row-start: 1;
-  height: auto;
+  height: calc(100% - 1.5em);
   justify-content: center;
-  min-height: 100%;
   overflow-y: auto;
   width: 100%;
 }
@@ -66,10 +65,19 @@ canvas {
   padding: 0.5em 0;
 }
 
+@media (min-width: 540px) {
+  .controls {
+    grid-template-columns: var(--coord-input-width) auto var(
+        --coord-input-width
+      );
+  }
+}
+
 @media (min-width: 768px) and (min-aspect-ratio: 3/5) {
   .output {
     grid-column-start: 1;
     grid-row-start: 1;
+    height: 100%;
     width: calc(100% - 2em);
   }
 
