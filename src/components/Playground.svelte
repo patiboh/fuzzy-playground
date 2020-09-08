@@ -17,8 +17,8 @@
   let canvasHeight = 150
 
   // Audio
-  // let drumroll
-  // let duration = 6.017687
+  let drumroll
+  let duration = 6.017687
   let playbackRate = 1.5
 
   // WebGL
@@ -42,8 +42,24 @@
     {
       id: 'L1',
       name: 'Random rectangles',
-      hasCoordinates: false,
-      setInterval: true,
+      hasInterval: true,
+      run(
+        webGLProps,
+        translation = null,
+        color = null,
+        width = null,
+        height = null,
+      ) {
+        return setInterval(() => {
+          draw.rectanglesScene(webGlProps)
+        }, 1)
+      },
+    },
+    {
+      id: 'L1-2',
+      name: '... with drums',
+      hasInterval: true,
+      hasAudio: true,
       run(
         webGLProps,
         translation = null,
@@ -60,7 +76,6 @@
       id: 'L2',
       name: 'Translation',
       hasCoordinates: true,
-      setInterval: false,
       run(webGlProps, translation, color, width, height) {
         draw.translationSceneViaDOM(
           webGlProps,
@@ -75,7 +90,6 @@
       id: 'L3',
       name: 'Translation via shader',
       hasCoordinates: true,
-      setInterval: false,
       run(webGlProps, translation, color, width = null, height = null) {
         draw.translationSceneViaWebGL(webGlProps, translation)
       },
@@ -94,6 +108,7 @@
 
   $: translation = [xCoord, yCoord]
   $: showCoordinates = currentAnimation.hasCoordinates
+  $: playAudio = currentAnimation.hasAudio
   $: maxX = canvasWidth
   $: maxY = canvasHeight
 
@@ -121,6 +136,35 @@
     })
   }
 
+  function clearEmojis() {
+    if (emojiFrame) {
+      cancelAnimationFrame(emojiFrame)
+      emojiFrame = null
+    }
+    emojis = []
+  }
+
+  function startAnimation() {
+    webGlProps = draw.initScene(canvas)
+    if (currentAnimation.hasInterval) {
+      animationInterval = currentAnimation.run(webGlProps)
+      // don't go on forever just yet
+      animationTimeout = setTimeout(() => {
+        uiState.set(constants.uiState.SUCCESS)
+        clearInterval(animationInterval)
+        loopEmojis() // get this out of here: make reactive to store change ?
+      }, animationDuration) // duration of drumroll, for now
+    }
+    if (playAudio) {
+      drumroll.playbackRate = playbackRate
+      drumroll.play()
+    }
+    if (showCoordinates) {
+      setCoordinates(canvas)
+      currentAnimation.run(webGlProps, translation, color)
+    }
+  }
+
   function stopAnimation() {
     if (animationInterval) {
       clearInterval(animationInterval)
@@ -132,32 +176,14 @@
     }
   }
 
-  function startAnimation() {
-    webGlProps = draw.initScene(canvas)
-    if (currentAnimation.setInterval) {
-      animationInterval = currentAnimation.run(webGlProps)
-      // don't go on forever just yet
-      animationTimeout = setTimeout(() => {
-        uiState.set(constants.uiState.SUCCESS)
-        clearInterval(animationInterval)
-        loopEmojis() // get this out of here: make reactive to store change ?
-      }, animationDuration) // duration of drumroll, for now
-    }
-    if (currentAnimation.hasCoordinates) {
-      setCoordinates(canvas)
-      currentAnimation.run(webGlProps, translation, color)
-    }
+  function resetPlayground() {
+    clearEmojis()
+    stopAnimation()
+    setCoordinates()
   }
 
-  function clearEmojis() {
-    if (emojiFrame) {
-      cancelAnimationFrame(emojiFrame)
-      emojiFrame = null
-    }
-    emojis = []
-  }
-
-  function handleError() {
+  function handleError(error) {
+    resetPlayground()
     uiState.set(constants.uiState.ERROR)
     stacktrace = `${error}\n${stacktrace}`
     loopEmojis()
@@ -168,7 +194,7 @@
       uiState.set(constants.uiState.ACTIVE)
       startAnimation()
     } catch (error) {
-      handleError()
+      handleError(error)
     }
   }
 
@@ -185,31 +211,26 @@
   }
 
   function handleRefresh() {
-    clearEmojis()
-    stopAnimation()
-    setCoordinates()
+    resetPlayground()
     location.reload() // TODO - reload gl code only ?
   }
 
   function handleReset() {
-    clearEmojis()
-    stopAnimation()
-    setCoordinates()
+    resetPlayground()
     uiState.set(constants.uiState.DEFAULT)
-    if (!currentAnimation.setInterval) {
+    if (!currentAnimation.hasInterval) {
       handlePlay()
     }
   }
 
   function handleLoadAnimation(event) {
-    clearEmojis()
-    stopAnimation()
-    setCoordinates()
+    resetPlayground()
     const animationId = event.detail.animation
     currentAnimation = animations.find(
       (animation) => animation.id === animationId,
     )
     showCoordinates = currentAnimation.hasCoordinates
+    playAudio = currentAnimation.hasAudio
     handlePlay()
   }
 
@@ -238,12 +259,12 @@
   bind:this={output}
   data-cy="output">
   <canvas bind:this={canvas} data-cy="canvas" />
-  <!-- <audio bind:this={drumroll}>
-    <source src="drumroll.mp4" type="audio/mpeg" />
-    <source src="drumroll.ogg" type="audio/ogg" />
-    <track kind="captions" src="drumrolls.vtt" srclang="en" />
-  </audio> -->
   <Feedback {stacktrace} />
+  <audio bind:this={drumroll}>
+    <source src="drumroll.ogg" type="audio/ogg" />
+    <track kind="captions" srclang="en" />
+    <!-- TODO: fix caption src -->
+  </audio>
 </section>
 <section class="controls">
   <AnimationsMenu on:loadAnimation={handleLoadAnimation} {animations} />
