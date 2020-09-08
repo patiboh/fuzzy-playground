@@ -1,127 +1,69 @@
-.btn-group {
-  grid-column-start: 1;
-  grid-column-end: 3;
-  grid-row-start: 3;
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-  height: 100%;
-  max-width: 24em;
-  justify-self: center;
+button {
+  border: unset;
 }
 
-.btn-jumbo {
-  border: none;
+.btn-emoji {
+  border: unset;
+  border-radius: 50%;
   scale: 0.95;
   transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
-.btn-jumbo::before {
+
+.btn-emoji::before {
   font-size: 6em;
-  width: 100%;
   height: 100%;
   line-height: 1;
+  width: 100%;
 }
-.btn-jumbo:hover,
-.btn-jumbo:focus {
-  outline: none;
+
+.btn-emoji:hover,
+.btn-emoji:focus {
   scale: 1;
 }
 
-@media (min-width: 768px) {
-  .btn-group {
-    grid-column-start: 2;
-    grid-row-start: 2;
-    flex-direction: column;
-    justify-content: space-evenly;
-    width: 8em;
-    height: 100%;
-    max-height: 22em;
-    padding: 1em;
-  }
-  .btn-jumbo::before {
-    font-size: 8em;
-  }
-}
-
-@media (min-aspect-ratio: 1/1) and (max-width: 767px) {
-  .btn-group {
-    grid-column-start: 2;
-    grid-row-start: 2;
-    flex-direction: column;
-    justify-content: space-evenly;
-    width: 8em;
-    height: 100%;
-    max-height: 22em;
-  }
-  .btn-jumbo::before {
-    font-size: 8em;
-  }
-}
-
-@media (min-width: 1280px) {
-  .btn-group {
-    width: 10em;
-    max-height: 26em;
-    padding: 2em;
-  }
-  .btn-jumbo::before {
-    font-size: 10em;
-  }
-}
-
 // Play button
-.fire-starter {
-  border-radius: 50%;
+.firestarter {
   background: radial-gradient(var(--color-firestarter-06) 20%, transparent 60%);
 }
-.fire-starter::before {
+
+.firestarter::before {
   content: '\1F47E';
 }
-.fire-starter:hover,
-.fire-starter:focus {
-  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="50" height="60" style="font-size: 40px;"><text y="40">%E2%9A%A1</text></svg>'),
+
+.firestarter:hover,
+.firestarter:focus {
+  background: radial-gradient(var(--color-firestarter-08) 20%, transparent 60%);
+  cursor: url('data:image/svg+xml;utf8,<svg  xmlns="http://www.w3.org/2000/svg" width="30" height="30" style="font-size: 30px;"><text y="25" >⚡️</text></svg>'),
     auto;
 }
-.fire-starter:hover,
-.fire-starter:focus {
-  background: radial-gradient(var(--color-firestarter-08) 20%, transparent 60%);
-}
-.fire-starter.success {
-  /* background: radial-gradient(
-    var(--color-coordinates) 20%,
-    rgba(0, 0, 0, 1) 60%
-  ); */
-}
-.fire-starter.success:hover,
-.fire-starter.success:focus {
-  /* background: radial-gradient(
-    rgba(34, 229, 227, 0.8) 20%,
-    rgba(0, 0, 0, 1) 60%
-  ); */
-}
-.fire-starter.error {
+
+.firestarter.error {
   background: radial-gradient(rgba(238, 9, 123, 0.8) 20%, transparent 60%);
 }
-.fire-starter.error:hover,
-.fire-starter.error:focus {
+
+.firestarter.error:hover,
+.firestarter.error:focus {
   background: radial-gradient(rgba(238, 9, 123, 1) 20%, transparent 60%);
 }
-.fire-starter.active {
+
+.firestarter.active {
   background: radial-gradient(var(--color-sponge-08) 20%, transparent 60%);
 }
-.fire-starter.active:hover,
-.fire-starter.active:focus {
-  background: radial-gradient(var(--color-sponge) 20%, transparent 60%);
-}
+
+// .firestarter.active:hover,
+// .firestarter.active:focus {
+//   background: radial-gradient(var(--color-sponge) 20%, transparent 60%);
+// }
 
 // Refresh button
 .shower {
-  border-radius: 50%;
   background: radial-gradient(rgba(34, 229, 227, 0.4) 20%, transparent 60%);
 }
+
 .shower::before {
   content: '\1F6BF';
 }
+
 .shower:hover,
 .shower:focus {
   background: radial-gradient(rgba(34, 229, 227, 0.5) 20%, transparent 60%);
@@ -129,13 +71,36 @@
 
 // Clear emojis animation button
 .sponge {
-  border-radius: 50%;
   background: radial-gradient(var(--color-sponge-08) 20%, transparent 60%);
 }
+
 .sponge::before {
   content: '🧽';
+  font-size: 4.95em;
 }
+
 .sponge:hover,
 .sponge:focus {
   background: radial-gradient(var(--color-sponge) 20%, transparent 60%);
+}
+
+// @media (min-width: 768px) {
+//   .btn-group {
+//     justify-content: space-evenly;
+//   }
+//   .btn-emoji {
+//     height: auto;
+//     width: 100%;
+//   }
+// }
+
+@media (min-width: 768px) and (min-aspect-ratio: 3/5) {
+  .btn-group {
+    justify-content: space-evenly;
+  }
+
+  .btn-emoji {
+    height: auto;
+    width: 100%;
+  }
 }

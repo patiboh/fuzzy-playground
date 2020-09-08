@@ -1,7 +1,8 @@
 :root {
-  --color-black: black;
+  --color-white: rgba(256, 256, 256, 1);
+  --color-black: rgba(0, 0, 0, 1);
   // --color-dark: rgba(37, 26, 26, 1);
-  --color-dark: black;
+  --color-dark: rgba(0, 0, 0, 1);
   --color-dark-06: rgba(37, 26, 26, 0.6);
   --color-danger: rgba(238, 9, 123, 1);
   --color-danger-08: rgba(238, 9, 123, 0.8);
@@ -14,9 +15,10 @@
   --color-coordinates: rgba(34, 229, 227, 0.6);
   --color-sponge: rgba(238, 204, 9, 1);
   --color-sponge-08: rgba(238, 204, 9, 0.8);
-
   --screen-md: 768px;
   --screen-lg: 1280px;
-
   --coord-input-width: 240px;
+  --coord-input-height: 4em;
+  --control-btn-group-height: 6em;
+  --border-radius-input: 5px;
 }

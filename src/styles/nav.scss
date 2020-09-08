@@ -11,9 +11,9 @@ ul {
 
 /* clearfix */
 ul::after {
+  clear: both;
   content: '';
   display: block;
-  clear: both;
 }
 
 li {
@@ -22,23 +22,23 @@ li {
 }
 
 [aria-current] {
-  position: relative;
   display: inline-block;
+  position: relative;
 }
 
 [aria-current]::after {
-  position: absolute;
-  content: '';
-  width: calc(100% - 1em);
-  height: 2px;
   background-color: var(--color-coordinates);
-  display: block;
   bottom: -1px;
+  content: '';
+  display: block;
+  height: 2px;
+  position: absolute;
+  width: calc(100% - 1em);
 }
 
 a {
   color: var(--color-text-light-shower);
-  text-decoration: none;
-  padding: 1em 0.5em;
   display: block;
+  padding: 1em 0.5em;
+  text-decoration: none;
 }

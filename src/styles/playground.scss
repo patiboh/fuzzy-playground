@@ -1,16 +1,16 @@
 .output {
-  grid-column-start: 1;
-  grid-column-end: 3;
-  grid-row-start: 1;
+  align-items: stretch;
   display: flex;
   flex-direction: column;
-  align-items: stretch;
+  grid-column-start: 1;
+  grid-row-start: 1;
+  height: auto;
   justify-content: center;
+  min-height: 100%;
   overflow-y: auto;
   width: 100%;
-  height: auto;
-  min-height: 100%;
 }
+
 .output.active,
 .output.error,
 .output.success {
@@ -18,53 +18,71 @@
     display: none;
   }
 }
+
 .output::before {
+  align-self: center;
   content: '🥁';
-  font-size: 16em;
+  font-size: 18em;
   opacity: 0.15;
   transition: opacity 0.3s ease-in;
-  align-self: center;
 }
+
 .output.focus::before {
   opacity: 1;
 }
+
 canvas {
   display: none;
 }
+
 .active canvas,
 .success canvas {
   display: block;
-  width: 100%;
   height: 100%;
+  width: 100%;
 }
 
-// .controls {
-//   grid-column-start: 1;
-//   grid-column-end: 3;
-//   grid-row-start: 3;
-// }
+.controls {
+  display: grid;
+  grid-column-start: 1;
+  grid-row-start: 2;
+  grid-template-columns: var(--coord-input-width) auto;
+  grid-template-rows: calc(var(--coord-input-height) * 2) var(
+      --control-btn-group-height
+    );
+}
 
-@media (min-width: 768px) {
+.btn-group {
+  display: flex;
+  justify-content: space-between;
+  justify-self: center;
+  width: 100%;
+}
+
+.btn-group.ui-controls {
+  grid-column-start: 1;
+  grid-row-start: 2;
+  max-width: 16em;
+  padding: 0.5em 0;
+}
+
+@media (min-width: 768px) and (min-aspect-ratio: 3/5) {
   .output {
     grid-column-start: 1;
-    grid-column-end: 2;
     grid-row-start: 1;
-    grid-row-end: 3;
     width: calc(100% - 2em);
   }
 
-  // .controls {
-  //   grid-column-start: 1;
-  //   grid-row-start: 3;
-  // }
-}
-
-@media (min-aspect-ratio: 1/1) {
-  .output {
-    grid-column-start: 1;
-    grid-column-end: 2;
+  .controls {
+    grid-column-start: 2;
     grid-row-start: 1;
-    grid-row-end: 3;
-    width: calc(100% - 2em);
+    grid-template-columns: auto;
+    grid-template-rows:
+      auto calc(var(--coord-input-height) * 2)
+      var(--control-btn-group-height);
+  }
+
+  .btn-group.ui-controls {
+    grid-row-start: 3;
   }
 }

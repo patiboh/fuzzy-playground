@@ -94,12 +94,22 @@ function drawRectangle(gl, colorUniformLocation) {
  * TRANSLATIONS
  * @param {WebGLRenderingContext} gl
  */
-function renderTranslation(gl) {
-  const translation = [0, 0]
-  const width = 100
-  const height = 30
-  const color = [Math.random(), Math.random(), Math.random(), 1]
+function renderTranslation(
+  gl,
+  colorUniformLocation,
+  translation,
+  color,
+  width,
+  height,
+) {
+  gl.uniform4fv(colorUniformLocation, color)
   setRectangle(gl, translation[0], translation[1], width, height)
+
+  // Draw the rectangle.
+  const primitiveType = gl.TRIANGLES
+  const offset = 0
+  const count = 6
+  gl.drawArrays(primitiveType, offset, count)
 }
 /**
  * @param {WebGLRenderingContext} gl
@@ -109,6 +119,27 @@ function drawRectangles(gl, colorUniformLocation, count) {
   for (let index = 0; index < count; ++index) {
     drawRectangle(gl, colorUniformLocation)
   }
+}
+
+/**
+ * TRANSLATIONS
+ * @param {WebGLRenderingContext} gl
+ */
+function renderTranslationGL(
+  gl,
+  colorUniformLocation,
+  translationUniformLocation,
+) {
+  // const width = 100
+  // const height = 30
+  // const color = [Math.random(), Math.random(), Math.random(), 1]
+  // gl.uniform4fv(colorUniformLocation, color)
+  // setRectangle(gl, translation[0], translation[1], width, height)
+  // // Draw the rectangle.
+  // const primitiveType = gl.TRIANGLES
+  // const offset = 0
+  // const count = 6
+  // gl.drawArrays(primitiveType, offset, count)
 }
 
 /**
@@ -187,19 +218,18 @@ export function initScene(canvas) {
   }
 }
 
-/* ++*
- * @param {WebGLRenderingContext} gl
- * @param {WebGLUniformLocation} resolutionUniformLocation
- * @param {WebGLUniformLocation} colorUniformLocation
- * @param {number} positionAttributeLocation
- * @param {WebGLBuffer} positionBuffer
+/* **
+ * @param  {
+    gl,
+    resolutionUniformLocation,
+    positionAttributeLocation,
+    positionBuffer,
+  } webGlProps
  */
 export function drawScene(webGlProps) {
   const {
     gl,
     resolutionUniformLocation,
-    colorUniformLocation,
-    translationUniformLocation,
     positionAttributeLocation,
     positionBuffer,
   } = webGlProps
@@ -218,7 +248,7 @@ export function drawScene(webGlProps) {
   gl.uniform2f(resolutionUniformLocation, gl.canvas.width, gl.canvas.height)
 
   // Clear the canvas
-  gl.clearColor(0, 0, 0, 0)
+  gl.clearColor(0, 0, 0, 0) // set color to use as default when clearing buffer
   gl.clear(gl.COLOR_BUFFER_BIT)
 
   // 2. Bind Position
@@ -245,10 +275,34 @@ export function drawScene(webGlProps) {
     stride,
     offset,
   )
+}
 
+export function rectanglesScene(webGlProps) {
+  const {gl, colorUniformLocation} = webGlProps
+  drawScene(webGlProps)
   // 3. Draw!!
   // - Draw 3 random rectangles
   drawRectangles(gl, colorUniformLocation, 1)
-  // - Translate
-  renderTranslation(gl)
+}
+
+export function translationSceneViaDOM(
+  webGlProps,
+  translation,
+  color,
+  width,
+  height,
+) {
+  const {gl, colorUniformLocation} = webGlProps
+  drawScene(webGlProps)
+  // 3. Draw!!
+  // - Draw 3 random rectangles
+  renderTranslation(gl, colorUniformLocation, translation, color, width, height)
+}
+
+export function translationSceneViaWebGL(webGlProps, translation) {
+  const {gl, colorUniformLocation, translationUniformLocation} = webGlProps
+  drawScene(webGlProps)
+  // 3. Draw!!
+  // - Draw 3 random rectangles
+  renderTranslationGL(gl, colorUniformLocation, translationUniformLocation)
 }

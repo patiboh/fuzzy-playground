@@ -27,11 +27,10 @@ export function resize(canvas) {
 /**
  * Use with caution, as this makes the WebGL program draw more pixels
  * -> it might be better to let the GPU take over
- * @param {WebGLRenderingContext} gl
+ * @param {HTMLCanvasElement} canvas
  */
-export function resizeHD(gl) {
+export function resizeHD(canvas) {
   const realToCSSPixels = window.devicePixelRatio
-  const canvas = /** @type {HTMLCanvasElement} */ (gl.canvas)
 
   // - Get the size that the browser is displaying the canvas in CSS pixels
   // - Compute the size needed to make the drawing buffer match it in device pixels
@@ -39,10 +38,10 @@ export function resizeHD(gl) {
   const displayHeight = Math.floor(canvas.clientHeight * realToCSSPixels)
 
   // Check if the canvas is the same size
-  if (gl.canvas.width !== displayWidth || gl.canvas.height !== displayHeight) {
+  if (canvas.width !== displayWidth || canvas.height !== displayHeight) {
     // If not, make it the same
-    gl.canvas.width = displayWidth
-    gl.canvas.height = displayHeight
+    canvas.width = displayWidth
+    canvas.height = displayHeight
   }
 }
 
@@ -51,6 +50,10 @@ export function randomInt(range) {
   return Math.floor(Math.random() * range)
 }
 
+/**
+ *
+ * @param {*} characters
+ */
 export function multiply(characters) {
   return new Array(100) // code from Svelte tutorial confetti
     .fill(0)

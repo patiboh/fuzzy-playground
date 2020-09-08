@@ -42,9 +42,13 @@ export const emojis = {
   },
 }
 
-export const customCursor = {
-  LG:
-    'url(\'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="120" style="font-size: 100px;"><text y="100">REPL</text></svg>\'), auto',
-  SM:
-    'url(\'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="50" height="60" style="font-size: 40px;"><text y="40">REPL</text></svg>\'), auto',
+export const cursor = {
+  default:
+    'url(\'data:image/svg+xml;utf8,<svg  xmlns="http://www.w3.org/2000/svg" width="30" height="30" style="font-size: 30px;"><text y="25" >⚡️</text></svg>\'), auto', // ⚡️ lightning
+  success:
+    'url(\'data:image/svg+xml;utf8,<svg  xmlns="http://www.w3.org/2000/svg" width="30" height="30" style="font-size: 30px;"><text y="25" >🙌</text></svg>\'), auto', // 🙌 raised hands
+  error:
+    'url(\'data:image/svg+xml;utf8,<svg  xmlns="http://www.w3.org/2000/svg" width="30" height="30" style="font-size: 30px;"><text y="25" >🌧</text></svg>\'), auto', // 🌧 cloud with rain
+  active:
+    'url(\'data:image/svg+xml;utf8,<svg  xmlns="http://www.w3.org/2000/svg" width="30" height="30" style="font-size: 30px;"><text y="25" >💥</text></svg>\'), auto', // 💥 fire spark
 }
