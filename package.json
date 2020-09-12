@@ -11,12 +11,12 @@
     "build": "sapper build --legacy",
     "export": "sapper export --legacy",
     "start": "node __sapper__/build",
-    "lint-css": "stylelint 'src/**/*.scss'",
-    "lint-css:fix": "stylelint 'src/**/*.scss' --fix",
-    "lint-js": "eslint src --ext mjs,svelte,js,ts,json,jsonl",
-    "lint-js:fix": "eslint src --ext mjs,svelte,js,ts,json,jsonl --fix",
-    "lint": "npm run lint-js && npm run lint-css",
-    "lint:fix": "npm run lint-js:fix && npm run lint-css:fix",
+    "lint:css": "stylelint 'src/**/*.scss'",
+    "lint:css:fix": "stylelint 'src/**/*.scss' --fix",
+    "lint:js": "eslint src --ext mjs,svelte,js,ts,json,jsonl",
+    "lint:js:fix": "eslint src --ext mjs,svelte,js,ts,json,jsonl --fix",
+    "lint": "npm run lint:js && npm run lint:css",
+    "lint:fix": "npm run lint:js:fix && npm run lint:css:fix",
     "pre-commit-lint": "npm run lint:fix -- --staged",
     "cy:run": "cypress run",
     "cy:open": "cypress open",
@@ -75,11 +75,11 @@
   },
   "lint-staged": {
     "src/**/*.{js,md,mjs,svelte,ts,json,jsonl}": [
-      "npm run lint-js:fix",
+      "npm run lint:js:fix",
       "prettier --write"
     ],
     "src/**/*.{css,scss}": [
-      "npm run lint-css:fix",
+      "npm run lint:css:fix",
       "prettier --write"
     ]
   }
