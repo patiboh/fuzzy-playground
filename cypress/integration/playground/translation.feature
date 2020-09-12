@@ -1,6 +1,5 @@
 Feature: Playground
 
-  @e2e-test
   Scenario: Translation
     Given I'm in the Playground
     And I can select an Animation in the animations menu
