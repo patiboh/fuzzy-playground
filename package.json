@@ -81,6 +81,9 @@
     "src/**/*.{css,scss}": [
       "npm run lint:css:fix",
       "prettier --write"
+    ],
+    "cypress": [
+      "npm run cy:run"
     ]
   }
 }
