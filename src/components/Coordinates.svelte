@@ -25,10 +25,11 @@
   @import '../styles/coordinates.scss';
 </style>
 
-<div class="coordinates">
+<div class="coordinates" data-cy="coordinates">
   <label>
     x = {xCoord}
     <input
+      data-cy="coord-x"
       type="range"
       bind:value={xCoord}
       max={maxX}
@@ -37,6 +38,7 @@
   <label>
     y = {yCoord}
     <input
+      data-cy="coord-y"
       type="range"
       bind:value={yCoord}
       max={maxY}

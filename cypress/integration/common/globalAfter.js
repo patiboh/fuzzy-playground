@@ -1,5 +1,5 @@
-const buttonRefresh = '[data-cy="btn-refresh"]'
+// const buttonRefresh = '[data-cy="btn-refresh"]'
 
-after(() => {
-  cy.get(buttonRefresh).click()
-})
+// after(() => {
+//   cy.get(buttonRefresh).click()
+// })

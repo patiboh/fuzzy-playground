@@ -18,12 +18,13 @@
   @import '../styles/animation-menu.scss';
 </style>
 
-<div class="btn-group animation-menu">
+<div class="btn-group animation-menu" data-cy="animations-menu">
   {#each animations as animation}
     <button
       class="btn-menu"
       on:click={handleClick}
-      data-animation={animation.id}>
+      data-animation={animation.id}
+      data-cy={animation.id}>
       {animation.name}
     </button>
   {/each}

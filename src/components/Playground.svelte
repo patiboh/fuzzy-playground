@@ -260,12 +260,13 @@
   data-cy="output">
   <canvas bind:this={canvas} data-cy="canvas" />
   <Feedback {stacktrace} />
-  <audio bind:this={drumroll}>
+  <audio bind:this={drumroll} data-cy="drumroll">
     <source src="drumroll.ogg" type="audio/ogg" />
     <track kind="captions" srclang="en" />
     <!-- TODO: fix caption src -->
   </audio>
 </section>
+
 <section class="controls">
   <AnimationsMenu on:loadAnimation={handleLoadAnimation} {animations} />
   {#if showCoordinates}
@@ -299,6 +300,7 @@
 </section>
 {#each emojis as emoji}
   <span
+    data-cy="emoji-{emoji.character}"
     class="emoji"
     style="left: {emoji.x}%; top: {emoji.y}%; transform: scale({emoji.ratio})">
     {emoji.character}
