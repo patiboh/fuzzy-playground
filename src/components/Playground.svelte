@@ -55,23 +55,23 @@
         }, 1)
       },
     },
-    {
-      id: 'L1-2',
-      name: '... with drums',
-      hasInterval: true,
-      hasAudio: true,
-      run(
-        webGLProps,
-        translation = null,
-        color = null,
-        width = null,
-        height = null,
-      ) {
-        return setInterval(() => {
-          draw.rectanglesScene(webGlProps)
-        }, 1)
-      },
-    },
+    // {
+    //   id: 'L1-2',
+    //   name: '... with drums',
+    //   hasInterval: true,
+    //   hasAudio: true,
+    //   run(
+    //     webGLProps,
+    //     translation = null,
+    //     color = null,
+    //     width = null,
+    //     height = null,
+    //   ) {
+    //     return setInterval(() => {
+    //       draw.rectanglesScene(webGlProps)
+    //     }, 1)
+    //   },
+    // },
     {
       id: 'L2',
       name: 'Translation',
@@ -86,14 +86,14 @@
         )
       },
     },
-    {
-      id: 'L3',
-      name: 'Translation via shader',
-      hasCoordinates: true,
-      run(webGlProps, translation, color, width = null, height = null) {
-        draw.translationSceneViaWebGL(webGlProps, translation)
-      },
-    },
+    // {
+    //   id: 'L3',
+    //   name: 'Translation via shader',
+    //   hasCoordinates: true,
+    //   run(webGlProps, translation, color, width = null, height = null) {
+    //     draw.translationSceneViaWebGL(webGlProps, translation)
+    //   },
+    // },
   ]
 
   let currentAnimation = animations[0]
@@ -152,7 +152,7 @@
       animationTimeout = setTimeout(() => {
         uiState.set(constants.uiState.SUCCESS)
         clearInterval(animationInterval)
-        loopEmojis() // get this out of here: make reactive to store change ?
+        // loopEmojis() // get this out of here: make reactive to store change ?
       }, animationDuration) // duration of drumroll, for now
     }
     if (playAudio) {

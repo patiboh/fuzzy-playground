@@ -9,12 +9,12 @@ const OUTPUT = '[data-cy="output"]'
 // Animations menu
 const ANIMATIONS_MENU = '[data-cy="animations-menu"]'
 const BTN_RANDOM_RECTS = '[data-cy="L1"]'
-const BTN_WITH_DRUMS = '[data-cy="L1-2"]'
+// const BTN_WITH_DRUMS = '[data-cy="L1-2"]'
 const BTN_TRANSLATE = '[data-cy="L2"]'
 const CONFETTI = '[data-cy="emoji-🥳"]'
 const POOP = '[data-cy="emoji-💩"]'
 const ANIMATION_RANDOM_RECTS = 'Random rectangles'
-const ANIMATION_WITH_DRUMS = '... with drums'
+// const ANIMATION_WITH_DRUMS = '... with drums'
 const ANIMATION_TRANSLATION = 'Translation'
 
 // Animation controls
@@ -28,7 +28,7 @@ export function visit() {
 
 export function findAnimationsMenu() {
   cy.get(ANIMATIONS_MENU).find(BTN_RANDOM_RECTS)
-  cy.get(ANIMATIONS_MENU).find(BTN_WITH_DRUMS)
+  // cy.get(ANIMATIONS_MENU).find(BTN_WITH_DRUMS)
   cy.get(ANIMATIONS_MENU).find(BTN_TRANSLATE)
 }
 
@@ -64,9 +64,9 @@ export function playAnimation(animation) {
   if (animation === ANIMATION_RANDOM_RECTS) {
     cy.get(BTN_RANDOM_RECTS).contains(ANIMATION_RANDOM_RECTS).click()
   }
-  if (animation === ANIMATION_WITH_DRUMS) {
-    cy.get(BTN_WITH_DRUMS).contains(ANIMATION_WITH_DRUMS).click()
-  }
+  // if (animation === ANIMATION_WITH_DRUMS) {
+  //   cy.get(BTN_WITH_DRUMS).contains(ANIMATION_WITH_DRUMS).click()
+  // }
   if (animation === ANIMATION_TRANSLATION) {
     cy.get(BTN_TRANSLATE).contains(ANIMATION_TRANSLATION).click()
   }
