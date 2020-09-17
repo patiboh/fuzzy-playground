@@ -1,17 +1,28 @@
 <script>
   // @ts-check
-  import {createEventDispatcher} from 'svelte'
+  import {onMount, createEventDispatcher} from 'svelte'
+
+  import {animations, currentAnimationId} from '../stores.js'
 
   const dispatch = createEventDispatcher()
 
-  export let animations = undefined
+  let menumItems = []
+
+  const animationsUnsub = animations.subscribe((value) => {
+    menumItems = value
+  })
 
   let handleClick = (event) => {
     const element = event.target
-    dispatch('loadAnimation', {
-      animation: element.getAttribute('data-animation'),
-    })
+    currentAnimationId.set(element.getAttribute('data-animation'))
+    dispatch('loadAnimation')
   }
+
+  onMount(() => {
+    return () => {
+      animationsUnsub()
+    }
+  })
 </script>
 
 <style lang="scss">
@@ -19,7 +30,7 @@
 </style>
 
 <div class="btn-group animation-menu" data-cy="animations-menu">
-  {#each animations as animation}
+  {#each menumItems as animation}
     <button
       class="btn-menu"
       on:click={handleClick}

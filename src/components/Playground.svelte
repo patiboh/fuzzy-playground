@@ -3,9 +3,13 @@
 
   import * as constants from '../types/constants.js'
   import * as utils from '../libs/utils.js'
-  import * as draw from '../libs/draw.js'
 
-  import {uiState, feedbackEmoji} from '../stores.js'
+  import {
+    uiState,
+    feedbackEmoji,
+    currentAnimation,
+    currentAnimationId,
+  } from '../stores.js'
   import Feedback from './Feedback.svelte'
   import Coordinates from './Coordinates.svelte'
   import AnimationsMenu from './AnimationsMenu.svelte'
@@ -22,7 +26,6 @@
   let playbackRate = 1.5
 
   // WebGL
-  let webGlProps
   let translation = [0, 0]
   let color = [Math.random(), Math.random(), Math.random(), 1]
   let width = 100 // of geometry
@@ -34,69 +37,10 @@
   let showCoordinates = false
 
   // animation loops
+  let stopInterval = () => {}
   let animationInterval
   let animationTimeout
   let animationDuration = 4200 / playbackRate
-
-  const animations = [
-    {
-      id: 'L1',
-      name: 'Random rectangles',
-      hasInterval: true,
-      run(
-        webGLProps,
-        translation = null,
-        color = null,
-        width = null,
-        height = null,
-      ) {
-        return setInterval(() => {
-          draw.rectanglesScene(webGlProps)
-        }, 1)
-      },
-    },
-    {
-      id: 'L1-2',
-      name: '... with drums',
-      hasInterval: true,
-      hasAudio: true,
-      run(
-        webGLProps,
-        translation = null,
-        color = null,
-        width = null,
-        height = null,
-      ) {
-        return setInterval(() => {
-          draw.rectanglesScene(webGlProps)
-        }, 1)
-      },
-    },
-    {
-      id: 'L2',
-      name: 'Translation',
-      hasCoordinates: true,
-      run(webGlProps, translation, color, width, height) {
-        draw.translationSceneViaDOM(
-          webGlProps,
-          translation,
-          color,
-          width,
-          height,
-        )
-      },
-    },
-    {
-      id: 'L3',
-      name: 'Translation via shader',
-      hasCoordinates: true,
-      run(webGlProps, translation, color, width = null, height = null) {
-        draw.translationSceneViaWebGL(webGlProps, translation)
-      },
-    },
-  ]
-
-  let currentAnimation = animations[0]
 
   // UI feedback
   let playgroundState
@@ -105,6 +49,7 @@
   let emojis
   let output
   let stacktrace = ''
+  let animation
 
   $: translation = [xCoord, yCoord]
   $: showCoordinates = currentAnimation.hasCoordinates
@@ -117,6 +62,10 @@
   })
   const emojiFeedbackUnsub = feedbackEmoji.subscribe((value) => {
     emojis = utils.multiply(Object.values(value))
+  })
+
+  const currentAnimationUnsub = currentAnimation.subscribe((value) => {
+    animation = value
   })
 
   function setCoordinates() {
@@ -145,30 +94,28 @@
   }
 
   function startAnimation() {
-    webGlProps = draw.initScene(canvas)
-    if (currentAnimation.hasInterval) {
-      animationInterval = currentAnimation.run(webGlProps)
-      // don't go on forever just yet
-      animationTimeout = setTimeout(() => {
-        uiState.set(constants.uiState.SUCCESS)
-        clearInterval(animationInterval)
-        loopEmojis() // get this out of here: make reactive to store change ?
-      }, animationDuration) // duration of drumroll, for now
-    }
     if (playAudio) {
       drumroll.playbackRate = playbackRate
       drumroll.play()
     }
+    if (animation.hasInterval) {
+      stopInterval = animation.run(canvas)
+      // don't go on forever just yet
+      animationTimeout = setTimeout(() => {
+        uiState.set(constants.uiState.SUCCESS)
+        stopInterval()
+        loopEmojis() // get this out of here: make reactive to store change ?
+      }, animationDuration) // duration of drumroll, for now
+    }
     if (showCoordinates) {
-      setCoordinates(canvas)
-      currentAnimation.run(webGlProps, translation, color)
+      setCoordinates()
+      animation.run(canvas, translation, color)
     }
   }
 
   function stopAnimation() {
-    if (animationInterval) {
-      clearInterval(animationInterval)
-      animationInterval = null
+    if (animation.hasInterval) {
+      stopInterval()
     }
     if (animationTimeout) {
       clearTimeout(animationTimeout)
@@ -218,34 +165,29 @@
   function handleReset() {
     resetPlayground()
     uiState.set(constants.uiState.DEFAULT)
-    if (!currentAnimation.hasInterval) {
+    if (!animation.hasInterval) {
       handlePlay()
     }
   }
 
-  function handleLoadAnimation(event) {
+  function handleLoadAnimation() {
     resetPlayground()
-    const animationId = event.detail.animation
-    currentAnimation = animations.find(
-      (animation) => animation.id === animationId,
-    )
-    showCoordinates = currentAnimation.hasCoordinates
-    playAudio = currentAnimation.hasAudio
     handlePlay()
   }
 
   function updateXCoord() {
-    currentAnimation.run(webGlProps, translation, color, width, height)
+    animation.run(canvas, translation, color, width, height)
   }
 
   function updateYCoord() {
-    currentAnimation.run(webGlProps, translation, color, width, height)
+    animation.run(canvas, translation, color, width, height)
   }
 
   onMount(() => {
     return () => {
       uiStateUnsub()
       emojiFeedbackUnsub()
+      currentAnimationUnsub()
     }
   })
 </script>
@@ -268,7 +210,7 @@
 </section>
 
 <section class="controls">
-  <AnimationsMenu on:loadAnimation={handleLoadAnimation} {animations} />
+  <AnimationsMenu on:loadAnimation={handleLoadAnimation} />
   {#if showCoordinates}
     <Coordinates
       bind:xCoord
