@@ -6,8 +6,8 @@
 
   import {
     uiState,
-    feedbackEmoji,
-    currentAnimation,
+    emojiFeedback,
+    animations,
     currentAnimationId,
   } from '../stores.js'
   import Feedback from './Feedback.svelte'
@@ -22,7 +22,8 @@
 
   // Audio
   let drumroll
-  let duration = 6.017687
+  let ended
+  let duration
   let playbackRate = 1.5
 
   // WebGL
@@ -37,41 +38,33 @@
   let showCoordinates = false
 
   // animation loops
-  let stopInterval = () => {}
+  let stopInterval
   let animationTimeout
   let animationDuration = 4200 / playbackRate
 
   // UI feedback
   let playgroundState
-  let emojiCursor
   let emojiFrame
   let emojis
-  let output
   let stacktrace = ''
-  let animation
+  let animationId = $currentAnimationId
+  let animation = $animations.find((animation) => animation.id === animationId)
 
   $: showCoordinates = animation.hasCoordinates
   $: playAudio = animation.hasAudio
   $: translation = [xCoord, yCoord]
-  $: maxX = canvasWidth
-  $: maxY = canvasHeight
+  $: maxX = canvasWidth - width
+  $: maxY = canvasHeight - height
 
   const uiStateUnsub = uiState.subscribe((value) => {
     playgroundState = value
   })
-  const emojiFeedbackUnsub = feedbackEmoji.subscribe((value) => {
+  const emojiFeedbackUnsub = emojiFeedback.subscribe((value) => {
     emojis = utils.multiply(Object.values(value))
   })
-  const currentAnimationUnsub = currentAnimation.subscribe((value) => {
-    animation = value
+  const currentAnimationIdUnsub = currentAnimationId.subscribe((value) => {
+    animationId = value
   })
-
-  function setCoordinates() {
-    canvasWidth = output.getBoundingClientRect().width - width
-    canvasHeight = output.getBoundingClientRect().height - height
-    xCoord = 0
-    yCoord = 0
-  }
 
   function loopEmojis() {
     emojiFrame = requestAnimationFrame(loopEmojis)
@@ -93,7 +86,6 @@
 
   function startAnimation() {
     if (playAudio) {
-      drumroll.playbackRate = playbackRate
       drumroll.play()
     }
     if (animation.hasInterval) {
@@ -106,7 +98,6 @@
       }, animationDuration) // duration of drumroll, for now
     }
     if (showCoordinates) {
-      setCoordinates()
       animation.run(canvas, translation, color, width, height)
     }
   }
@@ -125,7 +116,6 @@
   function resetPlayground() {
     clearEmojis()
     stopAnimation()
-    setCoordinates()
   }
 
   function handleError(error) {
@@ -159,7 +149,8 @@
 
   function handleLoadAnimation(event) {
     resetPlayground()
-    currentAnimationId.set(event.detail.animation)
+    currentAnimationId.set(event.detail.animationId)
+    animation = $animations.find((animation) => animation.id === animationId)
     handlePlay()
   }
 
@@ -175,7 +166,7 @@
     return () => {
       uiStateUnsub()
       emojiFeedbackUnsub()
-      currentAnimationUnsub()
+      currentAnimationIdUnsub()
     }
   })
 </script>
@@ -200,11 +191,17 @@
 
 <section
   class={`output ${playgroundState}`}
-  bind:this={output}
+  bind:offsetWidth={canvasWidth}
+  bind:offsetHeight={canvasHeight}
   data-cy="output">
   <canvas bind:this={canvas} data-cy="canvas" />
   <Feedback {stacktrace} />
-  <audio bind:this={drumroll} data-cy="drumroll">
+  <audio
+    bind:this={drumroll}
+    bind:duration
+    bind:ended
+    bind:playbackRate
+    data-cy="drumroll">
     <source src="drumroll.ogg" type="audio/ogg" />
     <track kind="captions" srclang="en" />
     <!-- TODO: fix caption src -->

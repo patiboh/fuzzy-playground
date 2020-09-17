@@ -5,7 +5,7 @@ import * as draw from './libs/draw.js'
 
 export const uiState = writable(constants.uiState.DEFAULT)
 
-export const feedbackEmoji = derived(uiState, ($uiState) => {
+export const emojiFeedback = derived(uiState, ($uiState) => {
   return constants.emojis[$uiState] ? constants.emojis[$uiState] : []
 })
 
@@ -22,8 +22,8 @@ const _animations = [
     name: 'Random rectangles',
     hasInterval: true,
     run(canvas) {
+      const webGlProps = draw.initScene(canvas)
       const interval = setInterval(() => {
-        const webGlProps = draw.initScene(canvas)
         draw.rectanglesScene(webGlProps)
       }, 1)
 
@@ -38,8 +38,8 @@ const _animations = [
     hasInterval: true,
     hasAudio: true,
     run(canvas) {
+      const webGlProps = draw.initScene(canvas)
       const interval = setInterval(() => {
-        const webGlProps = draw.initScene(canvas)
         draw.rectanglesScene(webGlProps)
       }, 1)
 
@@ -71,9 +71,3 @@ const _animations = [
 export const animations = readable(_animations)
 
 export const currentAnimationId = writable('L1')
-
-export const currentAnimation = derived(
-  currentAnimationId,
-  ($currentAnimationId) =>
-    _animations.find((animation) => animation.id === $currentAnimationId),
-)
