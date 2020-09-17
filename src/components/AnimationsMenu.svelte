@@ -15,7 +15,7 @@
   let handleClick = (event) => {
     const element = event.target
     dispatch('loadAnimation', {
-      animationId: element.getAttribute('data-animation'),
+      animationId: element.getAttribute('data-id'),
     })
   }
 
@@ -32,11 +32,7 @@
 
 <div class="btn-group animation-menu" data-cy="animations-menu">
   {#each menumItems as {name, id} (id)}
-    <button
-      class="btn-menu"
-      on:click={handleClick}
-      data-animation={id}
-      data-cy={id}>
+    <button class="btn-menu" on:click={handleClick} data-id={id} data-cy={id}>
       {name}
     </button>
   {/each}

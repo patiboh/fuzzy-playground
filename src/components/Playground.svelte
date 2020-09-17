@@ -38,7 +38,7 @@
   let showCoordinates = false
 
   // animation loops
-  let stopInterval
+  let interval
   let animationTimeout
   let animationDuration = 4200 / playbackRate
 
@@ -89,7 +89,7 @@
       drumroll.play()
     }
     if (animation.hasInterval) {
-      stopInterval = animation.run(canvas)
+      interval = animation.run(canvas)
       // don't go on forever just yet
       animationTimeout = setTimeout(() => {
         uiState.set(constants.uiState.SUCCESS)
@@ -103,9 +103,9 @@
   }
 
   function stopAnimation() {
-    if (stopInterval) {
-      stopInterval()
-      stopInterval = null
+    if (interval) {
+      clearInterval(interval)
+      interval = null
     }
     if (animationTimeout) {
       clearTimeout(animationTimeout)
@@ -119,7 +119,7 @@
   }
 
   function handleError(error) {
-    resetPlayground()
+    stopAnimation()
     uiState.set(constants.uiState.ERROR)
     stacktrace = `${error}\n${stacktrace}`
     loopEmojis()

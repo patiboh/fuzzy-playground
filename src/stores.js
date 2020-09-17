@@ -23,13 +23,9 @@ const _animations = [
     hasInterval: true,
     run(canvas) {
       const webGlProps = draw.initScene(canvas)
-      const interval = setInterval(() => {
+      return setInterval(() => {
         draw.rectanglesScene(webGlProps)
       }, 1)
-
-      return function stop() {
-        clearInterval(interval)
-      }
     },
   },
   {
@@ -39,13 +35,9 @@ const _animations = [
     hasAudio: true,
     run(canvas) {
       const webGlProps = draw.initScene(canvas)
-      const interval = setInterval(() => {
+      return setInterval(() => {
         draw.rectanglesScene(webGlProps)
       }, 1)
-
-      return function stop() {
-        clearInterval(interval)
-      }
     },
   },
   {
@@ -57,15 +49,15 @@ const _animations = [
       draw.translationSceneViaDOM(webGlProps, translation, color, width, height)
     },
   },
-  {
-    id: 'L3',
-    name: 'Translation via shader',
-    hasCoordinates: true,
-    run(canvas, translation) {
-      const webGlProps = draw.initScene(canvas)
-      draw.translationSceneViaWebGL(webGlProps, translation)
-    },
-  },
+  // {
+  //   id: 'L3',
+  //   name: 'Translation via shader',
+  //   hasCoordinates: true,
+  //   run(canvas, translation) {
+  //     const webGlProps = draw.initScene(canvas)
+  //     draw.translationSceneViaWebGL(webGlProps, translation)
+  //   },
+  // },
 ]
 
 export const animations = readable(_animations)
