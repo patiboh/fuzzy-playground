@@ -38,7 +38,6 @@
 
   // animation loops
   let stopInterval = () => {}
-  let animationInterval
   let animationTimeout
   let animationDuration = 4200 / playbackRate
 
@@ -51,9 +50,10 @@
   let stacktrace = ''
   let animation
 
-  $: translation = [xCoord, yCoord]
+  $: animation = currentAnimation
   $: showCoordinates = animation.hasCoordinates
   $: playAudio = animation.hasAudio
+  $: translation = [xCoord, yCoord]
   $: maxX = canvasWidth
   $: maxY = canvasHeight
 
@@ -63,7 +63,6 @@
   const emojiFeedbackUnsub = feedbackEmoji.subscribe((value) => {
     emojis = utils.multiply(Object.values(value))
   })
-
   const currentAnimationUnsub = currentAnimation.subscribe((value) => {
     animation = value
   })
@@ -109,7 +108,7 @@
     }
     if (showCoordinates) {
       setCoordinates()
-      animation.run(canvas, translation, color)
+      animation.run(canvas, translation, color, width, height)
     }
   }
 
