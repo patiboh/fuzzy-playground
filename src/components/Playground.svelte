@@ -112,8 +112,9 @@
   }
 
   function stopAnimation() {
-    if (animation.hasInterval) {
+    if (stopInterval) {
       stopInterval()
+      stopInterval = null
     }
     if (animationTimeout) {
       clearTimeout(animationTimeout)
@@ -183,19 +184,6 @@
   @import '../styles/playground.scss';
 </style>
 
-<section
-  class={`output ${playgroundState}`}
-  bind:this={output}
-  data-cy="output">
-  <canvas bind:this={canvas} data-cy="canvas" />
-  <Feedback {stacktrace} />
-  <audio bind:this={drumroll} data-cy="drumroll">
-    <source src="drumroll.ogg" type="audio/ogg" />
-    <track kind="captions" srclang="en" />
-    <!-- TODO: fix caption src -->
-  </audio>
-</section>
-
 <section class="sidebar">
   <AnimationsMenu on:loadAnimation={handleLoadAnimation} />
   {#if showCoordinates}
@@ -209,6 +197,20 @@
   {/if}
   <Controls {handlePlay} {handleReset} {handleRefresh} />
 </section>
+
+<section
+  class={`output ${playgroundState}`}
+  bind:this={output}
+  data-cy="output">
+  <canvas bind:this={canvas} data-cy="canvas" />
+  <Feedback {stacktrace} />
+  <audio bind:this={drumroll} data-cy="drumroll">
+    <source src="drumroll.ogg" type="audio/ogg" />
+    <track kind="captions" srclang="en" />
+    <!-- TODO: fix caption src -->
+  </audio>
+</section>
+
 {#each emojis as emoji}
   <span
     data-cy="emoji-{emoji.character}"
