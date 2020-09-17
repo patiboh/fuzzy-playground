@@ -52,8 +52,8 @@
   let animation
 
   $: translation = [xCoord, yCoord]
-  $: showCoordinates = currentAnimation.hasCoordinates
-  $: playAudio = currentAnimation.hasAudio
+  $: showCoordinates = animation.hasCoordinates
+  $: playAudio = animation.hasAudio
   $: maxX = canvasWidth
   $: maxY = canvasHeight
 
@@ -170,8 +170,9 @@
     }
   }
 
-  function handleLoadAnimation() {
+  function handleLoadAnimation(event) {
     resetPlayground()
+    currentAnimationId.set(event.detail.animation)
     handlePlay()
   }
 

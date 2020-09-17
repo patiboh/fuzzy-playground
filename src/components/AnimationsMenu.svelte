@@ -2,7 +2,7 @@
   // @ts-check
   import {onMount, createEventDispatcher} from 'svelte'
 
-  import {animations, currentAnimationId} from '../stores.js'
+  import {animations} from '../stores.js'
 
   const dispatch = createEventDispatcher()
 
@@ -14,8 +14,9 @@
 
   let handleClick = (event) => {
     const element = event.target
-    currentAnimationId.set(element.getAttribute('data-animation'))
-    dispatch('loadAnimation')
+    dispatch('loadAnimation', {
+      animation: element.getAttribute('data-animation'),
+    })
   }
 
   onMount(() => {
