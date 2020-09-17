@@ -50,7 +50,6 @@
   let stacktrace = ''
   let animation
 
-  $: animation = currentAnimation
   $: showCoordinates = animation.hasCoordinates
   $: playAudio = animation.hasAudio
   $: translation = [xCoord, yCoord]
@@ -102,7 +101,7 @@
       // don't go on forever just yet
       animationTimeout = setTimeout(() => {
         uiState.set(constants.uiState.SUCCESS)
-        stopInterval()
+        stopAnimation()
         loopEmojis() // get this out of here: make reactive to store change ?
       }, animationDuration) // duration of drumroll, for now
     }
