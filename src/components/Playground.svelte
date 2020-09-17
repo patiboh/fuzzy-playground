@@ -13,7 +13,7 @@
   import Feedback from './Feedback.svelte'
   import Coordinates from './Coordinates.svelte'
   import AnimationsMenu from './AnimationsMenu.svelte'
-  import EmojiButton from './EmojiButton.svelte'
+  import Controls from './Controls.svelte'
 
   // Canvas
   let canvas
@@ -145,18 +145,6 @@
     }
   }
 
-  function handlePlayButtonFocus() {
-    if (playgroundState === constants.uiState.DEFAULT) {
-      uiState.set(constants.uiState.FOCUS)
-    }
-  }
-
-  function handlePlayButtonBlur() {
-    if (playgroundState === constants.uiState.FOCUS) {
-      uiState.set(constants.uiState.DEFAULT)
-    }
-  }
-
   function handleRefresh() {
     resetPlayground()
     location.reload() // TODO - reload gl code only ?
@@ -210,7 +198,7 @@
   </audio>
 </section>
 
-<section class="controls">
+<section class="sidebar">
   <AnimationsMenu on:loadAnimation={handleLoadAnimation} />
   {#if showCoordinates}
     <Coordinates
@@ -221,25 +209,7 @@
       on:updateXCoord={updateXCoord}
       on:updateYCoord={updateYCoord} />
   {/if}
-  <div class="btn-group ui-controls">
-    <EmojiButton
-      dataCy="btn-play"
-      buttonClass="firestarter"
-      buttonLabel="Play"
-      handleClick={handlePlay}
-      handleFocus={handlePlayButtonFocus}
-      handleBlur={handlePlayButtonBlur} />
-    <EmojiButton
-      dataCy="btn-reset"
-      buttonClass="sponge"
-      buttonLabel="Reset playground"
-      handleClick={handleReset} />
-    <EmojiButton
-      dataCy="btn-refresh"
-      buttonClass="shower"
-      buttonLabel="Refresh page"
-      handleClick={handleRefresh} />
-  </div>
+  <Controls {handlePlay} {handleReset} {handleRefresh} />
 </section>
 {#each emojis as emoji}
   <span

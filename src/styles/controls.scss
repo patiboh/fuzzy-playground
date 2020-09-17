@@ -1,0 +1,18 @@
+.btn-group {
+  display: flex;
+  justify-content: space-between;
+  justify-self: center;
+  width: 100%;
+}
+
+.btn-group.ui-controls {
+  grid-column-start: 1;
+  grid-row-start: 2;
+  max-width: 16em;
+  padding: 0.5em 0;
+}
+@media (min-width: 768px) and (min-aspect-ratio: 3/5) {
+  .btn-group.ui-controls {
+    grid-row-start: 3;
+  }
+}
