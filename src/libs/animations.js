@@ -18,18 +18,18 @@ export const animations = [
       }, 1)
     },
   },
-  // {
-  //   id: 'L1-2',
-  //   name: '... with drums',
-  //   hasInterval: true,
-  //   hasAudio: true,
-  //   run(canvas) {
-  //     const webGlProps = draw.initScene(canvas)
-  //     return setInterval(() => {
-  //       draw.rectanglesScene(webGlProps)
-  //     }, 1)
-  //   },
-  // },
+  {
+    id: 'L1-2',
+    name: '... with drums',
+    type: 'interval',
+    hasAudio: true,
+    run(canvas) {
+      const webGlProps = draw.initScene(canvas)
+      return setInterval(() => {
+        draw.rectanglesScene(webGlProps)
+      }, 1)
+    },
+  },
   {
     id: 'L2',
     name: 'Translation',
