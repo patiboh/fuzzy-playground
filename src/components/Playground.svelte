@@ -1,8 +1,8 @@
 <script>
-  import {onMount} from 'svelte'
-
   import * as constants from '../types/constants.js'
   import * as utils from '../libs/utils.js'
+
+  import {types as aTypes} from '../libs/animations.js'
 
   import {
     uiState,
@@ -24,7 +24,7 @@
   let drumroll
   let ended
   let duration
-  let playbackRate = 1.5
+  let playbackRate = 2
 
   // WebGL
   let translation = [0, 0]
@@ -50,19 +50,19 @@
   let animationId = $currentAnimationId
   let animation = $animations.find((animation) => animation.id === animationId)
 
-  $: showCoordinates = animation.hasCoordinates
+  $: showCoordinates = animation.type === aTypes.coordinates
   $: playAudio = animation.hasAudio
   $: translation = [xCoord, yCoord]
   $: maxX = canvasWidth - width
   $: maxY = canvasHeight - height
 
-  const uiStateUnsub = uiState.subscribe((value) => {
+  uiState.subscribe((value) => {
     playgroundState = value
   })
-  const emojiFeedbackUnsub = emojiFeedback.subscribe((value) => {
+  emojiFeedback.subscribe((value) => {
     emojis = utils.multiply(Object.values(value))
   })
-  const currentAnimationIdUnsub = currentAnimationId.subscribe((value) => {
+  currentAnimationId.subscribe((value) => {
     animationId = value
   })
 
@@ -88,17 +88,22 @@
     if (playAudio) {
       drumroll.play()
     }
-    if (animation.hasInterval) {
-      interval = animation.run(canvas)
-      // don't go on forever just yet
-      animationTimeout = setTimeout(() => {
-        uiState.set(constants.uiState.SUCCESS)
-        stopAnimation()
-        loopEmojis() // get this out of here: make reactive to store change ?
-      }, animationDuration) // duration of drumroll, for now
-    }
-    if (showCoordinates) {
-      animation.run(canvas, translation, color, width, height)
+    switch (animation.type) {
+      case aTypes.interval:
+        interval = animation.run(canvas)
+        // don't go on forever just yet
+        animationTimeout = setTimeout(() => {
+          uiState.set(constants.uiState.SUCCESS)
+          stopAnimation()
+          loopEmojis() // get this out of here: make reactive to store change ?
+        }, animationDuration) // duration of drumroll, for now
+        break
+      case aTypes.coordinates:
+        animation.run(canvas, translation, color, width, height)
+        break
+      case aTypes.test:
+        animation.run(canvas)
+        break
     }
   }
 
@@ -161,14 +166,6 @@
   function updateYCoord() {
     animation.run(canvas, translation, color, width, height)
   }
-
-  onMount(() => {
-    return () => {
-      uiStateUnsub()
-      emojiFeedbackUnsub()
-      currentAnimationIdUnsub()
-    }
-  })
 </script>
 
 <style lang="scss">
