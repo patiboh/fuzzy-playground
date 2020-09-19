@@ -1,7 +1,7 @@
 import {writable, derived, readable} from 'svelte/store'
 
 import * as constants from './types/constants.js'
-import * as draw from './libs/draw.js'
+import * as _animations from './libs/animations.js'
 
 export const uiState = writable(constants.uiState.DEFAULT)
 
@@ -16,50 +16,6 @@ export const currentCursor = derived(uiState, ($uiState) => {
   }
 })
 
-const _animations = [
-  {
-    id: 'L1',
-    name: 'Random rectangles',
-    hasInterval: true,
-    run(canvas) {
-      const webGlProps = draw.initScene(canvas)
-      return setInterval(() => {
-        draw.rectanglesScene(webGlProps)
-      }, 1)
-    },
-  },
-  {
-    id: 'L1-2',
-    name: '... with drums',
-    hasInterval: true,
-    hasAudio: true,
-    run(canvas) {
-      const webGlProps = draw.initScene(canvas)
-      return setInterval(() => {
-        draw.rectanglesScene(webGlProps)
-      }, 1)
-    },
-  },
-  {
-    id: 'L2',
-    name: 'Translation',
-    hasCoordinates: true,
-    run(canvas, translation, color, width, height) {
-      const webGlProps = draw.initScene(canvas)
-      draw.translationSceneViaDOM(webGlProps, translation, color, width, height)
-    },
-  },
-  // {
-  //   id: 'L3',
-  //   name: 'Translation via shader',
-  //   hasCoordinates: true,
-  //   run(canvas, translation) {
-  //     const webGlProps = draw.initScene(canvas)
-  //     draw.translationSceneViaWebGL(webGlProps, translation)
-  //   },
-  // },
-]
-
-export const animations = readable(_animations)
+export const animations = readable(_animations.animations)
 
 export const currentAnimationId = writable('L1')
