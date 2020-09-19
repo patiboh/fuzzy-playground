@@ -27,7 +27,7 @@ li {
 }
 
 [aria-current]::after {
-  background-color: var(--color-coordinates);
+  background-color: var(--color-text-darker-shower);
   bottom: -1px;
   content: '';
   display: block;
@@ -37,7 +37,7 @@ li {
 }
 
 a {
-  color: var(--color-text-light-shower);
+  color: var(--color-dark);
   display: block;
   padding: 1em 0.5em;
   text-decoration: none;

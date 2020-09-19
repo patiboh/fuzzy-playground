@@ -14,7 +14,7 @@
   align-items: flex-start;
   background: linear-gradient(var(--color-dark) 5%, var(--color-coordinates));
   border-radius: var(--border-radius-input);
-  color: var(--color-text-light-shower);
+  color: var(--color-dark);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -29,11 +29,7 @@
 }
 
 .coordinates label:hover {
-  background: linear-gradient(
-    var(--color-dark) 10%,
-    var(--color-coordinates-hover)
-  );
-  color: var(--color-text-light);
+  color: var(--color-dark);
 }
 
 .coordinates input {

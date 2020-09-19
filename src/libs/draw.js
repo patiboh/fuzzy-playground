@@ -11,6 +11,10 @@ import * as utilsWebGl from './utilsWebGL.js'
 import {frag} from '../gl/fragment-shader-2d'
 import {vert} from '../gl/vertex-shader-2d'
 
+const color = [Math.random(), Math.random(), Math.random(), 1]
+const width = 100 // of geometry
+const height = 30 // of geometry
+
 /**
  * Write data to draw a rectangle into the last thing bound to gl.ARRAY_BUFFER (in this context positionBuffer)
  * @param {WebGLRenderingContext} gl
@@ -94,7 +98,7 @@ function drawRectangle(gl, colorUniformLocation) {
  * TRANSLATIONS
  * @param {WebGLRenderingContext} gl
  */
-function renderTranslation(
+export function renderTranslation(
   gl,
   colorUniformLocation,
   translation,
@@ -119,27 +123,6 @@ function drawRectangles(gl, colorUniformLocation, count) {
   for (let index = 0; index < count; ++index) {
     drawRectangle(gl, colorUniformLocation)
   }
-}
-
-/**
- * TRANSLATIONS
- * @param {WebGLRenderingContext} gl
- */
-function renderTranslationGL(
-  gl,
-  colorUniformLocation,
-  translationUniformLocation,
-) {
-  // const width = 100
-  // const height = 30
-  // const color = [Math.random(), Math.random(), Math.random(), 1]
-  // gl.uniform4fv(colorUniformLocation, color)
-  // setRectangle(gl, translation[0], translation[1], width, height)
-  // // Draw the rectangle.
-  // const primitiveType = gl.TRIANGLES
-  // const offset = 0
-  // const count = 6
-  // gl.drawArrays(primitiveType, offset, count)
 }
 
 /**
@@ -237,10 +220,10 @@ export function drawScene(webGlProps) {
    * RENDERING CODE
    * Code that gets executed every time we draw
    ************************/
-  const canvas = /** @type {HTMLCanvasElement} */ (gl.canvas)
+  // const canvas = /** @type {HTMLCanvasElement} */ (gl.canvas)
   // 1. Setup canvas
   // - resize canvas to fit screen display
-  utils.resize(canvas)
+  // utils.resize(canvas)
   // - tell WebGL how to covert clip space values for gl_Position back into screen space (pixels)
   // -> use gl.viewport
   gl.viewport(0, 0, gl.canvas.width, gl.canvas.height)
@@ -285,13 +268,7 @@ export function rectanglesScene(webGlProps) {
   drawRectangles(gl, colorUniformLocation, 1)
 }
 
-export function translationSceneViaDOM(
-  webGlProps,
-  translation,
-  color,
-  width,
-  height,
-) {
+export function drawTranslationScene(webGlProps, translation) {
   const {gl, colorUniformLocation} = webGlProps
   drawScene(webGlProps)
   // 3. Draw!!
@@ -299,10 +276,8 @@ export function translationSceneViaDOM(
   renderTranslation(gl, colorUniformLocation, translation, color, width, height)
 }
 
-export function translationSceneViaWebGL(webGlProps, translation) {
-  const {gl, colorUniformLocation, translationUniformLocation} = webGlProps
-  drawScene(webGlProps)
-  // 3. Draw!!
-  // - Draw 3 random rectangles
-  renderTranslationGL(gl, colorUniformLocation, translationUniformLocation)
+export function drawTranslation(webGlProps, translation) {
+  const {gl, colorUniformLocation} = webGlProps
+
+  renderTranslation(gl, colorUniformLocation, translation, color, width, height)
 }
