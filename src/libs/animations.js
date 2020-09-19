@@ -48,12 +48,4 @@ export const animations = [
   //     draw.translationSceneViaWebGL(webGlProps, translation)
   //   },
   // },
-  {
-    id: 'test-poop',
-    name: 'Error',
-    type: 'test',
-    run() {
-      throw Error('Test 💩')
-    },
-  },
 ]
