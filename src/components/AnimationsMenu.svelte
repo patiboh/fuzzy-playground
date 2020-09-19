@@ -22,7 +22,7 @@
 </style>
 
 <div class="animations-menu" data-cy="animations-menu">
-  {#each menumItems as {name, id, type} (id)}
+  {#each menumItems as {name, id, type}}
     <button
       class="btn-menu {type}"
       on:click={handleClick}
