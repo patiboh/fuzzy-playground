@@ -1,14 +1,11 @@
 <script>
-  // @ts-check
-  import {onMount, createEventDispatcher} from 'svelte'
-
+  import {createEventDispatcher} from 'svelte'
   import {animations} from '../stores.js'
 
   const dispatch = createEventDispatcher()
-
   let menumItems = []
 
-  const animationsUnsub = animations.subscribe((value) => {
+  animations.subscribe((value) => {
     menumItems = value
   })
 
@@ -18,20 +15,14 @@
       animationId: element.getAttribute('data-id'),
     })
   }
-
-  onMount(() => {
-    return () => {
-      animationsUnsub()
-    }
-  })
 </script>
 
 <style lang="scss">
-  @import '../styles/animation-menu.scss';
+  @import '../styles/animations-menu.scss';
 </style>
 
-<div class="btn-group animation-menu" data-cy="animations-menu">
-  {#each menumItems as {name, id} (id)}
+<div class="btn-group animations-menu" data-cy="animations-menu">
+  {#each menumItems as {name, id, type} (id)}
     <button class="btn-menu" on:click={handleClick} data-id={id} data-cy={id}>
       {name}
     </button>
