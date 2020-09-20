@@ -1,207 +1,54 @@
 <script>
-  import * as constants from '../types/constants.js'
+  import * as draw from '../libs/draw.js'
   import * as utils from '../libs/utils.js'
 
-  import {types as aTypes} from '../libs/animations.js'
-
-  import {
-    uiState,
-    emojiFeedback,
-    animations,
-    currentAnimationId,
-  } from '../stores.js'
-  import Feedback from './Feedback.svelte'
-  import Coordinates from './Coordinates.svelte'
-  import AnimationsMenu from './AnimationsMenu.svelte'
-  import Controls from './Controls.svelte'
-
-  // Canvas
   let canvas
-  let canvasWidth = 300
-  let canvasHeight = 150
+  let width
+  let height
+  let frame
 
+  let emojis = utils.multiply(['😘'])
   // Audio
   let drumroll
-  let ended
-  let duration
-  let playbackRate = 2
-
-  // WebGL
-  let translation = [0, 0]
-  let color = [Math.random(), Math.random(), Math.random(), 1]
-  let width = 100 // of geometry
-  let height = 30 // of geometry
-
-  // animation controls
-  let xCoord = 0
-  let yCoord = 0
-  let showCoordinates = false
-
-  // animation loops
+  let playbackRate = 2 // augmente la vitesse d'écoute
   let interval
-  let animationTimeout
+  let timeout
+  // 4200 ~= point d'inflexion
+  // du roulement de tambours à cymbale
   let animationDuration = 4200 / playbackRate
 
-  // UI feedback
-  let playgroundState
-  let emojiFrame
-  let emojis
-  let stacktrace = ''
-  let animationId = $currentAnimationId
-  let animation = $animations.find((animation) => animation.id === animationId)
-
-  $: showCoordinates = animation.type === aTypes.coordinates
-  $: playAudio = animation.hasAudio
-  $: translation = [xCoord, yCoord]
-  $: maxX = canvasWidth - width
-  $: maxY = canvasHeight - height
-
-  uiState.subscribe((value) => {
-    playgroundState = value
-  })
-  emojiFeedback.subscribe((value) => {
-    emojis = utils.multiply(Object.values(value))
-  })
-  currentAnimationId.subscribe((value) => {
-    animationId = value
-  })
+  function startAnimation() {
+    drumroll.play()
+    const webGlProps = draw.initScene(canvas)
+    interval = setInterval(() => {
+      draw.rectanglesScene(webGlProps)
+    }, 1)
+    // Arrête l'animation au point d'inflexion
+    timeout = setTimeout(() => {
+      // arrête l'animation
+      clearInterval(interval)
+      clearTimeout(timeout)
+      loopEmojis() // 🎉
+    }, animationDuration)
+  }
 
   function loopEmojis() {
-    emojiFrame = requestAnimationFrame(loopEmojis)
-
+    frame = requestAnimationFrame(loopEmojis)
     emojis = emojis.map((emoji) => {
       emoji.y += 0.7 * emoji.ratio
       if (emoji.y > 100) emoji.y = -20
       return emoji
     })
   }
-
-  function clearEmojis() {
-    if (emojiFrame) {
-      cancelAnimationFrame(emojiFrame)
-      emojiFrame = null
-    }
-    emojis = []
-  }
-
-  function startAnimation() {
-    if (playAudio) {
-      drumroll.play()
-    }
-    switch (animation.type) {
-      case aTypes.interval:
-        interval = animation.run(canvas)
-        // don't go on forever just yet
-        animationTimeout = setTimeout(() => {
-          uiState.set(constants.uiState.SUCCESS)
-          stopAnimation()
-          loopEmojis() // get this out of here: make reactive to store change ?
-        }, animationDuration) // duration of drumroll, for now
-        break
-      case aTypes.coordinates:
-        animation.run(canvas, translation, color, width, height)
-        break
-      case aTypes.test:
-        animation.run(canvas)
-        break
-    }
-  }
-
-  function stopAnimation() {
-    if (interval) {
-      clearInterval(interval)
-      interval = null
-    }
-    if (animationTimeout) {
-      clearTimeout(animationTimeout)
-      animationTimeout = null
-    }
-  }
-
-  function resetPlayground() {
-    clearEmojis()
-    stopAnimation()
-  }
-
-  function handleError(error) {
-    stopAnimation()
-    uiState.set(constants.uiState.ERROR)
-    stacktrace = `${error}\n${stacktrace}`
-    loopEmojis()
-  }
-
-  function handlePlay() {
-    try {
-      uiState.set(constants.uiState.ACTIVE)
-      startAnimation()
-    } catch (error) {
-      handleError(error)
-    }
-  }
-
-  function handleRefresh() {
-    resetPlayground()
-    location.reload() // TODO - reload gl code only ?
-  }
-
-  function handleReset() {
-    resetPlayground()
-    uiState.set(constants.uiState.DEFAULT)
-    if (!animation.hasInterval) {
-      handlePlay()
-    }
-  }
-
-  function handleLoadAnimation(event) {
-    resetPlayground()
-    currentAnimationId.set(event.detail.animationId)
-    animation = $animations.find((animation) => animation.id === animationId)
-    handlePlay()
-  }
-
-  function updateXCoord() {
-    animation.run(canvas, translation, color, width, height)
-  }
-
-  function updateYCoord() {
-    animation.run(canvas, translation, color, width, height)
-  }
 </script>
 
-<style lang="scss">
-  @import '../styles/playground.scss';
-</style>
+<section class="output">
+  <button on:click={startAnimation}>Play</button>
+  <canvas bind:this={canvas} {width} {height} />
 
-<section class="sidebar">
-  <AnimationsMenu on:loadAnimation={handleLoadAnimation} />
-  {#if showCoordinates}
-    <Coordinates
-      bind:xCoord
-      bind:yCoord
-      bind:maxX
-      bind:maxY
-      on:updateXCoord={updateXCoord}
-      on:updateYCoord={updateYCoord} />
-  {/if}
-  <Controls {handlePlay} {handleReset} {handleRefresh} />
-</section>
-
-<section
-  class={`output ${playgroundState}`}
-  bind:offsetWidth={canvasWidth}
-  bind:offsetHeight={canvasHeight}
-  data-cy="output">
-  <canvas bind:this={canvas} data-cy="canvas" />
-  <Feedback {stacktrace} />
-  <audio
-    bind:this={drumroll}
-    bind:duration
-    bind:ended
-    bind:playbackRate
-    data-cy="drumroll">
+  <audio bind:this={drumroll} bind:playbackRate>
     <source src="drumroll.ogg" type="audio/ogg" />
-    <track kind="captions" srclang="en" />
-    <!-- TODO: fix caption src -->
+    <track kind="captions" />
   </audio>
 </section>
 
