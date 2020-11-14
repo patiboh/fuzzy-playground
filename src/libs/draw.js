@@ -306,3 +306,5 @@ export function translationSceneViaWebGL(webGlProps, translation) {
   // - Draw 3 random rectangles
   renderTranslationGL(gl, colorUniformLocation, translationUniformLocation)
 }
+
+export function render() {}

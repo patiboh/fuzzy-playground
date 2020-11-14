@@ -1,9 +1,6 @@
-<script>
+<script context="module">
   import * as constants from '../types/constants.js'
   import * as utils from '../libs/utils.js'
-
-  import {types as aTypes} from '../libs/animations.js'
-
   import {
     uiState,
     emojiFeedback,
@@ -14,7 +11,9 @@
   import Coordinates from './Coordinates.svelte'
   import AnimationsMenu from './AnimationsMenu.svelte'
   import Controls from './Controls.svelte'
+</script>
 
+<script>
   // Canvas
   let canvas
   let canvasWidth = 300
@@ -28,19 +27,19 @@
 
   // WebGL
   let translation = [0, 0]
-  let color = [Math.random(), Math.random(), Math.random(), 1]
-  let width = 100 // of geometry
-  let height = 30 // of geometry
+  const color = [Math.random(), Math.random(), Math.random(), 1]
+  const width = 100 // of geometry
+  const height = 30 // of geometry
 
   // animation controls
   let xCoord = 0
   let yCoord = 0
   let showCoordinates = false
 
-  // animation loops
-  let interval
+  // animations
+  let stopAnimation
   let animationTimeout
-  let animationDuration = 4200 / playbackRate
+  const animationDuration = 4200 / playbackRate
 
   // UI feedback
   let playgroundState
@@ -50,8 +49,7 @@
   let animationId = $currentAnimationId
   let animation = $animations.find((animation) => animation.id === animationId)
 
-  $: showCoordinates = animation.type === aTypes.coordinates
-  $: playAudio = animation.hasAudio
+  $: showCoordinates = animation.coordinates
   $: translation = [xCoord, yCoord]
   $: maxX = canvasWidth - width
   $: maxY = canvasHeight - height
@@ -85,42 +83,27 @@
   }
 
   function startAnimation() {
-    if (playAudio) {
+    resetPlayground()
+    if (animation.audio) {
       drumroll.play()
     }
-    switch (animation.type) {
-      case aTypes.interval:
-        interval = animation.run(canvas)
-        // don't go on forever just yet
-        animationTimeout = setTimeout(() => {
-          uiState.set(constants.uiState.SUCCESS)
-          stopAnimation()
-          loopEmojis() // get this out of here: make reactive to store change ?
-        }, animationDuration) // duration of drumroll, for now
-        break
-      case aTypes.coordinates:
-        animation.run(canvas, translation, color, width, height)
-        break
-      case aTypes.test:
-        animation.run(canvas)
-        break
-    }
-  }
-
-  function stopAnimation() {
-    if (interval) {
-      clearInterval(interval)
-      interval = null
-    }
-    if (animationTimeout) {
-      clearTimeout(animationTimeout)
-      animationTimeout = null
+    if (animation.coordinates) {
+      animation.run(canvas, translation, color, width, height)
+    } else if (animation.loop) {
+      animation.run(canvas, translation, color, width, height)
+      animationTimeout = setTimeout(() => {
+        uiState.set(constants.uiState.SUCCESS)
+        stopAnimation()
+        loopEmojis() // get this out of here: make reactive to store change ?
+      }, animationDuration) // duration of drumroll, for now
+    } else {
+      animation.run(canvas)
     }
   }
 
   function resetPlayground() {
     clearEmojis()
-    stopAnimation()
+    animation.stop()
   }
 
   function handleError(error) {
