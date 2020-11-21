@@ -18,6 +18,7 @@
   let canvas
   let canvasWidth = 300
   let canvasHeight = 150
+  let animationFrame
 
   // Audio
   let drumroll
@@ -27,7 +28,7 @@
 
   // WebGL
   let translation = [0, 0]
-  const color = [Math.random(), Math.random(), Math.random(), 1]
+  let color = [Math.random(), Math.random(), Math.random(), 1]
   const width = 100 // of geometry
   const height = 30 // of geometry
 
@@ -37,7 +38,7 @@
   let showCoordinates = false
 
   // animations
-  let stopAnimation
+  let loop
   let animationTimeout
   const animationDuration = 4200 / playbackRate
 
@@ -56,6 +57,10 @@
 
   uiState.subscribe((value) => {
     playgroundState = value
+    if (value === constants.uiState.DEFAULT) {
+      xCoord = 0
+      yCoord = 0
+    }
   })
   emojiFeedback.subscribe((value) => {
     emojis = utils.multiply(Object.values(value))
@@ -75,47 +80,54 @@
   }
 
   function clearEmojis() {
-    if (emojiFrame) {
-      cancelAnimationFrame(emojiFrame)
-      emojiFrame = null
-    }
+    cancelAnimationFrame(emojiFrame)
     emojis = []
   }
 
+  function resetColor() {
+    color = [Math.random(), Math.random(), Math.random(), 1]
+  }
+
   function startAnimation() {
-    resetPlayground()
+    cancelAnimationFrame(animationFrame)
+    uiState.set(constants.uiState.ACTIVE)
     if (animation.audio) {
       drumroll.play()
     }
-    if (animation.coordinates) {
-      animation.run(canvas, translation, color, width, height)
-    } else if (animation.loop) {
-      animation.run(canvas, translation, color, width, height)
+    if (animation.loop) {
+      loop = animation.run(canvas)
       animationTimeout = setTimeout(() => {
         uiState.set(constants.uiState.SUCCESS)
-        stopAnimation()
-        loopEmojis() // get this out of here: make reactive to store change ?
+        clearInterval(loop)
+        loopEmojis()
       }, animationDuration) // duration of drumroll, for now
     } else {
-      animation.run(canvas)
+      if (animation.coordinates) {
+        animation.run(canvas, translation, color, width, height)
+      } else {
+        animation.run(canvas)
+      }
+      animationFrame = requestAnimationFrame(startAnimation)
     }
   }
 
   function resetPlayground() {
+    uiState.set(constants.uiState.DEFAULT)
     clearEmojis()
-    animation.stop()
+    resetColor()
+    clearInterval(loop)
+    clearTimeout(animationTimeout)
   }
 
   function handleError(error) {
-    stopAnimation()
     uiState.set(constants.uiState.ERROR)
     stacktrace = `${error}\n${stacktrace}`
     loopEmojis()
   }
 
   function handlePlay() {
+    resetPlayground()
     try {
-      uiState.set(constants.uiState.ACTIVE)
       startAnimation()
     } catch (error) {
       handleError(error)
@@ -129,14 +141,9 @@
 
   function handleReset() {
     resetPlayground()
-    uiState.set(constants.uiState.DEFAULT)
-    if (!animation.hasInterval) {
-      handlePlay()
-    }
   }
 
   function handleLoadAnimation(event) {
-    resetPlayground()
     currentAnimationId.set(event.detail.animationId)
     animation = $animations.find((animation) => animation.id === animationId)
     handlePlay()
@@ -154,20 +161,6 @@
 <style lang="scss">
   @import '../styles/playground.scss';
 </style>
-
-<section class="sidebar">
-  <AnimationsMenu on:loadAnimation={handleLoadAnimation} />
-  {#if showCoordinates}
-    <Coordinates
-      bind:xCoord
-      bind:yCoord
-      bind:maxX
-      bind:maxY
-      on:updateXCoord={updateXCoord}
-      on:updateYCoord={updateYCoord} />
-  {/if}
-  <Controls {handlePlay} {handleReset} {handleRefresh} />
-</section>
 
 <section
   class={`output ${playgroundState}`}
@@ -188,6 +181,19 @@
   </audio>
 </section>
 
+<aside class="sidebar">
+  <AnimationsMenu on:loadAnimation={handleLoadAnimation} />
+  {#if showCoordinates}
+    <Coordinates
+      bind:xCoord
+      bind:yCoord
+      bind:maxX
+      bind:maxY
+      on:updateXCoord={updateXCoord}
+      on:updateYCoord={updateYCoord} />
+  {/if}
+  <Controls {handlePlay} {handleReset} {handleRefresh} />
+</aside>
 {#each emojis as emoji}
   <span
     data-cy="emoji-{emoji.character}"
