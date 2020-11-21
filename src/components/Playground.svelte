@@ -94,7 +94,6 @@
   }
 
   function startAnimation() {
-    cancelAnimationFrame(animationFrame)
     uiState.set(constants.uiState.ACTIVE)
     if (animation.audio) {
       drumroll.play()
@@ -132,6 +131,7 @@
   }
 
   function handlePlay() {
+    cancelAnimationFrame(animationFrame)
     resetPlayground()
     try {
       startAnimation()
