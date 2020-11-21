@@ -26,8 +26,7 @@
   let duration
   let playbackRate = 2
 
-  // WebGL
-  let translation = [0, 0]
+  // WebGL Geometry
   let color = [Math.random(), Math.random(), Math.random(), 1]
   const width = 100 // of geometry
   const height = 30 // of geometry
@@ -35,10 +34,11 @@
   // animation controls
   let xCoord = 0
   let yCoord = 0
+  let translation = [0, 0]
   let showCoordinates = false
 
   // animations
-  let loop
+  let animationLoop
   let animationTimeout
   const animationDuration = 4200 / playbackRate
 
@@ -88,6 +88,11 @@
     color = [Math.random(), Math.random(), Math.random(), 1]
   }
 
+  function resetAudio() {
+    drumroll.pause()
+    drumroll.currentTime = 0
+  }
+
   function startAnimation() {
     cancelAnimationFrame(animationFrame)
     uiState.set(constants.uiState.ACTIVE)
@@ -95,10 +100,10 @@
       drumroll.play()
     }
     if (animation.loop) {
-      loop = animation.run(canvas)
+      animationLoop = animation.run(canvas)
       animationTimeout = setTimeout(() => {
         uiState.set(constants.uiState.SUCCESS)
-        clearInterval(loop)
+        clearInterval(animationLoop)
         loopEmojis()
       }, animationDuration) // duration of drumroll, for now
     } else {
@@ -115,7 +120,8 @@
     uiState.set(constants.uiState.DEFAULT)
     clearEmojis()
     resetColor()
-    clearInterval(loop)
+    resetAudio()
+    clearInterval(animationLoop)
     clearTimeout(animationTimeout)
   }
 
