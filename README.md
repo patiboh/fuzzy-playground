@@ -49,7 +49,7 @@ Consult [sapper.svelte.dev](https://sapper.svelte.dev) for help getting started.
 **Animation success / error**
 Inspired by the [Svelte tutorial](https://svelte.dev/tutorial/basics) confetti - I loved this from the first time I saw it, I just couldn't help it 😍 - and this [tweet by @cassidoo](https://twitter.com/cassidoo/status/1280239175078273024?s=20)
 
-- [Sapper](https://github.com/sveltejs/sapper) (mainly because I wanted to do TDD using Cucumber - this has proven more challenging than I expected)
+- [Sapper](https://github.com/sveltejs/sapper)
 - [Svelte](https://svelte.dev/)
 - [Svelte tutorial](https://svelte.dev/tutorial/basics): the best intro to Svelte, and source of the emoji animations
 - WebGL examples from https://webglfundamentals.org/
@@ -57,9 +57,5 @@ Inspired by the [Svelte tutorial](https://svelte.dev/tutorial/basics) confetti -
 
 ## TODO
 
-- Make animations interactive (WIP)
-- Fix mobile states
-- Figure out a testing strategy : separate UI from GL errors as they apply to two different usages
 - Get back to the WebGL bits!
-- Explore how to use Svelte better (-> checkout svelte.gl) !
-- ...
+- Explore how to use Svelte better
