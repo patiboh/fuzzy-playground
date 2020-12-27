@@ -6,15 +6,15 @@
   // @ts-check
   export let xCoord = 0
   export let yCoord = 0
-  export let maxX = undefined
-  export let maxY = undefined
+  export let maxX
+  export let maxY
 
-  let handleXCoordChange = () => {
+  const handleXCoordChange = () => {
     dispatch('updateXCoord', {
       value: xCoord,
     })
   }
-  let handleYCoordChange = () => {
+  const handleYCoordChange = () => {
     dispatch('updateYCoord', {
       value: yCoord,
     })
@@ -27,7 +27,8 @@
 
 <div class="coordinates" data-cy="coordinates">
   <label>
-    x = {xCoord}
+    x =
+    {xCoord}
     <input
       data-cy="coord-x"
       type="range"
@@ -36,7 +37,8 @@
       on:input={handleXCoordChange} />
   </label>
   <label>
-    y = {yCoord}
+    y =
+    {yCoord}
     <input
       data-cy="coord-y"
       type="range"
