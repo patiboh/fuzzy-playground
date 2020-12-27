@@ -156,11 +156,11 @@
   }
 
   function updateXCoord() {
-    animation.run(canvas, translation, color, width, height)
+    animation.update(translation)
   }
 
   function updateYCoord() {
-    animation.run(canvas, translation, color, width, height)
+    animation.update(translation)
   }
 </script>
 

@@ -8,8 +8,13 @@
 import * as utils from './utils.js'
 import * as utilsWebGl from './utilsWebGL.js'
 
-import {frag} from '../gl/fragment-shader-2d'
-import {vert} from '../gl/vertex-shader-2d'
+/**
+ * @param {WebGLRenderingContext} gl
+ * @param {Array} coords
+ */
+function setGeometry(gl, coords) {
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(coords), gl.STATIC_DRAW)
+}
 
 /**
  * Write data to draw a rectangle into the last thing bound to gl.ARRAY_BUFFER (in this context positionBuffer)
@@ -111,6 +116,47 @@ function renderTranslation(
   const count = 6
   gl.drawArrays(primitiveType, offset, count)
 }
+
+/**
+ * TRANSLATIONS
+ * @param {WebGLRenderingContext} gl
+ */
+function renderTranslationGL(gl, colorUniformLocation, color) {
+  /* prettier-ignore */
+  const coords = [
+    // left column
+    0, 0,
+    30, 0,
+    0, 150,
+    0, 150,
+    30, 0,
+    30, 150,
+
+    // top rung
+    30, 0,
+    100, 0,
+    30, 30,
+    30, 30,
+    100, 0,
+    100, 30,
+
+    // middle rung
+    30, 60,
+    67, 60,
+    30, 90,
+    30, 90,
+    67, 60,
+    67, 90,
+  ]
+  gl.uniform4fv(colorUniformLocation, color)
+  setGeometry(gl, coords)
+
+  // Draw the rectangle.
+  const primitiveType = gl.TRIANGLES
+  const offset = 0
+  const count = 18
+  gl.drawArrays(primitiveType, offset, count)
+}
 /**
  * @param {WebGLRenderingContext} gl
  * @param {number} count number of rectangles to draw
@@ -122,32 +168,11 @@ function drawRectangles(gl, colorUniformLocation, count) {
 }
 
 /**
- * TRANSLATIONS
- * @param {WebGLRenderingContext} gl
- */
-function renderTranslationGL(
-  gl,
-  colorUniformLocation,
-  translationUniformLocation,
-) {
-  // const width = 100
-  // const height = 30
-  // const color = [Math.random(), Math.random(), Math.random(), 1]
-  // gl.uniform4fv(colorUniformLocation, color)
-  // setRectangle(gl, translation[0], translation[1], width, height)
-  // // Draw the rectangle.
-  // const primitiveType = gl.TRIANGLES
-  // const offset = 0
-  // const count = 6
-  // gl.drawArrays(primitiveType, offset, count)
-}
-
-/**
  * INITIALIZATION CODE
  * Code that gets executed once before the program runs
  * @param {HTMLCanvasElement} canvas
  */
-export function initScene(canvas) {
+export function initScene(canvas, vert, frag) {
   // 1. Get A WebGL context
   const gl = canvas.getContext('webgl')
 
@@ -176,7 +201,10 @@ export function initScene(canvas) {
   gl.useProgram(program)
 
   // 4. Bind resources / data
+
+  // where the vertex data needs to go
   const positionAttributeLocation = gl.getAttribLocation(program, 'a_position')
+
   const positionBuffer = gl.createBuffer()
 
   // bind our resource (the positions buffer) to a BIND_POINT on the GPU
@@ -188,20 +216,11 @@ export function initScene(canvas) {
   //  - sets uniforms to be bound to the current program
   // bind u_color
   const colorUniformLocation = gl.getUniformLocation(program, 'u_color')
-  // gl.uniform4f(
-  //   colorUniformLocation,
-  //   Math.random(),
-  //   Math.random(),
-  //   Math.random(),
-  //   1,
-  // )
-
   // bind u_translation
   const translationUniformLocation = gl.getUniformLocation(
     program,
     'u_translation',
   )
-
   // bind u_resolution
   const resolutionUniformLocation = gl.getUniformLocation(
     program,
@@ -226,11 +245,12 @@ export function initScene(canvas) {
     positionBuffer,
   } webGlProps
  */
-export function drawScene(webGlProps) {
+export function drawScene(webGlProps, translation) {
   const {
     gl,
     resolutionUniformLocation,
     positionAttributeLocation,
+    translationUniformLocation,
     positionBuffer,
   } = webGlProps
   /************************
@@ -251,6 +271,10 @@ export function drawScene(webGlProps) {
   gl.clearColor(0, 0, 0, 0) // set color to use as default when clearing buffer
   gl.clear(gl.COLOR_BUFFER_BIT)
 
+  if (translation) {
+    // Set the translation.
+    gl.uniform2fv(translationUniformLocation, translation)
+  }
   // 2. Bind Position
   // - Enable data supply into vertex shader a_position attribute
   gl.enableVertexAttribArray(positionAttributeLocation)
@@ -299,12 +323,12 @@ export function translationSceneViaDOM(
   renderTranslation(gl, colorUniformLocation, translation, color, width, height)
 }
 
-export function translationSceneViaWebGL(webGlProps, translation) {
-  const {gl, colorUniformLocation, translationUniformLocation} = webGlProps
-  drawScene(webGlProps)
+export function translationSceneViaWebGL(webGlProps, translation, color) {
+  const {gl, colorUniformLocation} = webGlProps
   // 3. Draw!!
-  // - Draw 3 random rectangles
-  renderTranslationGL(gl, colorUniformLocation, translationUniformLocation)
+
+  drawScene(webGlProps, translation)
+  renderTranslationGL(gl, colorUniformLocation, color)
 }
 
 export function render() {}
