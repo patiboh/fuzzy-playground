@@ -42,7 +42,7 @@ export const animations = [
     vert,
     frag,
     requestAnimationFrame: true,
-    run(canvas, translation, color, width, height) {
+    run(canvas, translation, rotation, color, width, height) {
       this.webGlProps = draw.initScene(canvas, this.vert, this.frag)
       draw.translationSceneViaDOM(
         this.webGlProps,
@@ -64,20 +64,22 @@ export const animations = [
     vert: vertTranslateGl,
     frag,
     color: null,
-    run(canvas, translation, color) {
+    run(canvas, translation, rotation, color) {
       this.color = color
       this.webGlProps = draw.initScene(canvas, this.vert, this.frag)
       const drawOptions = {
         webGlProps: this.webGlProps,
         translation,
+        rotation,
         color,
       }
       draw.translationSceneViaWebGL(drawOptions)
     },
-    update(translation) {
+    update(translation, rotation) {
       const drawOptions = {
         webGlProps: this.webGlProps,
         translation,
+        rotation,
         color: this.color,
       }
       draw.drawSceneT2DGL(drawOptions)

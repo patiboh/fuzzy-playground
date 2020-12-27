@@ -337,10 +337,9 @@ export function drawSceneT2DGL(options) {
   // Set the translation.
   gl.uniform2fv(translationUniformLocation, translation)
 
-  if (rotation) {
-    // Set the translation.
-    gl.uniform2fv(rotationUniformLocation, rotation)
-  }
+  // Set the translation.
+  gl.uniform2fv(rotationUniformLocation, rotation)
+
   // Draw the geometry.
   const primitiveType = gl.TRIANGLES
   offset = 0

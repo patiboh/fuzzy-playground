@@ -161,11 +161,11 @@
   }
 
   function updateXCoord() {
-    animation.update(translation)
+    animation.update(translation, rotation)
   }
 
   function updateYCoord() {
-    animation.update(translation)
+    animation.update(translation, rotation)
   }
 </script>
 
