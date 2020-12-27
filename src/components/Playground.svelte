@@ -111,7 +111,9 @@
       } else {
         animation.run(canvas)
       }
-      animationFrame = requestAnimationFrame(startAnimation)
+      if (animation.requestAnimationFrame) {
+        animationFrame = requestAnimationFrame(startAnimation)
+      }
     }
   }
 

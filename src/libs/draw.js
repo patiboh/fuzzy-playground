@@ -121,7 +121,7 @@ function renderTranslation(
  * TRANSLATIONS
  * @param {WebGLRenderingContext} gl
  */
-function renderTranslationGL(gl, colorUniformLocation, color) {
+function setGeometryTranslationGL(gl, colorUniformLocation, color) {
   /* prettier-ignore */
   const coords = [
     // left column
@@ -150,12 +150,6 @@ function renderTranslationGL(gl, colorUniformLocation, color) {
   ]
   gl.uniform4fv(colorUniformLocation, color)
   setGeometry(gl, coords)
-
-  // Draw the rectangle.
-  const primitiveType = gl.TRIANGLES
-  const offset = 0
-  const count = 18
-  gl.drawArrays(primitiveType, offset, count)
 }
 /**
  * @param {WebGLRenderingContext} gl
@@ -205,13 +199,6 @@ export function initScene(canvas, vert, frag) {
   // where the vertex data needs to go
   const positionAttributeLocation = gl.getAttribLocation(program, 'a_position')
 
-  const positionBuffer = gl.createBuffer()
-
-  // bind our resource (the positions buffer) to a BIND_POINT on the GPU
-  // so that we can pass data to it
-  // always set this up before rendering loop
-  gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer)
-
   // 5. Set up Uniforms (~ globals)
   //  - sets uniforms to be bound to the current program
   // bind u_color
@@ -226,6 +213,15 @@ export function initScene(canvas, vert, frag) {
     program,
     'u_resolution',
   )
+
+  // Create a buffer to put positions in
+  const positionBuffer = gl.createBuffer()
+
+  // bind our resource (the positions buffer) to a BIND_POINT on the GPU
+  // so that we can pass data to it
+  // always set this up before rendering loop
+  // (think of it as ARRAY_BUFFER = positionBuffer)
+  gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer)
 
   return {
     gl,
@@ -245,12 +241,11 @@ export function initScene(canvas, vert, frag) {
     positionBuffer,
   } webGlProps
  */
-export function drawScene(webGlProps, translation) {
+export function drawScene(webGlProps) {
   const {
     gl,
     resolutionUniformLocation,
     positionAttributeLocation,
-    translationUniformLocation,
     positionBuffer,
   } = webGlProps
   /************************
@@ -271,10 +266,6 @@ export function drawScene(webGlProps, translation) {
   gl.clearColor(0, 0, 0, 0) // set color to use as default when clearing buffer
   gl.clear(gl.COLOR_BUFFER_BIT)
 
-  if (translation) {
-    // Set the translation.
-    gl.uniform2fv(translationUniformLocation, translation)
-  }
   // 2. Bind Position
   // - Enable data supply into vertex shader a_position attribute
   gl.enableVertexAttribArray(positionAttributeLocation)
@@ -301,6 +292,69 @@ export function drawScene(webGlProps, translation) {
   )
 }
 
+// Draw the scene.
+export function drawSceneT2DGL(webGlProps, translation, color) {
+  const {
+    gl,
+    resolutionUniformLocation,
+    positionAttributeLocation,
+    translationUniformLocation,
+    colorUniformLocation,
+    positionBuffer,
+  } = webGlProps
+  /************************
+   * RENDERING CODE
+   * Code that gets executed every time we draw
+   ************************/
+  const canvas = /** @type {HTMLCanvasElement} */ (gl.canvas)
+  // 1. Setup canvas
+  // - resize canvas to fit screen display
+  utils.resize(canvas)
+
+  // Tell WebGL how to convert from clip space to pixels
+  gl.viewport(0, 0, gl.canvas.width, gl.canvas.height)
+
+  // Clear the canvas.
+  gl.clearColor(0, 0, 0, 0) // set color to use as default when clearing buffer
+  gl.clear(gl.COLOR_BUFFER_BIT)
+
+  // Turn on the attribute
+  gl.enableVertexAttribArray(positionAttributeLocation)
+
+  // Bind the position buffer.
+  gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer)
+
+  // Tell the attribute how to get data out of positionBuffer (ARRAY_BUFFER)
+  const size = 2 // 2 components per iteration
+  const type = gl.FLOAT // the data is 32bit floats
+  const normalize = false // don't normalize the data
+  const stride = 0 // 0 = move forward size * sizeof(type) each iteration to get the next position
+  let offset = 0 // start at the beginning of the buffer
+  gl.vertexAttribPointer(
+    positionAttributeLocation,
+    size,
+    type,
+    normalize,
+    stride,
+    offset,
+  )
+
+  // set the resolution
+  gl.uniform2f(resolutionUniformLocation, gl.canvas.width, gl.canvas.height)
+
+  // set the color
+  gl.uniform4fv(colorUniformLocation, color)
+
+  // Set the translation.
+  gl.uniform2fv(translationUniformLocation, translation)
+
+  // Draw the geometry.
+  const primitiveType = gl.TRIANGLES
+  offset = 0
+  const count = 18 // 6 triangles in the 'F', 3 points per triangle
+  gl.drawArrays(primitiveType, offset, count)
+}
+
 export function rectanglesScene(webGlProps) {
   const {gl, colorUniformLocation} = webGlProps
   drawScene(webGlProps)
@@ -325,10 +379,8 @@ export function translationSceneViaDOM(
 
 export function translationSceneViaWebGL(webGlProps, translation, color) {
   const {gl, colorUniformLocation} = webGlProps
-  // 3. Draw!!
-
-  drawScene(webGlProps, translation)
-  renderTranslationGL(gl, colorUniformLocation, color)
+  setGeometryTranslationGL(gl, colorUniformLocation, color) // Set the translation.
+  drawSceneT2DGL(webGlProps, translation, color)
 }
 
 export function render() {}
