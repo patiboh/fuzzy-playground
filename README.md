@@ -13,34 +13,11 @@ The app displays a canvas, a feedback area (displayed only when there are errors
 - a "Clear emojis button" (to stop the emojis)
 - inputs for 2D coordinates (for now)
 
-Some screenshots below
+![Fuzzy Playground](Fuzzy-Playground-focus.png)
 
-**Default state**
+You can play with it here:
 
-These are desktop views. I still have much to do to improve visuals, in particular transitions as well as optimise for mobile.
-
-Pristine state
-
-![Playground default state](playground-desktop-default.png)
-
-Play button focus
-
-![Playground default state](playground-desktop-animate-button-focus.png)
-
-**Animating**
-
-To note that there are no emojis (except UI controls) when the animation is running. This also means that for any sort of endless loop (such as interactive animations) - there should not be any emoji feedback unless the animation has been stopped (in either success or failure state).
-
-![Playground animating](playground-animating.png)
-
-**Animation success / error**
-
-These are mobile views. Desktop views have the same content, using the layout of the default views above.
-
-Inspired by the [Svelte tutorial](https://svelte.dev/tutorial/basics) confetti - I loved this from the first time I saw it, I just couldn't help it 😍 - and this [tweet by @cassidoo](https://twitter.com/cassidoo/status/1280239175078273024?s=20)
-
-![Playground animation is a success](playground-animation-end-success.png)
-![Playground animation has an error](playground-error.png)
+https://fuzzy-playground.patiboh.vercel.app/
 
 **Is that all??**
 
@@ -68,6 +45,9 @@ Open up [localhost:3000](http://localhost:3000) and start clicking around.
 Consult [sapper.svelte.dev](https://sapper.svelte.dev) for help getting started.
 
 ## Libraries & Resources:
+
+**Animation success / error**
+Inspired by the [Svelte tutorial](https://svelte.dev/tutorial/basics) confetti - I loved this from the first time I saw it, I just couldn't help it 😍 - and this [tweet by @cassidoo](https://twitter.com/cassidoo/status/1280239175078273024?s=20)
 
 - [Sapper](https://github.com/sveltejs/sapper) (mainly because I wanted to do TDD using Cucumber - this has proven more challenging than I expected)
 - [Svelte](https://svelte.dev/)
