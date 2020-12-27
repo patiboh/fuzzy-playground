@@ -3,6 +3,7 @@ import * as draw from '../libs/draw.js'
 import {frag} from '../gl/fragment-shader-2d'
 import {vert} from '../gl/vertex-shader-2d'
 import {vert as vertTranslateGl} from '../gl/vertex-shader-translate-gl-2d'
+import {vert as vertRotate2d} from '../gl/vertex-shader-rotate-2d'
 
 export const animations = [
   {
@@ -56,7 +57,7 @@ export const animations = [
     },
   },
   {
-    id: 'L3',
+    id: 'L2-2',
     name: 'Translation via shader',
     coordinates: true,
     webGlProps: null,
@@ -66,10 +67,50 @@ export const animations = [
     run(canvas, translation, color) {
       this.color = color
       this.webGlProps = draw.initScene(canvas, this.vert, this.frag)
-      draw.translationSceneViaWebGL(this.webGlProps, translation, color)
+      const drawOptions = {
+        webGlProps: this.webGlProps,
+        translation,
+        color,
+      }
+      draw.translationSceneViaWebGL(drawOptions)
     },
     update(translation) {
-      draw.drawSceneT2DGL(this.webGlProps, translation, this.color)
+      const drawOptions = {
+        webGlProps: this.webGlProps,
+        translation,
+        color: this.color,
+      }
+      draw.drawSceneT2DGL(drawOptions)
+    },
+  },
+  {
+    id: 'L3',
+    name: 'Rotation',
+    coordinates: true,
+    radialCoordinates: true,
+    webGlProps: null,
+    vert: vertRotate2d,
+    frag,
+    color: null,
+    run(canvas, translation, rotation, color) {
+      this.color = color
+      this.webGlProps = draw.initScene(canvas, this.vert, this.frag)
+      const drawOptions = {
+        webGlProps: this.webGlProps,
+        translation,
+        rotation,
+        color,
+      }
+      draw.translationSceneViaWebGL(drawOptions)
+    },
+    update(translation, rotation) {
+      const drawOptions = {
+        webGlProps: this.webGlProps,
+        translation,
+        rotation,
+        color: this.color,
+      }
+      draw.drawSceneT2DGL(drawOptions)
     },
   },
 ]

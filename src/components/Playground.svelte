@@ -34,6 +34,8 @@
   // animation controls
   let xCoord = 0
   let yCoord = 0
+  let xRad = 0 // radial coordinate x = cos(O)
+  let yRad = 0 // radial coordinate y = sin(O)
   let translation = [0, 0]
   let showCoordinates = false
 
@@ -52,6 +54,7 @@
 
   $: showCoordinates = animation.coordinates
   $: translation = [xCoord, yCoord]
+  $: rotation = [xRad, yRad]
   $: maxX = canvasWidth - width
   $: maxY = canvasHeight - height
 
@@ -107,7 +110,7 @@
       }, animationDuration) // duration of drumroll, for now
     } else {
       if (animation.coordinates) {
-        animation.run(canvas, translation, color, width, height)
+        animation.run(canvas, translation, rotation, color, width, height)
       } else {
         animation.run(canvas)
       }

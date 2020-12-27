@@ -200,6 +200,7 @@ export function initScene(canvas, vert, frag) {
     program,
     'u_resolution',
   )
+  var rotationUniformLocation = gl.getUniformLocation(program, 'u_rotation')
 
   // Create a buffer to put positions in
   const positionBuffer = gl.createBuffer()
@@ -216,6 +217,7 @@ export function initScene(canvas, vert, frag) {
     colorUniformLocation,
     translationUniformLocation,
     positionAttributeLocation,
+    rotationUniformLocation,
     positionBuffer,
   }
 }
@@ -280,13 +282,15 @@ export function drawScene(webGlProps) {
 }
 
 // Draw the scene.
-export function drawSceneT2DGL(webGlProps, translation, color) {
+export function drawSceneT2DGL(options) {
+  const {webGlProps, translation, rotation, color} = options
   const {
     gl,
     resolutionUniformLocation,
-    positionAttributeLocation,
-    translationUniformLocation,
     colorUniformLocation,
+    translationUniformLocation,
+    positionAttributeLocation,
+    rotationUniformLocation,
     positionBuffer,
   } = webGlProps
   /************************
@@ -324,7 +328,6 @@ export function drawSceneT2DGL(webGlProps, translation, color) {
     stride,
     offset,
   )
-
   // set the resolution
   gl.uniform2f(resolutionUniformLocation, gl.canvas.width, gl.canvas.height)
 
@@ -334,6 +337,10 @@ export function drawSceneT2DGL(webGlProps, translation, color) {
   // Set the translation.
   gl.uniform2fv(translationUniformLocation, translation)
 
+  if (rotation) {
+    // Set the translation.
+    gl.uniform2fv(rotationUniformLocation, rotation)
+  }
   // Draw the geometry.
   const primitiveType = gl.TRIANGLES
   offset = 0
@@ -370,10 +377,11 @@ export function translationSceneViaDOM(
   )
 }
 
-export function translationSceneViaWebGL(webGlProps, translation, color) {
+export function translationSceneViaWebGL(options) {
+  const {webGlProps, color} = options
   const {gl, colorUniformLocation} = webGlProps
   renderTranslationGeometry(gl, colorUniformLocation, color) // Set the translation.
-  drawSceneT2DGL(webGlProps, translation, color)
+  drawSceneT2DGL(options)
 }
 
 export function render() {}
