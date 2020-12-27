@@ -90,6 +90,7 @@ export const animations = [
     name: 'Rotation',
     coordinates: true,
     radialCoordinates: true,
+    angleRange: true,
     webGlProps: null,
     vert: vertRotate2d,
     frag,

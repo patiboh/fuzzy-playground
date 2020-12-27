@@ -9,6 +9,7 @@
   } from '../stores.js'
   import Feedback from './Feedback.svelte'
   import Coordinates from './Coordinates.svelte'
+  import AngleRange from './AngleRange.svelte'
   import AnimationsMenu from './AnimationsMenu.svelte'
   import Controls from './Controls.svelte'
 </script>
@@ -34,10 +35,13 @@
   // animation controls
   let xCoord = 0
   let yCoord = 0
-  let xRad = 0 // radial coordinate x = cos(O)
-  let yRad = 0 // radial coordinate y = sin(O)
+  let angle = 0
+  let xRadCoord = 0 // radial coordinate x = cos(O)
+  let yRadCoord = 0 // radial coordinate y = sin(O)
   let translation = [0, 0]
+  let rotation = [0, 0]
   let showCoordinates = false
+  let showAngleRange = false
 
   // animations
   let animationLoop
@@ -53,8 +57,11 @@
   let animation = $animations.find((animation) => animation.id === animationId)
 
   $: showCoordinates = animation.coordinates
+  $: showAngleRange = animation.angleRange
   $: translation = [xCoord, yCoord]
-  $: rotation = [xRad, yRad]
+  $: xRadCoord = Math.cos(degToRad(angle)) // radial coordinate x = cos(O)
+  $: yRadCoord = Math.sin(degToRad(angle)) // radial coordinate y = sin(O)
+  $: rotation = [xRadCoord, yRadCoord]
   $: maxX = canvasWidth - width
   $: maxY = canvasHeight - height
 
@@ -71,6 +78,10 @@
   currentAnimationId.subscribe((value) => {
     animationId = value
   })
+
+  function degToRad(degrees) {
+    return degrees * (Math.PI / 180)
+  }
 
   function loopEmojis() {
     emojiFrame = requestAnimationFrame(loopEmojis)
@@ -159,12 +170,15 @@
     animation = $animations.find((animation) => animation.id === animationId)
     handlePlay()
   }
-
   function updateXCoord() {
     animation.update(translation, rotation)
   }
 
   function updateYCoord() {
+    animation.update(translation, rotation)
+  }
+
+  function updatePosition() {
     animation.update(translation, rotation)
   }
 </script>
@@ -202,6 +216,9 @@
       bind:maxY
       on:updateXCoord={updateXCoord}
       on:updateYCoord={updateYCoord} />
+    {#if showAngleRange}
+      <AngleRange bind:angle on:updateAngle={updatePosition} />
+    {/if}
   {/if}
   <Controls {handlePlay} {handleReset} {handleRefresh} />
 </aside>
