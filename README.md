@@ -8,9 +8,10 @@ Its basically a web application that uses Svelte to handle the state management 
 
 The app displays a canvas, a feedback area (displayed only when there are errors in the code), and provides some controls:
 
-- a Play button
-- a Refresh button (reloads the page for now)
-- a "Clear emojis button" (to stop the emojis)
+- 👾 a Play button
+- 🧽 a Reset button (reset current animation)
+- 🚿 a Refresh button (reloads the page for now)
+- an Animations menu
 - inputs for 2D coordinates (for now)
 
 ![Fuzzy Playground](Fuzzy-Playground-focus.png)
