@@ -1,0 +1,66 @@
+.radial-coordinates {
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  grid-column-start: 1;
+  grid-row-start: 1;
+  height: auto;
+  justify-content: flex-start;
+  padding-right: 1em;
+  width: auto;
+}
+
+.radial-coordinates label {
+  align-items: flex-start;
+  background: linear-gradient(var(--color-dark) 5%, var(--color-coordinates));
+  border-radius: var(--border-radius-input);
+  color: var(--color-text-light-shower);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin-right: 1em;
+  max-width: 100%;
+  padding: 0.5em 1em 0.35em;
+  width: auto;
+}
+
+.radial-coordinates label:last-of-type {
+  margin-top: 0.5em;
+}
+
+.radial-coordinates label:hover {
+  background: linear-gradient(
+    var(--color-dark) 10%,
+    var(--color-coordinates-hover)
+  );
+  color: var(--color-text-light);
+}
+
+.radial-coordinates input {
+  margin-bottom: 0.25em;
+  margin-top: 0.5em;
+  width: calc(100% - 1em);
+}
+
+@media (min-width: 768px) and (min-aspect-ratio: 3/5) {
+  .radial-coordinates {
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    grid-row-start: 2;
+    justify-content: flex-start;
+    overflow-x: scroll;
+    width: 100%;
+  }
+
+  .radial-coordinates label {
+    align-items: center;
+    flex-direction: row;
+    margin: 0.5em 0 0;
+    padding: 0.7em 1em;
+  }
+
+  .radial-coordinates input {
+    width: calc(100% - 6em);
+  }
+}
