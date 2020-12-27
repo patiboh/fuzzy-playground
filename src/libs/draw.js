@@ -25,39 +25,20 @@ function setGeometry(gl, coords) {
  * @param {number} height
  */
 function setRectangle(gl, x, y, width, height) {
-  // // Positions in clip space
-  // // const positions = [
-  // //   0,0,
-  // //   0,0.5,
-  // //   0.7, 0,
-  // // ]
-
-  // // Positions in pixels
-  // // prettier-ignore
-  // const positions = [
-  //     20, 20,
-  //     200, 20,
-  //     20, 100,
-  //     20, 100,
-  //     200, 20,
-  //     200, 100,
-  //   ]
-  // gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(positions), gl.STATIC_DRAW)
-
   const x1 = x
   const x2 = x + width
   const y1 = y
   const y2 = y + height
-
   // prettier-ignore
-  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([
+  const coords = [
     x1, y1,
     x2, y1,
     x1, y2,
     x1, y2,
     x2, y1,
     x2, y2,
-  ]), gl.STATIC_DRAW)
+  ]
+  setGeometry(gl, coords)
 }
 
 /**
@@ -99,7 +80,7 @@ function drawRectangle(gl, colorUniformLocation) {
  * TRANSLATIONS
  * @param {WebGLRenderingContext} gl
  */
-function renderTranslation(
+function renderTranslationRectangle(
   gl,
   colorUniformLocation,
   translation,
@@ -121,7 +102,7 @@ function renderTranslation(
  * TRANSLATIONS
  * @param {WebGLRenderingContext} gl
  */
-function setGeometryTranslationGL(gl, colorUniformLocation, color) {
+function renderTranslationGeometry(gl, colorUniformLocation, color) {
   /* prettier-ignore */
   const coords = [
     // left column
@@ -150,6 +131,12 @@ function setGeometryTranslationGL(gl, colorUniformLocation, color) {
   ]
   gl.uniform4fv(colorUniformLocation, color)
   setGeometry(gl, coords)
+
+  // Draw the rectangle.
+  const primitiveType = gl.TRIANGLES
+  const offset = 0
+  const count = 18
+  gl.drawArrays(primitiveType, offset, count)
 }
 /**
  * @param {WebGLRenderingContext} gl
@@ -313,7 +300,6 @@ export function drawSceneT2DGL(webGlProps, translation, color) {
 
   // Tell WebGL how to convert from clip space to pixels
   gl.viewport(0, 0, gl.canvas.width, gl.canvas.height)
-
   // Clear the canvas.
   gl.clearColor(0, 0, 0, 0) // set color to use as default when clearing buffer
   gl.clear(gl.COLOR_BUFFER_BIT)
@@ -374,12 +360,19 @@ export function translationSceneViaDOM(
   drawScene(webGlProps)
   // 3. Draw!!
   // - Draw 3 random rectangles
-  renderTranslation(gl, colorUniformLocation, translation, color, width, height)
+  renderTranslationRectangle(
+    gl,
+    colorUniformLocation,
+    translation,
+    color,
+    width,
+    height,
+  )
 }
 
 export function translationSceneViaWebGL(webGlProps, translation, color) {
   const {gl, colorUniformLocation} = webGlProps
-  setGeometryTranslationGL(gl, colorUniformLocation, color) // Set the translation.
+  renderTranslationGeometry(gl, colorUniformLocation, color) // Set the translation.
   drawSceneT2DGL(webGlProps, translation, color)
 }
 
