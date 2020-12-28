@@ -38,15 +38,15 @@
    */
 
   // translation
-  let xCoord = 0
-  let yCoord = 0
+  let xCoord = canvasWidth / 2
+  let yCoord = canvasHeight / 2
   let translation = [xCoord, yCoord]
   let showCoordinates = false
 
   // rotation
   let angle = 0
-  let xRadCoord = 0 // radial coordinate x = cos(O)
-  let yRadCoord = 0 // radial coordinate y = sin(O)
+  let xRadCoord = Math.cos(degToRad(angle)) // radial coordinate x = cos(O)
+  let yRadCoord = Math.sin(degToRad(angle)) // radial coordinate y = sin(O)
   let rotation = [xRadCoord, yRadCoord]
   let showAngleRange = false
 
@@ -82,10 +82,6 @@
 
   uiState.subscribe((value) => {
     playgroundState = value
-    if (value === constants.uiState.DEFAULT) {
-      xCoord = 0
-      yCoord = 0
-    }
   })
   emojiFeedback.subscribe((value) => {
     emojis = utils.multiply(Object.values(value))
@@ -115,6 +111,17 @@
 
   function resetColor() {
     color = [Math.random(), Math.random(), Math.random(), 1]
+  }
+
+  function resetPosition() {
+    xCoord = maxX / 2
+    yCoord = maxY / 2
+    angle = 0
+  }
+
+  function resetScale() {
+    xScale = 1
+    yScale = 1
   }
 
   function resetAudio() {
@@ -159,6 +166,8 @@
     clearEmojis()
     resetColor()
     resetAudio()
+    resetPosition()
+    resetScale()
     clearInterval(animationLoop)
     clearTimeout(animationTimeout)
   }

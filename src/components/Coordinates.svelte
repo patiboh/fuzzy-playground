@@ -4,8 +4,8 @@
   const dispatch = createEventDispatcher()
 
   // @ts-check
-  export let xCoord = 0
-  export let yCoord = 0
+  export let xCoord
+  export let yCoord
   export let maxX
   export let maxY
 
