@@ -200,7 +200,10 @@ export function initScene(canvas, vert, frag) {
     program,
     'u_resolution',
   )
-  var rotationUniformLocation = gl.getUniformLocation(program, 'u_rotation')
+  // bind u_rotation
+  const rotationUniformLocation = gl.getUniformLocation(program, 'u_rotation')
+  // bind u_scale
+  const scaleUniformLocation = gl.getUniformLocation(program, 'u_scale')
 
   // Create a buffer to put positions in
   const positionBuffer = gl.createBuffer()
@@ -218,6 +221,7 @@ export function initScene(canvas, vert, frag) {
     translationUniformLocation,
     positionAttributeLocation,
     rotationUniformLocation,
+    scaleUniformLocation,
     positionBuffer,
   }
 }
@@ -283,7 +287,7 @@ export function drawScene(webGlProps) {
 
 // Draw the scene.
 export function drawSceneT2DGL(options) {
-  const {webGlProps, translation, rotation, color} = options
+  const {webGlProps, translation, rotation, scale, color} = options
   const {
     gl,
     resolutionUniformLocation,
@@ -291,6 +295,7 @@ export function drawSceneT2DGL(options) {
     translationUniformLocation,
     positionAttributeLocation,
     rotationUniformLocation,
+    scaleUniformLocation,
     positionBuffer,
   } = webGlProps
   /************************
@@ -337,8 +342,11 @@ export function drawSceneT2DGL(options) {
   // Set the translation.
   gl.uniform2fv(translationUniformLocation, translation)
 
-  // Set the translation.
+  // Set the rotation.
   gl.uniform2fv(rotationUniformLocation, rotation)
+
+  // Set the scale.
+  gl.uniform2fv(scaleUniformLocation, scale)
 
   // Draw the geometry.
   const primitiveType = gl.TRIANGLES

@@ -4,6 +4,7 @@ import {frag} from '../gl/fragment-shader-2d'
 import {vert} from '../gl/vertex-shader-2d'
 import {vert as vertTranslateGl} from '../gl/vertex-shader-translate-gl-2d'
 import {vert as vertRotate2d} from '../gl/vertex-shader-rotate-2d'
+import {vert as vertScale2d} from '../gl/vertex-shader-scale-2d'
 
 export const animations = [
   {
@@ -64,22 +65,24 @@ export const animations = [
     vert: vertTranslateGl,
     frag,
     color: null,
-    run(canvas, translation, rotation, color) {
+    run(canvas, translation, rotation, scale, color) {
       this.color = color
       this.webGlProps = draw.initScene(canvas, this.vert, this.frag)
       const drawOptions = {
         webGlProps: this.webGlProps,
         translation,
         rotation,
+        scale,
         color,
       }
       draw.translationSceneViaWebGL(drawOptions)
     },
-    update(translation, rotation) {
+    update(translation, rotation, scale) {
       const drawOptions = {
         webGlProps: this.webGlProps,
         translation,
         rotation,
+        scale,
         color: this.color,
       }
       draw.drawSceneT2DGL(drawOptions)
@@ -95,22 +98,57 @@ export const animations = [
     vert: vertRotate2d,
     frag,
     color: null,
-    run(canvas, translation, rotation, color) {
+    run(canvas, translation, rotation, scale, color) {
       this.color = color
       this.webGlProps = draw.initScene(canvas, this.vert, this.frag)
       const drawOptions = {
         webGlProps: this.webGlProps,
         translation,
         rotation,
+        scale,
         color,
       }
       draw.translationSceneViaWebGL(drawOptions)
     },
-    update(translation, rotation) {
+    update(translation, rotation, scale) {
       const drawOptions = {
         webGlProps: this.webGlProps,
         translation,
         rotation,
+        scale,
+        color: this.color,
+      }
+      draw.drawSceneT2DGL(drawOptions)
+    },
+  },
+  {
+    id: 'L4',
+    name: 'Scale',
+    coordinates: true,
+    angleRange: true,
+    scales: true,
+    webGlProps: null,
+    vert: vertScale2d,
+    frag,
+    color: null,
+    run(canvas, translation, rotation, scale, color) {
+      this.color = color
+      this.webGlProps = draw.initScene(canvas, this.vert, this.frag)
+      const drawOptions = {
+        webGlProps: this.webGlProps,
+        translation,
+        rotation,
+        scale,
+        color,
+      }
+      draw.translationSceneViaWebGL(drawOptions)
+    },
+    update(translation, rotation, scale) {
+      const drawOptions = {
+        webGlProps: this.webGlProps,
+        translation,
+        rotation,
+        scale,
         color: this.color,
       }
       draw.drawSceneT2DGL(drawOptions)

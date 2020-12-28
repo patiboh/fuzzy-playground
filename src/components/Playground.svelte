@@ -10,6 +10,7 @@
   import Feedback from './Feedback.svelte'
   import Coordinates from './Coordinates.svelte'
   import AngleRange from './AngleRange.svelte'
+  import Scales from './Scales.svelte'
   import AnimationsMenu from './AnimationsMenu.svelte'
   import Controls from './Controls.svelte'
 </script>
@@ -32,16 +33,28 @@
   const width = 100 // of geometry
   const height = 30 // of geometry
 
-  // animation controls
+  /**
+   * Geometry controls
+   */
+
+  // translation
   let xCoord = 0
   let yCoord = 0
+  let translation = [xCoord, yCoord]
+  let showCoordinates = false
+
+  // rotation
   let angle = 0
   let xRadCoord = 0 // radial coordinate x = cos(O)
   let yRadCoord = 0 // radial coordinate y = sin(O)
-  let translation = [0, 0]
-  let rotation = [0, 0]
-  let showCoordinates = false
+  let rotation = [xRadCoord, yRadCoord]
   let showAngleRange = false
+
+  // scale
+  let xScale = 1
+  let yScale = 1
+  let scale = [xScale, yScale]
+  let showScales = false
 
   // animations
   let animationLoop
@@ -58,10 +71,12 @@
 
   $: showCoordinates = animation.coordinates
   $: showAngleRange = animation.angleRange
+  $: showScales = animation.scales
   $: translation = [xCoord, yCoord]
   $: xRadCoord = Math.cos(degToRad(angle)) // radial coordinate x = cos(O)
   $: yRadCoord = Math.sin(degToRad(angle)) // radial coordinate y = sin(O)
   $: rotation = [xRadCoord, yRadCoord]
+  $: scale = [xScale, yScale]
   $: maxX = canvasWidth - width
   $: maxY = canvasHeight - height
 
@@ -121,7 +136,15 @@
       }, animationDuration) // duration of drumroll, for now
     } else {
       if (animation.coordinates) {
-        animation.run(canvas, translation, rotation, color, width, height)
+        animation.run(
+          canvas,
+          translation,
+          rotation,
+          scale,
+          color,
+          width,
+          height,
+        )
       } else {
         animation.run(canvas)
       }
@@ -172,7 +195,7 @@
   }
 
   function updatePosition() {
-    animation.update(translation, rotation)
+    animation.update(translation, rotation, scale)
   }
 </script>
 
@@ -210,6 +233,17 @@
         bind:maxY
         on:updateXCoord={updatePosition}
         on:updateYCoord={updatePosition} />
+      {#if showScales}
+        <Scales
+          bind:xScale
+          bind:yScale
+          maxScaleX="5"
+          maxScaleY="5"
+          minScaleX="-5"
+          minScaleY="-5"
+          on:updateXScale={updatePosition}
+          on:updateYScale={updatePosition} />
+      {/if}
       {#if showAngleRange}
         <AngleRange bind:angle on:updateAngle={updatePosition} />
       {/if}
