@@ -43,7 +43,7 @@ export const animations = [
     vert,
     frag,
     requestAnimationFrame: true,
-    run(canvas, translation, rotation, color, width, height) {
+    run(canvas, translation, rotation, scale, color, width, height) {
       this.webGlProps = draw.initScene(canvas, this.vert, this.frag)
       draw.translationSceneViaDOM(
         this.webGlProps,
