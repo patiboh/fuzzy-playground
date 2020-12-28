@@ -22,28 +22,26 @@
 </script>
 
 <style lang="scss">
-  @import '../styles/coordinates.scss';
+  @import '../styles/input-range.scss';
 </style>
 
-<div class="coordinates" data-cy="coordinates">
-  <label>
-    x =
-    {xCoord}
-    <input
-      data-cy="coord-x"
-      type="range"
-      bind:value={xCoord}
-      max={maxX}
-      on:input={handleXCoordChange} />
-  </label>
-  <label>
-    y =
-    {yCoord}
-    <input
-      data-cy="coord-y"
-      type="range"
-      bind:value={yCoord}
-      max={maxY}
-      on:input={handleYCoordChange} />
-  </label>
-</div>
+<label>
+  x =
+  {xCoord}
+  <input
+    data-cy="coord-x"
+    type="range"
+    bind:value={xCoord}
+    max={maxX}
+    on:input={handleXCoordChange} />
+</label>
+<label>
+  y =
+  {yCoord}
+  <input
+    data-cy="coord-y"
+    type="range"
+    bind:value={yCoord}
+    max={maxY}
+    on:input={handleYCoordChange} />
+</label>

@@ -209,16 +209,18 @@
 <aside class="sidebar">
   <AnimationsMenu on:loadAnimation={handleLoadAnimation} />
   {#if showCoordinates}
-    <Coordinates
-      bind:xCoord
-      bind:yCoord
-      bind:maxX
-      bind:maxY
-      on:updateXCoord={updateXCoord}
-      on:updateYCoord={updateYCoord} />
-    {#if showAngleRange}
-      <AngleRange bind:angle on:updateAngle={updatePosition} />
-    {/if}
+    <div class="coordinates" data-cy="coordinates">
+      <Coordinates
+        bind:xCoord
+        bind:yCoord
+        bind:maxX
+        bind:maxY
+        on:updateXCoord={updateXCoord}
+        on:updateYCoord={updateYCoord} />
+      {#if showAngleRange}
+        <AngleRange bind:angle on:updateAngle={updatePosition} />
+      {/if}
+    </div>
   {/if}
   <Controls {handlePlay} {handleReset} {handleRefresh} />
 </aside>

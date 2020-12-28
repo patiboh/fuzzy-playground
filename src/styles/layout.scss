@@ -25,15 +25,26 @@ main {
   display: grid;
   grid-column-start: 1;
   grid-row-start: 2;
-  grid-template-columns: var(--coord-input-width) auto;
-  grid-template-rows: calc(var(--coord-input-height) * 2) var(
+  grid-template-columns: var(--control-btn-group-width) auto;
+  grid-template-rows: calc(var(--coord-input-height) * 3) var(
       --control-btn-group-height
     );
 }
 
+.coordinates {
+  display: flex;
+  flex-direction: column;
+  grid-column-start: 2;
+  grid-row-start: 1;
+  height: auto;
+  justify-content: flex-start;
+  padding-right: 1em;
+  width: auto;
+}
+
 @media (min-width: 540px) {
   .sidebar {
-    grid-template-columns: var(--coord-input-width) auto var(
+    grid-template-columns: var(--control-btn-group-width) auto var(
         --coord-input-width
       );
   }
@@ -50,7 +61,16 @@ main {
     grid-row-start: 1;
     grid-template-columns: auto;
     grid-template-rows:
-      auto calc(var(--coord-input-height) * 2)
+      auto calc(var(--coord-input-height) * 3)
       var(--control-btn-group-height);
+  }
+  .coordinates {
+    display: flex;
+    flex-direction: column;
+    grid-row-start: 2;
+    grid-column-start: 1;
+    justify-content: flex-start;
+    overflow-x: scroll;
+    width: 100%;
   }
 }
