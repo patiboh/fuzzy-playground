@@ -170,13 +170,6 @@
     animation = $animations.find((animation) => animation.id === animationId)
     handlePlay()
   }
-  function updateXCoord() {
-    animation.update(translation, rotation)
-  }
-
-  function updateYCoord() {
-    animation.update(translation, rotation)
-  }
 
   function updatePosition() {
     animation.update(translation, rotation)
@@ -215,8 +208,8 @@
         bind:yCoord
         bind:maxX
         bind:maxY
-        on:updateXCoord={updateXCoord}
-        on:updateYCoord={updateYCoord} />
+        on:updateXCoord={updatePosition}
+        on:updateYCoord={updatePosition} />
       {#if showAngleRange}
         <AngleRange bind:angle on:updateAngle={updatePosition} />
       {/if}
