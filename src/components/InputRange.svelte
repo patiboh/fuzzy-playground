@@ -6,6 +6,7 @@
   // @ts-check
   export let label = ''
   export let value = 0
+  export let min = 0
   export let max = 0
   export let step = '0.01'
 
@@ -27,6 +28,7 @@
     data-cy={`${label}-range`}
     type="range"
     bind:value
+    {min}
     {max}
     {step}
     on:input={handleInput} />

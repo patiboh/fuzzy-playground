@@ -8,9 +8,7 @@
     currentAnimationId,
   } from '../stores.js'
   import Feedback from './Feedback.svelte'
-  import Coordinates from './Coordinates.svelte'
-  import InputRange from './InputRange.svelte'
-  import Scale from './Scale.svelte'
+  import Geometry from './Geometry.svelte'
   import AnimationsMenu from './AnimationsMenu.svelte'
   import Controls from './Controls.svelte'
 </script>
@@ -29,32 +27,18 @@
   let playbackRate = 2
 
   // WebGL Geometry
-  let color = [Math.random(), Math.random(), Math.random(), 1]
   const width = 100 // of geometry
   const height = 30 // of geometry
 
   /**
    * Geometry controls
    */
-
-  // translation
-  let xCoord = canvasWidth / 2
-  let yCoord = canvasHeight / 2
-  let translation = [xCoord, yCoord]
-  let showCoordinates = false
-
-  // rotation
-  let angle = 0
-  let xRadCoord = Math.cos(degToRad(angle)) // radial coordinate x = cos(O)
-  let yRadCoord = Math.sin(degToRad(angle)) // radial coordinate y = sin(O)
-  let rotation = [xRadCoord, yRadCoord]
-  let showRotation = false
-
-  // scale
-  let xScale = 1
-  let yScale = 1
-  let scale = [xScale, yScale]
-  let showScale = false
+  let geometryState = {
+    color: [Math.random(), Math.random(), Math.random(), 1],
+    translation: [canvasWidth / 2, canvasHeight / 2],
+    rotation: [0, 0],
+    scale: [1, 1],
+  }
 
   // animations
   let animationLoop
@@ -69,17 +53,6 @@
   let animationId = $currentAnimationId
   let animation = $animations.find((animation) => animation.id === animationId)
 
-  $: showCoordinates = animation.coordinates
-  $: showRotation = animation.rotation
-  $: showScale = animation.scale
-  $: translation = [xCoord, yCoord]
-  $: xRadCoord = Math.cos(degToRad(angle)) // radial coordinate x = cos(O)
-  $: yRadCoord = Math.sin(degToRad(angle)) // radial coordinate y = sin(O)
-  $: rotation = [xRadCoord, yRadCoord]
-  $: scale = [xScale, yScale]
-  $: maxX = canvasWidth - width
-  $: maxY = canvasHeight - height
-
   uiState.subscribe((value) => {
     playgroundState = value
   })
@@ -89,10 +62,6 @@
   currentAnimationId.subscribe((value) => {
     animationId = value
   })
-
-  function degToRad(degrees) {
-    return degrees * (Math.PI / 180)
-  }
 
   function loopEmojis() {
     emojiFrame = requestAnimationFrame(loopEmojis)
@@ -107,21 +76,6 @@
   function clearEmojis() {
     cancelAnimationFrame(emojiFrame)
     emojis = []
-  }
-
-  function resetColor() {
-    color = [Math.random(), Math.random(), Math.random(), 1]
-  }
-
-  function resetPosition() {
-    xCoord = maxX / 2
-    yCoord = maxY / 2
-    angle = 0
-  }
-
-  function resetScale() {
-    xScale = 1
-    yScale = 1
   }
 
   function resetAudio() {
@@ -145,10 +99,10 @@
       if (animation.coordinates) {
         animation.run(
           canvas,
-          translation,
-          rotation,
-          scale,
-          color,
+          geometryState.translation,
+          geometryState.rotation,
+          geometryState.scale,
+          geometryState.color,
           width,
           height,
         )
@@ -164,10 +118,7 @@
   function resetPlayground() {
     uiState.set(constants.uiState.DEFAULT)
     clearEmojis()
-    resetColor()
     resetAudio()
-    resetPosition()
-    resetScale()
     clearInterval(animationLoop)
     clearTimeout(animationTimeout)
   }
@@ -203,8 +154,14 @@
     handlePlay()
   }
 
-  function updateGeometry() {
-    animation.update(translation, rotation, scale)
+  function updateGeometry(event) {
+    const {color, translation, rotation, scale} = event.detail.value
+    geometryState = {...geometryState, color, translation, rotation, scale}
+    if (animation.webGlProps) {
+      animation.update(translation, rotation, scale)
+    } else {
+      handlePlay()
+    }
   }
 </script>
 
@@ -234,31 +191,11 @@
 <aside class="sidebar">
   <AnimationsMenu on:loadAnimation={handleLoadAnimation} />
   <div class="coordinates" data-cy="coordinates">
-    {#if showCoordinates}
-      <Coordinates
-        bind:xCoord
-        bind:yCoord
-        bind:maxX
-        bind:maxY
-        on:input={updateGeometry} />
-    {/if}
-    {#if showScale}
-      <Scale
-        bind:xScale
-        bind:yScale
-        maxX="5"
-        maxY="5"
-        minX="-5"
-        minY="-5"
-        on:input={updateGeometry} />
-    {/if}
-    {#if showRotation}
-      <InputRange
-        bind:value={angle}
-        label="angle"
-        max="360"
-        on:input={updateGeometry} />
-    {/if}
+    <Geometry
+      on:change={updateGeometry}
+      {canvasWidth}
+      {canvasHeight}
+      {animation} />
   </div>
   <Controls {handlePlay} {handleReset} {handleRefresh} />
 </aside>

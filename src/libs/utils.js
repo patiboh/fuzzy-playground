@@ -67,3 +67,7 @@ export function multiply(characters) {
     })
     .sort((a, b) => a.ratio - b.ratio)
 }
+
+export function degToRad(degrees) {
+  return degrees * (Math.PI / 180)
+}
