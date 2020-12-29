@@ -1,4 +1,6 @@
 <script>
+  import InputRange from './InputRange.svelte'
+
   import {createEventDispatcher} from 'svelte'
 
   const dispatch = createEventDispatcher()
@@ -9,39 +11,18 @@
   export let maxX
   export let maxY
 
-  const handleXCoordChange = () => {
-    dispatch('updateXCoord', {
+  const handleXChange = () => {
+    dispatch('input', {
       value: xCoord,
     })
   }
-  const handleYCoordChange = () => {
-    dispatch('updateYCoord', {
+  const handleYChange = () => {
+    dispatch('input', {
       value: yCoord,
     })
   }
 </script>
 
-<style lang="scss">
-  @import '../styles/input-range.scss';
-</style>
+<InputRange bind:value={xCoord} label="x" max={maxX} on:input={handleXChange} />
 
-<label>
-  x =
-  {xCoord}
-  <input
-    data-cy="coord-x"
-    type="range"
-    bind:value={xCoord}
-    max={maxX}
-    on:input={handleXCoordChange} />
-</label>
-<label>
-  y =
-  {yCoord}
-  <input
-    data-cy="coord-y"
-    type="range"
-    bind:value={yCoord}
-    max={maxY}
-    on:input={handleYCoordChange} />
-</label>
+<InputRange bind:value={yCoord} label="y" max={maxY} on:input={handleYChange} />

@@ -9,7 +9,7 @@
   } from '../stores.js'
   import Feedback from './Feedback.svelte'
   import Coordinates from './Coordinates.svelte'
-  import AngleRange from './AngleRange.svelte'
+  import InputRange from './InputRange.svelte'
   import Scales from './Scales.svelte'
   import AnimationsMenu from './AnimationsMenu.svelte'
   import Controls from './Controls.svelte'
@@ -203,7 +203,7 @@
     handlePlay()
   }
 
-  function updatePosition() {
+  function updateGeometry() {
     animation.update(translation, rotation, scale)
   }
 </script>
@@ -233,31 +233,33 @@
 
 <aside class="sidebar">
   <AnimationsMenu on:loadAnimation={handleLoadAnimation} />
-  {#if showCoordinates}
-    <div class="coordinates" data-cy="coordinates">
+  <div class="coordinates" data-cy="coordinates">
+    {#if showCoordinates}
       <Coordinates
         bind:xCoord
         bind:yCoord
         bind:maxX
         bind:maxY
-        on:updateXCoord={updatePosition}
-        on:updateYCoord={updatePosition} />
-      {#if showScales}
-        <Scales
-          bind:xScale
-          bind:yScale
-          maxScaleX="5"
-          maxScaleY="5"
-          minScaleX="-5"
-          minScaleY="-5"
-          on:updateXScale={updatePosition}
-          on:updateYScale={updatePosition} />
-      {/if}
-      {#if showAngleRange}
-        <AngleRange bind:angle on:updateAngle={updatePosition} />
-      {/if}
-    </div>
-  {/if}
+        on:input={updateGeometry} />
+    {/if}
+    {#if showScales}
+      <Scales
+        bind:xScale
+        bind:yScale
+        maxX="5"
+        maxY="5"
+        minX="-5"
+        minY="-5"
+        on:input={updateGeometry} />
+    {/if}
+    {#if showAngleRange}
+      <InputRange
+        bind:value={angle}
+        label="angle"
+        max="360"
+        on:input={updateGeometry} />
+    {/if}
+  </div>
   <Controls {handlePlay} {handleReset} {handleRefresh} />
 </aside>
 {#each emojis as emoji}

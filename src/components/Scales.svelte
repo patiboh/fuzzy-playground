@@ -1,53 +1,43 @@
 <script>
+  import InputRange from './InputRange.svelte'
+
   import {createEventDispatcher} from 'svelte'
 
   const dispatch = createEventDispatcher()
-
   // @ts-check
   export let xScale
   export let yScale
-  export let maxScaleX
-  export let minScaleX
-  export let maxScaleY
-  export let minScaleY
+  export let minX
+  export let maxX
+  export let minY
+  export let maxY
 
-  const handleXScaleChange = () => {
-    dispatch('updateXScale', {
+  const step = '0.01'
+
+  const handleXChange = () => {
+    dispatch('input', {
       value: xScale,
     })
   }
-  const handleYScaleChange = () => {
-    dispatch('updateYScale', {
+  const handleYChange = () => {
+    dispatch('input', {
       value: yScale,
     })
   }
 </script>
 
-<style lang="scss">
-  @import '../styles/input-range.scss';
-</style>
+<InputRange
+  bind:value={xScale}
+  label="scale x"
+  min={minX}
+  max={maxX}
+  {step}
+  on:input={handleXChange} />
 
-<label>
-  scale X:
-  {xScale}
-  <input
-    data-cy="coord-x"
-    type="range"
-    bind:value={xScale}
-    min={minScaleX}
-    max={maxScaleX}
-    step="0.01"
-    on:input={handleXScaleChange} />
-</label>
-<label>
-  scale Y:
-  {yScale}
-  <input
-    data-cy="coord-y"
-    type="range"
-    bind:value={yScale}
-    min={minScaleY}
-    max={maxScaleY}
-    step="0.01"
-    on:input={handleYScaleChange} />
-</label>
+<InputRange
+  bind:value={yScale}
+  label="scale y"
+  min={minY}
+  max={maxY}
+  {step}
+  on:input={handleYChange} />
