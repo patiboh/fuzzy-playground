@@ -10,7 +10,7 @@
   import Feedback from './Feedback.svelte'
   import Coordinates from './Coordinates.svelte'
   import InputRange from './InputRange.svelte'
-  import Scales from './Scales.svelte'
+  import Scale from './Scale.svelte'
   import AnimationsMenu from './AnimationsMenu.svelte'
   import Controls from './Controls.svelte'
 </script>
@@ -48,13 +48,13 @@
   let xRadCoord = Math.cos(degToRad(angle)) // radial coordinate x = cos(O)
   let yRadCoord = Math.sin(degToRad(angle)) // radial coordinate y = sin(O)
   let rotation = [xRadCoord, yRadCoord]
-  let showAngleRange = false
+  let showRotation = false
 
   // scale
   let xScale = 1
   let yScale = 1
   let scale = [xScale, yScale]
-  let showScales = false
+  let showScale = false
 
   // animations
   let animationLoop
@@ -70,8 +70,8 @@
   let animation = $animations.find((animation) => animation.id === animationId)
 
   $: showCoordinates = animation.coordinates
-  $: showAngleRange = animation.angleRange
-  $: showScales = animation.scales
+  $: showRotation = animation.rotation
+  $: showScale = animation.scale
   $: translation = [xCoord, yCoord]
   $: xRadCoord = Math.cos(degToRad(angle)) // radial coordinate x = cos(O)
   $: yRadCoord = Math.sin(degToRad(angle)) // radial coordinate y = sin(O)
@@ -242,8 +242,8 @@
         bind:maxY
         on:input={updateGeometry} />
     {/if}
-    {#if showScales}
-      <Scales
+    {#if showScale}
+      <Scale
         bind:xScale
         bind:yScale
         maxX="5"
@@ -252,7 +252,7 @@
         minY="-5"
         on:input={updateGeometry} />
     {/if}
-    {#if showAngleRange}
+    {#if showRotation}
       <InputRange
         bind:value={angle}
         label="angle"

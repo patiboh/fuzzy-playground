@@ -38,6 +38,7 @@ export const animations = [
   {
     id: 'L2',
     name: 'Translation',
+    ui: ['position'],
     coordinates: true,
     webGlProps: null,
     vert,
@@ -60,6 +61,7 @@ export const animations = [
   {
     id: 'L2-2',
     name: 'Translation via shader',
+    ui: ['position'],
     coordinates: true,
     webGlProps: null,
     vert: vertTranslateGl,
@@ -91,9 +93,10 @@ export const animations = [
   {
     id: 'L3',
     name: 'Rotation',
+    ui: ['position', 'angle'],
     coordinates: true,
     radialCoordinates: true,
-    angleRange: true,
+    rotation: true,
     webGlProps: null,
     vert: vertRotate2d,
     frag,
@@ -124,9 +127,10 @@ export const animations = [
   {
     id: 'L4',
     name: 'Scale',
+    ui: ['position', 'angle', 'scale'],
     coordinates: true,
-    angleRange: true,
-    scales: true,
+    rotation: true,
+    scale: true,
     webGlProps: null,
     vert: vertScale2d,
     frag,
