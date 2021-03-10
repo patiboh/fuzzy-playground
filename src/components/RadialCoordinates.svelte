@@ -1,29 +1,25 @@
 <script>
-  import {createEventDispatcher} from 'svelte'
+  // import {createEventDispatcher} from 'svelte'
 
-  const dispatch = createEventDispatcher()
+  // const dispatch = createEventDispatcher()
 
-  // @ts-check
-  export let xRad = 0
-  export let yRad = 0
-  export let maxX
-  export let maxY
+  // // @ts-check
+  // export let xRad = 0
+  // export let yRad = 0
+  // export let maxX
+  // export let maxY
 
-  const handleXRadChange = () => {
-    dispatch('updateXRad', {
-      value: xRad,
-    })
-  }
-  const handleYRadChange = () => {
-    dispatch('updateYRad', {
-      value: yRad,
-    })
-  }
+  // const handleXRadChange = () => {
+  //   dispatch('updateXRad', {
+  //     value: xRad,
+  //   })
+  // }
+  // const handleYRadChange = () => {
+  //   dispatch('updateYRad', {
+  //     value: yRad,
+  //   })
+  // }
 </script>
-
-<style lang="scss">
-  @import '../styles/radial-coordinates.scss';
-</style>
 
 <div class="radial-coordinates" data-cy="radial-coordinates">
   <!-- <label>
@@ -48,3 +44,7 @@
       on:input={handleYRadChange} />
   </label> -->
 </div>
+
+<style lang="scss">
+  @import '../styles/radial-coordinates.scss';
+</style>

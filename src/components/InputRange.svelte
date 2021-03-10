@@ -17,10 +17,6 @@
   }
 </script>
 
-<style lang="scss">
-  @import '../styles/input-range.scss';
-</style>
-
 <label>
   {label}:
   {value}
@@ -31,5 +27,10 @@
     {min}
     {max}
     {step}
-    on:input={handleInput} />
+    on:input={handleInput}
+  />
 </label>
+
+<style lang="scss">
+  @import '../styles/input-range.scss';
+</style>

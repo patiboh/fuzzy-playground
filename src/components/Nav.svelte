@@ -2,11 +2,6 @@
   export let segment
 </script>
 
-<style lang="scss">
-  @import '../styles/variables.scss';
-  @import '../styles/nav.scss';
-</style>
-
 <nav>
   <ul>
     <li>
@@ -21,3 +16,8 @@
     <!-- <li><a rel=prefetch aria-current="{segment === 'blog' ? 'page' : undefined}" href="blog">blog</a></li> -->
   </ul>
 </nav>
+
+<style lang="scss">
+  @import '../styles/variables.scss';
+  @import '../styles/nav.scss';
+</style>

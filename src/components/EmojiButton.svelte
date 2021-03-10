@@ -34,10 +34,6 @@
   })
 </script>
 
-<style lang="scss">
-  @import '../styles/buttons.scss';
-</style>
-
 <button
   data-cy={dataCy}
   on:focus={handleFocus}
@@ -47,4 +43,9 @@
   bind:this={emojiButton}
   class={`btn-emoji ${buttonClass} ${playgroundState}`}
   style={`cursor: ${customCursor}`}
-  aria-label={buttonLabel} />
+  aria-label={buttonLabel}
+/>
+
+<style lang="scss">
+  @import '../styles/buttons.scss';
+</style>

@@ -186,15 +186,12 @@
   }
 </script>
 
-<style lang="scss">
-  @import '../styles/playground.scss';
-</style>
-
 <section
   class={`output ${playgroundState}`}
   bind:offsetWidth={canvasWidth}
   bind:offsetHeight={canvasHeight}
-  data-cy="output">
+  data-cy="output"
+>
   <canvas bind:this={canvas} data-cy="canvas" />
   <Feedback {stacktrace} />
   <audio
@@ -202,7 +199,8 @@
     bind:duration
     bind:ended
     bind:playbackRate
-    data-cy="drumroll">
+    data-cy="drumroll"
+  >
     <source src="drumroll.ogg" type="audio/ogg" />
     <track kind="captions" srclang="en" />
     <!-- TODO: fix caption src -->
@@ -216,7 +214,8 @@
       on:change={updateGeometry}
       {canvasWidth}
       {canvasHeight}
-      {animation} />
+      {animation}
+    />
   </div>
   <Controls {handlePlay} {handleReset} {handleRefresh} />
 </aside>
@@ -224,7 +223,12 @@
   <span
     data-cy="emoji-{emoji.character}"
     class="emoji"
-    style="left: {emoji.x}%; top: {emoji.y}%; transform: scale({emoji.ratio})">
+    style="left: {emoji.x}%; top: {emoji.y}%; transform: scale({emoji.ratio})"
+  >
     {emoji.character}
   </span>
 {/each}
+
+<style lang="scss">
+  @import '../styles/playground.scss';
+</style>

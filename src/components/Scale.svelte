@@ -32,7 +32,8 @@
   min={minX}
   max={maxX}
   {step}
-  on:input={handleXChange} />
+  on:input={handleXChange}
+/>
 
 <InputRange
   bind:value={yScale}
@@ -40,4 +41,5 @@
   min={minY}
   max={maxY}
   {step}
-  on:input={handleYChange} />
+  on:input={handleYChange}
+/>
