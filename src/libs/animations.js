@@ -13,14 +13,16 @@ export const animations = [
     loop: true,
     vert,
     frag,
+    init(canvas) {
+      this.webGlProps = draw.initScene(canvas, this.vert, this.frag)
+    },
     run(canvas) {
-      const webGlProps = draw.initScene(canvas, this.vert, this.frag)
-      return setInterval(() => {
-        draw.rectanglesScene(webGlProps)
-      }, 1)
+      if (!this.webGlProps) {
+        this.init(canvas)
+      }
+      draw.rectanglesScene(this.webGlProps)
     },
   },
-
   {
     id: 'L1-2',
     name: '... with drums',
@@ -28,11 +30,14 @@ export const animations = [
     audio: true,
     vert,
     frag,
+    init(canvas) {
+      this.webGlProps = draw.initScene(canvas, this.vert, this.frag)
+    },
     run(canvas) {
-      const webGlProps = draw.initScene(canvas, this.vert, this.frag)
-      return setInterval(() => {
-        draw.rectanglesScene(webGlProps)
-      }, 1)
+      if (!this.webGlProps) {
+        this.init(canvas)
+      }
+      draw.rectanglesScene(this.webGlProps)
     },
   },
   {
@@ -44,8 +49,13 @@ export const animations = [
     vert,
     frag,
     requestAnimationFrame: true,
-    run(canvas, translation, rotation, scale, color, width, height) {
+    init(canvas) {
       this.webGlProps = draw.initScene(canvas, this.vert, this.frag)
+    },
+    run(canvas, translation, rotation, scale, color, width, height) {
+      if (!this.webGlProps) {
+        this.init(canvas)
+      }
       draw.translationSceneViaDOM(
         this.webGlProps,
         translation,

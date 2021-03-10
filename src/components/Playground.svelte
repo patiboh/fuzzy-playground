@@ -41,9 +41,8 @@
   }
 
   // animations
-  let animationLoop
-  let animationTimeout
-  const animationDuration = 4200 / playbackRate
+  let animationStartTime
+  const animationDuration = 4179 / playbackRate
 
   // UI feedback
   let playgroundState
@@ -83,18 +82,27 @@
     drumroll.currentTime = 0
   }
 
-  function startAnimation() {
+  function runLoop(timestamp, duration) {
+    const runtime = timestamp - animationStartTime
+    if (runtime >= duration) {
+      celebrate()
+    } else {
+      // if duration not met yet
+      animation.run(canvas)
+      animationFrame = requestAnimationFrame(function (timestamp) {
+        // call requestAnimationFrame again with parameters
+        runLoop(timestamp, duration)
+      })
+    }
+  }
+
+  function startAnimation(timestamp, duration) {
     uiState.set(constants.uiState.ACTIVE)
     if (animation.audio) {
       drumroll.play()
     }
-    if (animation.loop) {
-      animationLoop = animation.run(canvas)
-      animationTimeout = setTimeout(() => {
-        uiState.set(constants.uiState.SUCCESS)
-        clearInterval(animationLoop)
-        loopEmojis()
-      }, animationDuration) // duration of drumroll, for now
+    if (animation.loop && duration) {
+      runLoop(timestamp, duration)
     } else {
       if (animation.coordinates) {
         animation.run(
@@ -109,18 +117,25 @@
       } else {
         animation.run(canvas)
       }
-      if (animation.requestAnimationFrame) {
-        animationFrame = requestAnimationFrame(startAnimation)
-      }
+      animationFrame = requestAnimationFrame(function (timestamp) {
+        // call requestAnimationFrame again with parameters
+        startAnimation(timestamp, duration)
+      })
     }
+  }
+
+  function celebrate() {
+    cancelAnimationFrame(animationFrame)
+    clearEmojis()
+    uiState.set(constants.uiState.SUCCESS)
+    loopEmojis()
   }
 
   function resetPlayground() {
     uiState.set(constants.uiState.DEFAULT)
-    clearEmojis()
     resetAudio()
-    clearInterval(animationLoop)
-    clearTimeout(animationTimeout)
+    cancelAnimationFrame(animationFrame)
+    clearEmojis()
   }
 
   function handleError(error) {
@@ -130,10 +145,16 @@
   }
 
   function handlePlay() {
-    cancelAnimationFrame(animationFrame)
-    resetPlayground()
     try {
-      startAnimation()
+      resetPlayground()
+      animationFrame = requestAnimationFrame(function (timestamp) {
+        animationStartTime = timestamp || new Date().getTime()
+        if (animation.loop) {
+          startAnimation(timestamp, animationDuration)
+        } else {
+          startAnimation(timestamp)
+        }
+      })
     } catch (error) {
       handleError(error)
     }
