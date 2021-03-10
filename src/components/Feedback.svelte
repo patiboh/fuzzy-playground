@@ -18,10 +18,10 @@
   })
 </script>
 
-<style lang="scss">
-  @import '../styles/feedback.scss';
-</style>
-
 <div class={`feedback ${playgroundState}`} data-cy="feedback">
   <pre class="stacktrace" data-cy="stacktrace">{stacktrace}</pre>
 </div>
+
+<style lang="scss">
+  @import '../styles/feedback.scss';
+</style>

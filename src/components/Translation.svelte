@@ -34,6 +34,19 @@
   })
 </script>
 
+<label>
+  x =
+  {coordX}
+  <input type="range" bind:value={coordX} max={maxX} on:input={update} />
+</label>
+<label>
+  y =
+  {coordY}
+  <input type="range" bind:value={coordY} max={maxY} on:input={update} />
+</label>
+
+<canvas bind:this={canvas} {width} {height} />
+
 <style>
   canvas {
     background-color: black;
@@ -48,16 +61,3 @@
     width: 400px;
   }
 </style>
-
-<label>
-  x =
-  {coordX}
-  <input type="range" bind:value={coordX} max={maxX} on:input={update} />
-</label>
-<label>
-  y =
-  {coordY}
-  <input type="range" bind:value={coordY} max={maxY} on:input={update} />
-</label>
-
-<canvas bind:this={canvas} {width} {height} />

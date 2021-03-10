@@ -17,18 +17,19 @@
   }
 </script>
 
-<style lang="scss">
-  @import '../styles/animations-menu.scss';
-</style>
-
 <div class="animations-menu" data-cy="animations-menu">
   {#each menumItems as {name, id, type}}
     <button
       class="btn-menu {type}"
       on:click={handleClick}
       data-id={id}
-      data-cy={id}>
+      data-cy={id}
+    >
       {name}
     </button>
   {/each}
 </div>
+
+<style lang="scss">
+  @import '../styles/animations-menu.scss';
+</style>
