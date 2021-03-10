@@ -61,7 +61,7 @@
   let playgroundState
   uiState.subscribe((value) => {
     playgroundState = value
-    if (playgroundState === constants.uiState.DEFAULT) {
+    if (showCoordinates && playgroundState === constants.uiState.DEFAULT) {
       resetGeometry()
     }
   })
@@ -82,7 +82,7 @@
   }
 
   function handleChange() {
-    dispatch('change', {
+    dispatch('geometryChange', {
       value: {color, translation, rotation, scale},
     })
   }
