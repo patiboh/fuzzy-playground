@@ -82,7 +82,7 @@
   }
 
   function handleChange() {
-    dispatch('geometryChange', {
+    dispatch('change', {
       value: {color, translation, rotation, scale},
     })
   }
