@@ -108,7 +108,7 @@
     }
   }
 
-  function startAnimation(duration) {
+  function animate(duration) {
     uiState.set(constants.uiState.ACTIVE)
     if (animation.audio) {
       drumroll.play()
@@ -140,32 +140,32 @@
     loopEmojis()
   }
 
-  function handlePlay() {
+  function play() {
     try {
       resetPlayground()
       if (animation.loop) {
-        startAnimation(animationDuration)
+        animate(animationDuration)
       } else {
-        startAnimation()
+        animate()
       }
     } catch (error) {
       handleError(error)
     }
   }
 
-  function handleRefresh() {
+  function refresh() {
     resetPlayground()
     location.reload() // TODO - reload gl code only ?
   }
 
-  function handleReset() {
+  function stop() {
     resetPlayground()
   }
 
   function handleLoadAnimation(event) {
     currentAnimationId.set(event.detail.animationId)
     animation = $animations.find((animation) => animation.id === animationId)
-    handlePlay()
+    play()
   }
 
   function updateGeometry(event) {
@@ -174,7 +174,7 @@
     if (animation.webGlProps) {
       animation.update(translation, rotation, scale)
     } else {
-      handlePlay()
+      play()
     }
   }
 </script>
@@ -210,7 +210,7 @@
       {animation}
     />
   </div>
-  <Controls {handlePlay} {handleReset} {handleRefresh} />
+  <Controls {play} {stop} {refresh} />
 </aside>
 {#each emojis as emoji}
   <span
