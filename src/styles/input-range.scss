@@ -6,10 +6,8 @@ label {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  margin-right: 1em;
-  max-width: 100%;
-  padding: 0.5em;
-  width: auto;
+  margin-left: 1em;
+  padding: 0.25em 0.25em 0.005em;
 }
 
 label:last-of-type {
@@ -33,6 +31,5 @@ input {
 @media (min-width: 768px) and (min-aspect-ratio: 3/5) {
   label {
     margin: 0.5em 0 0;
-    padding: 0.5em;
   }
 }

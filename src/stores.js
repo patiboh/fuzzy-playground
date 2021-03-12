@@ -18,4 +18,4 @@ export const currentCursor = derived(uiState, ($uiState) => {
 
 export const animations = readable(_animations.animations)
 
-export const currentAnimationId = writable('L1')
+export const currentAnimationId = writable('random-rect')

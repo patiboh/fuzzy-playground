@@ -12,9 +12,9 @@
     playgroundState = value
   })
 
-  export let handlePlay = () => {}
-  export let handleRefresh = () => {}
-  export let handleReset = () => {}
+  export let play = () => {}
+  export let stop = () => {}
+  export let refresh = () => {}
 
   function handlePlayButtonFocus() {
     if (playgroundState === constants.uiState.DEFAULT) {
@@ -40,7 +40,7 @@
     dataCy="btn-play"
     buttonClass="firestarter"
     buttonLabel="Play"
-    handleClick={handlePlay}
+    handleClick={play}
     handleFocus={handlePlayButtonFocus}
     handleBlur={handlePlayButtonBlur}
   />
@@ -48,13 +48,13 @@
     dataCy="btn-reset"
     buttonClass="sponge"
     buttonLabel="Reset playground"
-    handleClick={handleReset}
+    handleClick={stop}
   />
   <EmojiButton
     dataCy="btn-refresh"
     buttonClass="shower"
     buttonLabel="Refresh page"
-    handleClick={handleRefresh}
+    handleClick={refresh}
   />
 </div>
 

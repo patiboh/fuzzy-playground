@@ -1,6 +1,5 @@
 <script context="module">
   import * as constants from '../types/constants.js'
-  import * as utils from '../libs/utils.js'
   import {
     uiState,
     emojiFeedback,
@@ -14,6 +13,7 @@
 </script>
 
 <script>
+  import * as utils from '../libs/utils.js'
   // Canvas
   let canvas
   let canvasWidth = 300
@@ -84,26 +84,10 @@
 
   function runLoop(timestamp, duration) {
     const runtime = timestamp - animationStartTime
-    if (runtime >= duration) {
+    if (duration && runtime >= duration) {
       celebrate()
     } else {
       // if duration not met yet
-      animation.run(canvas)
-      animationFrame = requestAnimationFrame(function (timestamp) {
-        // call requestAnimationFrame again with parameters
-        runLoop(timestamp, duration)
-      })
-    }
-  }
-
-  function startAnimation(timestamp, duration) {
-    uiState.set(constants.uiState.ACTIVE)
-    if (animation.audio) {
-      drumroll.play()
-    }
-    if (animation.loop && duration) {
-      runLoop(timestamp, duration)
-    } else {
       if (animation.coordinates) {
         animation.run(
           canvas,
@@ -117,11 +101,23 @@
       } else {
         animation.run(canvas)
       }
-      animationFrame = requestAnimationFrame(function (timestamp) {
+      animationFrame = requestAnimationFrame(function (t) {
         // call requestAnimationFrame again with parameters
-        startAnimation(timestamp, duration)
+        runLoop(t, duration)
       })
     }
+  }
+
+  function animate(duration) {
+    uiState.set(constants.uiState.ACTIVE)
+    if (animation.audio) {
+      drumroll.play()
+    }
+    animationFrame = requestAnimationFrame(function (timestamp) {
+      animationStartTime = timestamp || new Date().getTime()
+      // call requestAnimationFrame again with parameters
+      runLoop(timestamp, duration)
+    })
   }
 
   function celebrate() {
@@ -144,35 +140,32 @@
     loopEmojis()
   }
 
-  function handlePlay() {
+  function play() {
     try {
       resetPlayground()
-      animationFrame = requestAnimationFrame(function (timestamp) {
-        animationStartTime = timestamp || new Date().getTime()
-        if (animation.loop) {
-          startAnimation(timestamp, animationDuration)
-        } else {
-          startAnimation(timestamp)
-        }
-      })
+      if (animation.loop) {
+        animate(animationDuration)
+      } else {
+        animate()
+      }
     } catch (error) {
       handleError(error)
     }
   }
 
-  function handleRefresh() {
+  function refresh() {
     resetPlayground()
     location.reload() // TODO - reload gl code only ?
   }
 
-  function handleReset() {
+  function stop() {
     resetPlayground()
   }
 
   function handleLoadAnimation(event) {
     currentAnimationId.set(event.detail.animationId)
     animation = $animations.find((animation) => animation.id === animationId)
-    handlePlay()
+    play()
   }
 
   function updateGeometry(event) {
@@ -181,7 +174,7 @@
     if (animation.webGlProps) {
       animation.update(translation, rotation, scale)
     } else {
-      handlePlay()
+      play()
     }
   }
 </script>
@@ -217,7 +210,7 @@
       {animation}
     />
   </div>
-  <Controls {handlePlay} {handleReset} {handleRefresh} />
+  <Controls {play} {stop} {refresh} />
 </aside>
 {#each emojis as emoji}
   <span

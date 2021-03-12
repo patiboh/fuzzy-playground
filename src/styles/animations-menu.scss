@@ -2,7 +2,7 @@
   align-items: flex-start;
   display: flex;
   flex-direction: column;
-  grid-column-start: 3;
+  grid-column-start: 1;
   grid-row-end: 3;
   grid-row-start: 1;
   justify-self: stretch;
@@ -15,10 +15,13 @@
   border-radius: var(--border-radius-input);
   color: var(--color-text-light-shower);
   flex-grow: 0;
+  font-size: 0.8em;
   font-weight: 500;
+  line-height: 1;
   margin: 0 0 0.5em;
   padding: 1em 2em;
-  width: 100%;
+  text-align: center;
+  text-transform: uppercase;
 }
 
 // button styles for specific animation types

@@ -17,18 +17,21 @@
   }
 </script>
 
-<div class="animations-menu" data-cy="animations-menu">
-  {#each menumItems as {name, id, type}}
-    <button
-      class="btn-menu {type}"
-      on:click={handleClick}
-      data-id={id}
-      data-cy={id}
-    >
-      {name}
-    </button>
-  {/each}
-</div>
+<nav class="animations-menu">
+  <ul>
+    {#each menumItems as {name, id, type}}
+      <li
+        class="btn-menu {type}"
+        on:click={handleClick}
+        data-id={id}
+        data-cy={id}
+      >
+        <!--TODO: make routes for animations-->
+        {name}
+      </li>
+    {/each}
+  </ul>
+</nav>
 
 <style lang="scss">
   @import '../styles/animations-menu.scss';
