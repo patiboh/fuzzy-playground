@@ -84,26 +84,10 @@
 
   function runLoop(timestamp, duration) {
     const runtime = timestamp - animationStartTime
-    if (runtime >= duration) {
+    if (duration && runtime >= duration) {
       celebrate()
     } else {
       // if duration not met yet
-      animation.run(canvas)
-      animationFrame = requestAnimationFrame(function (timestamp) {
-        // call requestAnimationFrame again with parameters
-        runLoop(timestamp, duration)
-      })
-    }
-  }
-
-  function startAnimation(timestamp, duration) {
-    uiState.set(constants.uiState.ACTIVE)
-    if (animation.audio) {
-      drumroll.play()
-    }
-    if (animation.loop && duration) {
-      runLoop(timestamp, duration)
-    } else {
       if (animation.coordinates) {
         animation.run(
           canvas,
@@ -117,11 +101,23 @@
       } else {
         animation.run(canvas)
       }
-      animationFrame = requestAnimationFrame(function (timestamp) {
+      animationFrame = requestAnimationFrame(function (t) {
         // call requestAnimationFrame again with parameters
-        startAnimation(timestamp, duration)
+        runLoop(t, duration)
       })
     }
+  }
+
+  function startAnimation(duration) {
+    uiState.set(constants.uiState.ACTIVE)
+    if (animation.audio) {
+      drumroll.play()
+    }
+    animationFrame = requestAnimationFrame(function (timestamp) {
+      animationStartTime = timestamp || new Date().getTime()
+      // call requestAnimationFrame again with parameters
+      runLoop(timestamp, duration)
+    })
   }
 
   function celebrate() {
@@ -147,14 +143,11 @@
   function handlePlay() {
     try {
       resetPlayground()
-      animationFrame = requestAnimationFrame(function (timestamp) {
-        animationStartTime = timestamp || new Date().getTime()
-        if (animation.loop) {
-          startAnimation(timestamp, animationDuration)
-        } else {
-          startAnimation(timestamp)
-        }
-      })
+      if (animation.loop) {
+        startAnimation(animationDuration)
+      } else {
+        startAnimation()
+      }
     } catch (error) {
       handleError(error)
     }
