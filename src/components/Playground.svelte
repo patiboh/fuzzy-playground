@@ -205,14 +205,12 @@
 
 <aside class="sidebar">
   <AnimationsMenu on:loadAnimation={handleLoadAnimation} />
-  <div class="coordinates" data-cy="coordinates">
-    <Geometry
-      on:change={updateGeometry}
-      {canvasWidth}
-      {canvasHeight}
-      {animation}
-    />
-  </div>
+  <Geometry
+    on:change={updateGeometry}
+    {canvasWidth}
+    {canvasHeight}
+    {animation}
+  />
   <Controls {play} {stop} {refresh} />
 </aside>
 {#each emojis as emoji}

@@ -17,7 +17,7 @@
   }
 </script>
 
-<nav class="animations-menu">
+<nav data-cy="animations-menu" class="animations-menu">
   <ul>
     {#each menumItems as {name, id, type}}
       <li
