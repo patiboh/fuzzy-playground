@@ -29,10 +29,9 @@
 }
 
 .radial-coordinates label:hover {
-  background: linear-gradient(
-    var(--color-dark) 10%,
-    var(--color-coordinates-hover)
-  );
+  background:
+    linear-gradient(var(--color-dark) 10%,
+    var(--color-coordinates-hover));
   color: var(--color-text-light);
 }
 
