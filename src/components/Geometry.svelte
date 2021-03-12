@@ -1,6 +1,5 @@
 <script context="module">
   import * as constants from '../types/constants.js'
-  import * as utils from '../libs/utils.js'
   import {uiState} from '../stores.js'
   import InputRange from './InputRange.svelte'
   import Coordinates from './Coordinates.svelte'
@@ -10,6 +9,7 @@
 </script>
 
 <script>
+  import * as utils from '../libs/utils.js'
   // @ts-check
   // export let inputs = []
   export let canvasWidth = 300

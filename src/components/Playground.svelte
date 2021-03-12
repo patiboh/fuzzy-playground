@@ -1,6 +1,5 @@
 <script context="module">
   import * as constants from '../types/constants.js'
-  import * as utils from '../libs/utils.js'
   import {
     uiState,
     emojiFeedback,
@@ -14,6 +13,7 @@
 </script>
 
 <script>
+  import * as utils from '../libs/utils.js'
   // Canvas
   let canvas
   let canvasWidth = 300
