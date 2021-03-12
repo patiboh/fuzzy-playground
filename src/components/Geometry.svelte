@@ -95,28 +95,39 @@
   }
 </script>
 
-{#if showCoordinates}
-  <Coordinates
-    bind:xCoord
-    bind:yCoord
-    bind:maxX
-    bind:maxY
-    on:input={handleChange} />
-{/if}
-{#if showScale}
-  <Scale
-    bind:xScale
-    bind:yScale
-    maxX="5"
-    maxY="5"
-    minX="-5"
-    minY="-5"
-    on:input={handleChange} />
-{/if}
-{#if showRotation}
-  <InputRange
-    bind:value={angle}
-    label="angle"
-    max={360}
-    on:input={handleChange} />
-{/if}
+<ul>
+  {#if showCoordinates}
+    <li>
+      <Coordinates
+        bind:xCoord
+        bind:yCoord
+        bind:maxX
+        bind:maxY
+        on:input={handleChange}
+      />
+    </li>
+  {/if}
+  {#if showScale}
+    <li>
+      <Scale
+        bind:xScale
+        bind:yScale
+        maxX="5"
+        maxY="5"
+        minX="-5"
+        minY="-5"
+        on:input={handleChange}
+      />
+    </li>
+  {/if}
+  {#if showRotation}
+    <li>
+      <InputRange
+        bind:value={angle}
+        label="angle"
+        max={360}
+        on:input={handleChange}
+      />
+    </li>
+  {/if}
+</ul>

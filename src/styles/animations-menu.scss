@@ -2,16 +2,11 @@
   align-items: flex-start;
   display: flex;
   flex-direction: column;
-  grid-column-start: 3;
+  grid-column-start: 1;
   grid-row-end: 3;
   grid-row-start: 1;
   justify-self: stretch;
   max-width: var(--coord-input-width);
-}
-
-.animations-menu > ul {
-  padding: 0;
-  list-style: none;
 }
 
 .btn-menu {
@@ -20,13 +15,13 @@
   border-radius: var(--border-radius-input);
   color: var(--color-text-light-shower);
   flex-grow: 0;
+  font-size: 0.8em;
   font-weight: 500;
+  line-height: 1;
   margin: 0 0 0.5em;
   padding: 1em 2em;
   text-align: center;
-  font-size: 0.8em;
   text-transform: uppercase;
-  line-height: 1;
 }
 
 // button styles for specific animation types
