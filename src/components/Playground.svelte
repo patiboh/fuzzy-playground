@@ -66,6 +66,9 @@
     emojiFrame = requestAnimationFrame(loopEmojis)
 
     emojis = emojis.map((emoji) => {
+      if (!emoji.character) {
+        emoji.character = '💩 undefined'
+      }
       emoji.y += 0.7 * emoji.ratio
       if (emoji.y > 100) emoji.y = -20
       return emoji
