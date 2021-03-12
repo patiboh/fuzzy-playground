@@ -8,19 +8,19 @@ const OUTPUT = '[data-cy="output"]'
 
 // Animations menu
 const ANIMATIONS_MENU = '[data-cy="animations-menu"]'
-const BTN_RANDOM_RECTS = '[data-cy="L1"]'
-const BTN_WITH_DRUMS = '[data-cy="L1-2"]'
-const BTN_TRANSLATE = '[data-cy="L2"]'
+const BTN_RANDOM_RECTS = '[data-cy="random-rect"]'
+const BTN_WITH_DRUMS = '[data-cy="random-rect-audio"]'
+const BTN_2D_GEO = '[data-cy="2D-geometry"]'
 const CONFETTI = '[data-cy="emoji-🥳"]'
 const POOP = '[data-cy="emoji-💩"]'
 const ANIMATION_RANDOM_RECTS = 'Random rectangles'
 const ANIMATION_WITH_DRUMS = '... with drums'
-const ANIMATION_TRANSLATION = 'Translation'
+const ANIMATION_2D_GEO = '2D geometry'
 
 // Animation controls
 const COORDINATES = '[data-cy="coordinates"]'
-const COORD_X = '[data-cy="coord-x"]'
-const COORD_Y = '[data-cy="coord-y"]'
+const COORD_X = '[data-cy="x-range"]'
+const COORD_Y = '[data-cy="y-range"]'
 const rootUrl = '/'
 export function visit() {
   cy.visit(rootUrl)
@@ -29,21 +29,19 @@ export function visit() {
 export function findAnimationsMenu() {
   cy.get(ANIMATIONS_MENU).find(BTN_RANDOM_RECTS)
   cy.get(ANIMATIONS_MENU).find(BTN_WITH_DRUMS)
-  cy.get(ANIMATIONS_MENU).find(BTN_TRANSLATE)
+  cy.get(ANIMATIONS_MENU).find(BTN_2D_GEO)
 }
 
 export function findCoordinates() {
   cy.get(COORDINATES).then(() => {
-    cy.get(OUTPUT).then(() => {
-      const outputHeight = 580 // TODO : fix value: should match canvas width (test on resize ?)
-      const outputWidth = 536 // TODO : fix value: should match canvas width (test on resize ?)
+    const outputHeight = 580 // TODO : fix value: should match canvas width (test on resize ?)
+    const outputWidth = 536 // TODO : fix value: should match canvas width (test on resize ?)
 
-      cy.get(COORD_X).then(($coord) => {
-        expect($coord).to.have.attr('max', outputHeight)
-      })
-      cy.get(COORD_Y).then(($coord) => {
-        expect($coord).to.have.attr('max', outputWidth)
-      })
+    cy.get(COORD_X).then(($coord) => {
+      expect($coord).to.have.attr('max', outputHeight)
+    })
+    cy.get(COORD_Y).then(($coord) => {
+      expect($coord).to.have.attr('max', outputWidth)
     })
   })
 }
@@ -67,8 +65,8 @@ export function playAnimation(animation) {
   if (animation === ANIMATION_WITH_DRUMS) {
     cy.get(BTN_WITH_DRUMS).contains(ANIMATION_WITH_DRUMS).click()
   }
-  if (animation === ANIMATION_TRANSLATION) {
-    cy.get(BTN_TRANSLATE).contains(ANIMATION_TRANSLATION).click()
+  if (animation === ANIMATION_2D_GEO) {
+    cy.get(BTN_2D_GEO).contains(ANIMATION_2D_GEO).click()
   }
 }
 

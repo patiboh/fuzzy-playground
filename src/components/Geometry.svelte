@@ -97,7 +97,7 @@
 
 <ul>
   {#if showCoordinates}
-    <li>
+    <li data-cy="coordinates">
       <Coordinates
         bind:xCoord
         bind:yCoord
