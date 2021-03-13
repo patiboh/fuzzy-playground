@@ -14,6 +14,9 @@
   "cypress-cucumber-preprocessor": {
     "nonGlobalStepDefinitions": true
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "dev": "sapper dev",
     "build": "sapper build",
