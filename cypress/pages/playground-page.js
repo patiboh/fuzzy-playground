@@ -71,7 +71,7 @@ export function playAnimation(animation) {
 }
 
 export function findTheConfetti() {
-  cy.get(CONFETTI)
+  cy.wait(5000).get(CONFETTI)
 }
 
 export function findThePoop() {
