@@ -134,6 +134,7 @@
     uiState.set(constants.uiState.DEFAULT)
     resetAudio()
     cancelAnimationFrame(animationFrame)
+    animation.clear()
     clearEmojis()
   }
 
@@ -144,8 +145,8 @@
   }
 
   function play() {
+    resetPlayground()
     try {
-      resetPlayground()
       if (animation.loop) {
         animate(animationDuration)
       } else {
@@ -166,6 +167,7 @@
   }
 
   function handleLoadAnimation(event) {
+    resetPlayground()
     currentAnimationId.set(event.detail.animationId)
     animation = $animations.find((animation) => animation.id === animationId)
     play()

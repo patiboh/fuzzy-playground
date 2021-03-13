@@ -20,6 +20,9 @@ export const animations = [
       }
       draw.rectanglesScene(this.webGlProps)
     },
+    clear() {
+      this.webGlProps = null
+    },
   },
   {
     id: 'random-rect-audio',
@@ -36,6 +39,9 @@ export const animations = [
         this.init(canvas)
       }
       draw.rectanglesScene(this.webGlProps)
+    },
+    clear() {
+      this.webGlProps = null
     },
   },
   {
@@ -70,6 +76,9 @@ export const animations = [
         color: this.color,
       }
       draw.drawSceneT2DGL(drawOptions)
+    },
+    clear() {
+      this.webGlProps = null
     },
   },
 ]
