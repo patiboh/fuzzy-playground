@@ -134,6 +134,7 @@
     uiState.set(constants.uiState.DEFAULT)
     resetAudio()
     cancelAnimationFrame(animationFrame)
+    animation.clear()
     clearEmojis()
   }
 
