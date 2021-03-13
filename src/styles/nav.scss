@@ -37,8 +37,13 @@ li {
 }
 
 a {
-  color: var(--color-text-light-shower);
   display: block;
   padding: 1em 0.5em;
   text-decoration: none;
+  color: var(--white);
+}
+
+a:focus,
+a:hover {
+  color: var(--primary-light);
 }
