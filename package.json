@@ -3,6 +3,10 @@
   "description": "An evolving environment to play, experiment and learn about web graphics and user interfaces",
   "version": "0.0.1",
   "license": "BSD-3-Clause",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/patiboh/fuzzy-playground.git"
+  },
   "cypress-cucumber-preprocessor": {
     "nonGlobalStepDefinitions": true
   },
