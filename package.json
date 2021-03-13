@@ -2,7 +2,7 @@
   "name": "@fat-fuzzy/fuzzy-playground",
   "author": "Patricia Boh",
   "description": "An evolving environment to play, experiment and learn about web graphics and user interfaces",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "license": "BSD-3-Clause",
   "repository": {
     "type": "git",
