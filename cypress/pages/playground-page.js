@@ -60,10 +60,10 @@ export function pressRefresh() {
 
 export function playAnimation(animation) {
   if (animation === ANIMATION_RANDOM_RECTS) {
-    cy.get(BTN_RANDOM_RECTS).contains(ANIMATION_RANDOM_RECTS).click()
+    cy.get(BTN_RANDOM_RECTS).contains(ANIMATION_RANDOM_RECTS).click().wait(5000)
   }
   if (animation === ANIMATION_WITH_DRUMS) {
-    cy.get(BTN_WITH_DRUMS).contains(ANIMATION_WITH_DRUMS).click()
+    cy.get(BTN_WITH_DRUMS).contains(ANIMATION_WITH_DRUMS).click().wait(5000)
   }
   if (animation === ANIMATION_2D_GEO) {
     cy.get(BTN_2D_GEO).contains(ANIMATION_2D_GEO).click()
