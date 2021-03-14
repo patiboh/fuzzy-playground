@@ -51,9 +51,6 @@
 
   uiState.subscribe((value) => {
     playgroundState = value
-    if (value === constants.uiState.DEFAULT) {
-      geometryState = geometryStateDefault
-    }
   })
   emojiFeedback.subscribe((value) => {
     emojis = utils.multiply(Object.values(value))
