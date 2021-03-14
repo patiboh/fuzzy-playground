@@ -56,11 +56,6 @@ button {
   background: radial-gradient(var(--color-sponge-08) 20%, transparent 60%);
 }
 
-// .firestarter.active:hover,
-// .firestarter.active:focus {
-//   background: radial-gradient(var(--color-sponge) 20%, transparent 60%);
-// }
-
 // Refresh button
 .shower {
   background: radial-gradient(rgba(34, 229, 227, 0.4) 20%, transparent 60%);
@@ -75,30 +70,25 @@ button {
   background: radial-gradient(rgba(34, 229, 227, 0.5) 20%, transparent 60%);
 }
 
-// Clear emojis animation button
+// Stop button
 .sponge {
   background: radial-gradient(var(--color-sponge-08) 20%, transparent 60%);
 }
 
 .sponge::before {
   content: '🧽';
-  font-size: 4.95em;
+}
+
+@media (min-width: 540px) {
+  .sponge::before {
+    font-size: 5.25em;
+  }
 }
 
 .sponge:hover,
 .sponge:focus {
   background: radial-gradient(var(--color-sponge) 20%, transparent 60%);
 }
-
-// @media (min-width: 768px) {
-//   .btn-group {
-//     justify-content: space-evenly;
-//   }
-//   .btn-emoji {
-//     height: auto;
-//     width: 100%;
-//   }
-// }
 
 @media (min-width: 768px) and (min-aspect-ratio: 3/5) {
   .btn-group {
