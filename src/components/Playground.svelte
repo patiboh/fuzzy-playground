@@ -7,7 +7,7 @@
     currentAnimationId,
   } from '../stores.js'
   import Feedback from './Feedback.svelte'
-  import Geometry from './GeometryControls.svelte'
+  import GeometryControls from './GeometryControls.svelte'
   import AnimationsMenu from './AnimationsMenu.svelte'
   import Controls from './Controls.svelte'
 </script>
@@ -90,7 +90,7 @@
       celebrate()
     } else {
       // if duration not met yet
-      if (animation.coordinates) {
+      if (animation.position) {
         animation.run(
           canvas,
           geometryState.translation,
@@ -205,7 +205,7 @@
 
 <aside class="sidebar">
   <AnimationsMenu on:loadAnimation={handleLoadAnimation} />
-  <Geometry
+  <GeometryControls
     on:change={updateGeometry}
     {canvasWidth}
     {canvasHeight}

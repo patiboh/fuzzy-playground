@@ -48,7 +48,7 @@ export const animations = [
     id: '2D-geometry',
     name: '2D geometry',
     ui: ['position', 'angle', 'scale'],
-    coordinates: true,
+    position: true,
     rotation: true,
     scale: true,
     webGlProps: null,

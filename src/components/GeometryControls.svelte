@@ -2,7 +2,7 @@
   import * as constants from '../types/constants.js'
   import {uiState} from '../stores.js'
   import InputRange from './InputRange.svelte'
-  import Coordinates from './Coordinates.svelte'
+  import Position from './Position.svelte'
   import Scale from './Scale.svelte'
 
   import {createEventDispatcher} from 'svelte'
@@ -32,7 +32,7 @@
   let xCoord = canvasWidth / 2
   let yCoord = canvasHeight / 2
   let translation = [xCoord, yCoord]
-  let showCoordinates = false
+  let showPosition = false
 
   // rotation
   let angle = 0
@@ -47,7 +47,7 @@
   let scale = [xScale, yScale]
   let showScale = false
 
-  $: showCoordinates = animation.coordinates
+  $: showPosition = animation.position
   $: showRotation = animation.rotation
   $: showScale = animation.scale
   $: translation = [xCoord, yCoord]
@@ -61,7 +61,7 @@
   let playgroundState
   uiState.subscribe((value) => {
     playgroundState = value
-    if (showCoordinates && playgroundState === constants.uiState.DEFAULT) {
+    if (showPosition && playgroundState === constants.uiState.DEFAULT) {
       resetGeometry()
     }
   })
@@ -96,9 +96,9 @@
 </script>
 
 <ul class="geometry-controls">
-  {#if showCoordinates}
-    <li data-cy="coordinates">
-      <Coordinates
+  {#if showPosition}
+    <li data-cy="position">
+      <Position
         bind:xCoord
         bind:yCoord
         bind:maxX
