@@ -7,7 +7,7 @@
     currentAnimationId,
   } from '../stores.js'
   import Feedback from './Feedback.svelte'
-  import Geometry from './Geometry.svelte'
+  import Geometry from './GeometryControls.svelte'
   import AnimationsMenu from './AnimationsMenu.svelte'
   import Controls from './Controls.svelte'
 </script>
@@ -33,12 +33,13 @@
   /**
    * Geometry controls
    */
-  let geometryState = {
+  const geometryStateDefault = {
     color: [Math.random(), Math.random(), Math.random(), 1],
     translation: [canvasWidth / 2, canvasHeight / 2],
     rotation: [0, 0],
     scale: [1, 1],
   }
+  let geometryState = geometryStateDefault
 
   // animations
   let animationStartTime
@@ -118,7 +119,6 @@
     }
     animationFrame = requestAnimationFrame(function (timestamp) {
       animationStartTime = timestamp || new Date().getTime()
-      // call requestAnimationFrame again with parameters
       runLoop(timestamp, duration)
     })
   }
@@ -164,6 +164,7 @@
 
   function stop() {
     resetPlayground()
+    geometryState = geometryStateDefault
   }
 
   function handleLoadAnimation(event) {

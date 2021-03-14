@@ -31,19 +31,6 @@ main {
     );
 }
 
-.coordinates {
-  display: flex;
-  flex-direction: column;
-  grid-column-start: 2;
-  grid-row-end: 3;
-  grid-row-start: 1;
-  height: auto;
-  justify-content: flex-start;
-  margin-left: 1em;
-  overflow-y: auto;
-  width: auto;
-}
-
 @media (min-width: 540px) {
   .sidebar {
     grid-template-columns: var(--menu-btn-width) auto;
@@ -63,15 +50,5 @@ main {
     grid-template-rows:
       calc(var(--menu-btn-height) * 3) auto
       var(--control-btn-group-height);
-  }
-
-  .coordinates {
-    display: flex;
-    flex-direction: column;
-    grid-column-start: 1;
-    grid-row-start: 2;
-    margin-left: 0;
-    overflow-x: scroll;
-    width: 100%;
   }
 }

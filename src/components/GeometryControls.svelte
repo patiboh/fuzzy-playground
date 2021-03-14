@@ -95,7 +95,7 @@
   }
 </script>
 
-<ul>
+<ul class="geometry-controls">
   {#if showCoordinates}
     <li data-cy="coordinates">
       <Coordinates
@@ -131,3 +131,7 @@
     </li>
   {/if}
 </ul>
+
+<style lang="scss">
+  @import '../styles/geometry-controls.scss';
+</style>
