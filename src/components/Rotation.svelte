@@ -22,27 +22,8 @@
 </script>
 
 <div class="rotation" data-cy="rotation">
-  <!-- <label>
-     // TODO
-    x =
-    {xRad}
-    <input
-      data-cy="coord-x"
-      type="range"
-      bind:value={xRad}
-      max={maxX}
-      on:input={handleXRadChange} />
-  </label>
-  <label>
-    y =
-    {yRad}
-    <input
-      data-cy="coord-y"
-      type="range"
-      bind:value={yRad}
-      max={maxY}
-      on:input={handleYRadChange} />
-  </label> -->
+  <!--https://css-tricks.com/accessible-svgs/-->
+  <svg id="InteractiveSVG" role="group" />
 </div>
 
 <style lang="scss">
