@@ -11,7 +11,6 @@
 <script>
   import * as utils from '../libs/utils.js'
   // @ts-check
-  // export let inputs = []
   export let canvasWidth = 300
   export let canvasHeight = 150
   export let animation

@@ -21,7 +21,7 @@
   // }
 </script>
 
-<div class="radial-coordinates" data-cy="radial-coordinates">
+<div class="rotation" data-cy="rotation">
   <!-- <label>
      // TODO
     x =
@@ -46,5 +46,5 @@
 </div>
 
 <style lang="scss">
-  @import '../styles/radial-coordinates.scss';
+  @import '../styles/rotation.scss';
 </style>

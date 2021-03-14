@@ -186,18 +186,18 @@
 </script>
 
 <section
+  data-cy="output"
   class={`output ${playgroundState}`}
   bind:offsetWidth={canvasWidth}
   bind:offsetHeight={canvasHeight}
-  data-cy="output"
 >
   <canvas bind:this={canvas} data-cy="canvas" />
   <Feedback {stacktrace} />
   <audio
     data-cy="drumroll"
+    duration={animationDuration}
     bind:this={drumroll}
     bind:playbackRate
-    duration={animationDuration}
   >
     <source src="drumroll.ogg" type="audio/ogg" />
     <track kind="captions" srclang="en" />
