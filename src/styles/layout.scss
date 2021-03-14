@@ -25,7 +25,7 @@ main {
   display: grid;
   grid-column-start: 1;
   grid-row-start: 2;
-  grid-template-columns: var(--coord-input-width) var(--coord-input-width);
+  grid-template-columns: 50% 50%;
   grid-template-rows: calc(var(--menu-btn-height) * 3) var(
       --control-btn-group-height
     );
