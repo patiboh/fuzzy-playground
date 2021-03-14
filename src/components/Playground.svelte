@@ -28,15 +28,13 @@
   const width = 100 // of geometry
   const height = 30 // of geometry
 
-  /**
-   * Geometry controls
-   */
   const geometryStateDefault = {
     color: [Math.random(), Math.random(), Math.random(), 1],
     translation: [canvasWidth / 2, canvasHeight / 2],
     rotation: [0, 0],
     scale: [1, 1],
   }
+  // TODO : fix - gepometry state is not reactive
   let geometryState = geometryStateDefault
 
   // animations
@@ -177,7 +175,7 @@
   function updateGeometry(event) {
     const {color, translation, rotation, scale} = event.detail.value
     geometryState = {...geometryState, color, translation, rotation, scale}
-    if (animation.webGlProps) {
+    if (animation.position && animation.webGlProps) {
       animation.update(translation, rotation, scale)
     } else {
       play()
@@ -209,6 +207,8 @@
   <AnimationsMenu on:loadAnimation={handleLoadAnimation} />
   <GeometryControls
     on:change={updateGeometry}
+    defaultState={geometryStateDefault}
+    {geometryState}
     {canvasWidth}
     {canvasHeight}
     {animation}

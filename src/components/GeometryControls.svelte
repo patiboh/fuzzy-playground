@@ -11,6 +11,8 @@
 <script>
   import * as utils from '../libs/utils.js'
   // @ts-check
+  export let geometryStateDefault
+  export let geometryState = geometryStateDefault
   export let canvasWidth = 300
   export let canvasHeight = 150
   export let animation
@@ -56,11 +58,17 @@
   $: scale = [xScale, yScale]
   $: maxX = canvasWidth - width
   $: maxY = canvasHeight - height
+  $: geometryState = {
+    color,
+    translation,
+    rotation,
+    scale,
+  }
 
   let playgroundState
   uiState.subscribe((value) => {
     playgroundState = value
-    if (showPosition && playgroundState === constants.uiState.DEFAULT) {
+    if (playgroundState === constants.uiState.DEFAULT) {
       resetGeometry()
     }
   })
@@ -82,7 +90,7 @@
 
   function handleChange() {
     dispatch('change', {
-      value: {color, translation, rotation, scale},
+      value: geometryState,
     })
   }
 
