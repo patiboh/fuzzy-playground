@@ -22,8 +22,6 @@
 
   // Audio
   let drumroll
-  let ended
-  let duration
   let playbackRate = 2
 
   // WebGL Geometry
@@ -194,11 +192,10 @@
   <canvas bind:this={canvas} data-cy="canvas" />
   <Feedback {stacktrace} />
   <audio
-    bind:this={drumroll}
-    bind:duration
-    bind:ended
-    bind:playbackRate
     data-cy="drumroll"
+    bind:this={drumroll}
+    bind:playbackRate
+    duration={animationDuration}
   >
     <source src="drumroll.ogg" type="audio/ogg" />
     <track kind="captions" srclang="en" />
