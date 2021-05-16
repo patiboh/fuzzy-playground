@@ -2,7 +2,7 @@
   import * as constants from '../types/constants.js'
   import {uiState} from '../stores.js'
   import InputRange from './InputRange.svelte'
-  import Coordinates from './Coordinates.svelte'
+  import Position from './Position.svelte'
   import Scale from './Scale.svelte'
 
   import {createEventDispatcher} from 'svelte'
@@ -11,7 +11,8 @@
 <script>
   import * as utils from '../libs/utils.js'
   // @ts-check
-  // export let inputs = []
+  export let geometryStateDefault
+  export let geometryState = geometryStateDefault
   export let canvasWidth = 300
   export let canvasHeight = 150
   export let animation
@@ -32,7 +33,7 @@
   let xCoord = canvasWidth / 2
   let yCoord = canvasHeight / 2
   let translation = [xCoord, yCoord]
-  let showCoordinates = false
+  let showPosition = false
 
   // rotation
   let angle = 0
@@ -47,7 +48,7 @@
   let scale = [xScale, yScale]
   let showScale = false
 
-  $: showCoordinates = animation.coordinates
+  $: showPosition = animation.position
   $: showRotation = animation.rotation
   $: showScale = animation.scale
   $: translation = [xCoord, yCoord]
@@ -57,11 +58,17 @@
   $: scale = [xScale, yScale]
   $: maxX = canvasWidth - width
   $: maxY = canvasHeight - height
+  $: geometryState = {
+    color,
+    translation,
+    rotation,
+    scale,
+  }
 
   let playgroundState
   uiState.subscribe((value) => {
     playgroundState = value
-    if (showCoordinates && playgroundState === constants.uiState.DEFAULT) {
+    if (playgroundState === constants.uiState.DEFAULT) {
       resetGeometry()
     }
   })
@@ -83,7 +90,7 @@
 
   function handleChange() {
     dispatch('change', {
-      value: {color, translation, rotation, scale},
+      value: geometryState,
     })
   }
 
@@ -95,10 +102,10 @@
   }
 </script>
 
-<ul>
-  {#if showCoordinates}
-    <li data-cy="coordinates">
-      <Coordinates
+<ul class="geometry-controls">
+  {#if showPosition}
+    <li data-cy="position">
+      <Position
         bind:xCoord
         bind:yCoord
         bind:maxX
@@ -131,3 +138,7 @@
     </li>
   {/if}
 </ul>
+
+<style lang="scss">
+  @import '../styles/geometry-controls.scss';
+</style>

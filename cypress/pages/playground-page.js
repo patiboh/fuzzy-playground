@@ -18,7 +18,7 @@ const ANIMATION_WITH_DRUMS = '... with drums'
 const ANIMATION_2D_GEO = '2D geometry'
 
 // Animation controls
-const COORDINATES = '[data-cy="coordinates"]'
+const POSITION = '[data-cy="position"]'
 const COORD_X = '[data-cy="x-range"]'
 const COORD_Y = '[data-cy="y-range"]'
 const rootUrl = '/'
@@ -32,8 +32,8 @@ export function findAnimationsMenu() {
   cy.get(ANIMATIONS_MENU).find(BTN_2D_GEO)
 }
 
-export function findCoordinates() {
-  cy.get(COORDINATES).then(() => {
+export function findPosition() {
+  cy.get(POSITION).then(() => {
     const outputHeight = 580 // TODO : fix value: should match canvas width (test on resize ?)
     const outputWidth = 536 // TODO : fix value: should match canvas width (test on resize ?)
 

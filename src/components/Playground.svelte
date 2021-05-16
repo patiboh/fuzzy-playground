@@ -7,7 +7,7 @@
     currentAnimationId,
   } from '../stores.js'
   import Feedback from './Feedback.svelte'
-  import Geometry from './Geometry.svelte'
+  import GeometryControls from './GeometryControls.svelte'
   import AnimationsMenu from './AnimationsMenu.svelte'
   import Controls from './Controls.svelte'
 </script>
@@ -22,23 +22,20 @@
 
   // Audio
   let drumroll
-  let ended
-  let duration
   let playbackRate = 2
 
   // WebGL Geometry
   const width = 100 // of geometry
   const height = 30 // of geometry
 
-  /**
-   * Geometry controls
-   */
-  let geometryState = {
+  const geometryStateDefault = {
     color: [Math.random(), Math.random(), Math.random(), 1],
     translation: [canvasWidth / 2, canvasHeight / 2],
     rotation: [0, 0],
     scale: [1, 1],
   }
+  // TODO : fix - gepometry state is not reactive
+  let geometryState = geometryStateDefault
 
   // animations
   let animationStartTime
@@ -91,7 +88,7 @@
       celebrate()
     } else {
       // if duration not met yet
-      if (animation.coordinates) {
+      if (animation.position) {
         animation.run(
           canvas,
           geometryState.translation,
@@ -118,7 +115,6 @@
     }
     animationFrame = requestAnimationFrame(function (timestamp) {
       animationStartTime = timestamp || new Date().getTime()
-      // call requestAnimationFrame again with parameters
       runLoop(timestamp, duration)
     })
   }
@@ -176,7 +172,7 @@
   function updateGeometry(event) {
     const {color, translation, rotation, scale} = event.detail.value
     geometryState = {...geometryState, color, translation, rotation, scale}
-    if (animation.webGlProps) {
+    if (animation.position && animation.webGlProps) {
       animation.update(translation, rotation, scale)
     } else {
       play()
@@ -185,19 +181,18 @@
 </script>
 
 <section
+  data-cy="output"
   class={`output ${playgroundState}`}
   bind:offsetWidth={canvasWidth}
   bind:offsetHeight={canvasHeight}
-  data-cy="output"
 >
   <canvas bind:this={canvas} data-cy="canvas" />
   <Feedback {stacktrace} />
   <audio
-    bind:this={drumroll}
-    bind:duration
-    bind:ended
-    bind:playbackRate
     data-cy="drumroll"
+    duration={animationDuration}
+    bind:this={drumroll}
+    bind:playbackRate
   >
     <source src="drumroll.ogg" type="audio/ogg" />
     <track kind="captions" srclang="en" />
@@ -207,8 +202,10 @@
 
 <aside class="sidebar">
   <AnimationsMenu on:loadAnimation={handleLoadAnimation} />
-  <Geometry
+  <GeometryControls
     on:change={updateGeometry}
+    defaultState={geometryStateDefault}
+    {geometryState}
     {canvasWidth}
     {canvasHeight}
     {animation}

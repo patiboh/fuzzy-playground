@@ -6,7 +6,7 @@ And(/^I play the '2D geometry' animation$/, () => {
 })
 
 Then(/^I can see coordinates handles for X and Y$/, () => {
-  PlaygroundPage.findCoordinates()
+  PlaygroundPage.findPosition()
 })
 
 And(/^I can translate a rectangle in the canvas$/, () => {

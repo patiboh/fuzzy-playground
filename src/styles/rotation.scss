@@ -1,4 +1,4 @@
-.radial-coordinates {
+.rotation {
   border-radius: 5px;
   display: flex;
   flex-direction: column;
@@ -10,7 +10,7 @@
   width: auto;
 }
 
-.radial-coordinates label {
+.rotation label {
   align-items: flex-start;
   background: linear-gradient(var(--color-dark) 5%, var(--color-coordinates));
   border-radius: var(--border-radius-input);
@@ -24,25 +24,26 @@
   width: auto;
 }
 
-.radial-coordinates label:last-of-type {
+.rotation label:last-of-type {
   margin-top: 0.5em;
 }
 
-.radial-coordinates label:hover {
-  background:
-    linear-gradient(var(--color-dark) 10%,
-    var(--color-coordinates-hover));
+.rotation label:hover {
+  background: linear-gradient(
+    var(--color-dark) 10%,
+    var(--color-coordinates-hover)
+  );
   color: var(--color-text-light);
 }
 
-.radial-coordinates input {
+.rotation input {
   margin-bottom: 0.25em;
   margin-top: 0.5em;
   width: calc(100% - 1em);
 }
 
 @media (min-width: 768px) and (min-aspect-ratio: 3/5) {
-  .radial-coordinates {
+  .rotation {
     border-radius: 5px;
     display: flex;
     flex-direction: column;
@@ -52,14 +53,14 @@
     width: 100%;
   }
 
-  .radial-coordinates label {
+  .rotation label {
     align-items: center;
     flex-direction: row;
     margin: 0.5em 0 0;
     padding: 0.7em 1em;
   }
 
-  .radial-coordinates input {
+  .rotation input {
     width: calc(100% - 6em);
   }
 }
